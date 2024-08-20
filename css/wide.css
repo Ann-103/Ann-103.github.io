@@ -1,0 +1,22 @@
+.aside-content{
+    max-width:300px;
+    min-width:288px;
+}
+.recent-posts{
+  width:auto!important;
+}
+
+@media screen and (max-width: 1024px){
+    .card-widget:not(#card-toc){
+        display:none!important;
+    }
+    /*因为目录可以用侧边栏展开，所以不能隐藏*/
+}
+.flink-list-item{
+    width:calc(100% / 4 - 15px)!important;
+}
+@media screen and (max-width: 1250px) {
+    .flink-list-item{
+        width:calc(100% / 3 - 15px)!important;
+    }
+}

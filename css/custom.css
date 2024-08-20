@@ -1,0 +1,28 @@
+
+/*设置鼠标样式*/
+body {
+    cursor: url(https://cdn.jsdelivr.net/gh/sviptzk/HexoStaticFile@latest/Hexo/img/default.cur),
+        default;
+}
+a,img {
+    cursor: url(https://cdn.jsdelivr.net/gh/sviptzk/HexoStaticFile@latest/Hexo/img/pointer.cur),
+        default;
+}
+
+  #nav .menus_items .menus_item .menus_item_child li {
+    display: inline-block;
+  }
+  /* 圆角隐藏 */
+  ul.menus_item_child {
+    overflow: hidden;
+    border-radius: 5px;
+  }
+  /* 调整空隙，确保不会天下武功唯快不破 */
+  #nav .menus_items .menus_item .menus_item_child {
+    margin-top: 0px !important;
+  }
+
+  
+  #footer{
+    background: transparent!important;
+  }
