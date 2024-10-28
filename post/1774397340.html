@@ -7,7 +7,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://ann-103.github.io/img/favicon.png">
 <meta property="article:published_time" content="2024-10-28T06:58:14.000Z">
-<meta property="article:modified_time" content="2024-10-28T08:33:31.949Z">
+<meta property="article:modified_time" content="2024-10-28T08:40:07.788Z">
 <meta property="article:author" content="Ann">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://ann-103.github.io/img/favicon.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://ann-103.github.io/post/1774397340.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
@@ -16,7 +16,7 @@
   localSearch: undefined,
   translate: undefined,
   noticeOutdate: undefined,
-  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":50},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
   copy: {
     success: '复制成功',
     error: '复制错误',
@@ -55,7 +55,7 @@
   isHome: false,
   isHighlightShrink: false,
   isToc: true,
-  postUpdate: '2024-10-28 16:33:31'
+  postUpdate: '2024-10-28 16:40:07'
 }</script><script>(win=>{
       win.saveToLocal = {
         set: (key, value, ttl) => {
@@ -173,7 +173,7 @@
     document.addEventListener('pjax:send', () => { preloader.initLoading() })
     document.addEventListener('pjax:complete', () => { preloader.endLoading() })
   }
-})()</script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/favicon.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">10</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr class="custom-hr"/></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Ann-Blog"><span class="site-name">Ann-Blog</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">Git</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-10-28T06:58:14.000Z" title="发表于 2024-10-28 14:58:14">2024-10-28</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-10-28T08:33:31.949Z" title="更新于 2024-10-28 16:33:31">2024-10-28</time></span></div><div class="meta-secondline"></div></div></div><article class="post-content" id="article-container"><blockquote>
+})()</script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/favicon.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">10</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr class="custom-hr"/></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Ann-Blog"><span class="site-name">Ann-Blog</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">Git</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-10-28T06:58:14.000Z" title="发表于 2024-10-28 14:58:14">2024-10-28</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-10-28T08:40:07.788Z" title="更新于 2024-10-28 16:40:07">2024-10-28</time></span></div><div class="meta-secondline"></div></div></div><article class="post-content" id="article-container"><blockquote>
 <p>本文是针对git的工作原理和操作为主的学习记录,参考资料：《github入门与实践》，参考网站：<a target="_blank" rel="noopener" href="https://www.liaoxuefeng.com">https://www.liaoxuefeng.com</a></p>
 </blockquote>
 <h1 id="git概述">GIT概述</h1>
@@ -480,121 +480,70 @@ $ git reset --hard 1094a//取标识串前几位自动匹配
 </li>
 <li>
 <p>如果不同分支不在同一时间轴上，即并没有在分支修改完后直接合并，而是修改了另外一个分支的内容导致分叉</p>
-<ul>
-<li>
-<pre><code>git switch -c feature1
-git add readme.txt
-//修改最后一行为AND
-git commit -m &quot;AND simple&quot;
-git switch master
-//修改最后一行为&amp;
-git add readme.txt 
-git commit -m &quot;&amp; simple&quot;
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 报错</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-Git is a distributed version control system.
-Git is free software distributed under the GPL.
-Git has a mutable index called stage.
-Git tracks changes of files.
-&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
-&amp;
-=======
-AND
-&gt;&gt;&gt;&gt;&gt;&gt;&gt; feature1
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 人为修改</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-git add readme.txt 
-//修改最后一行为and
-git commit -m &quot;conflict fixed&quot;
-git branch -d feature1//删除第一个分支
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 观察分支合并图</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-git log --graph//参数表示绘制一个ASII图像
-//oneline --abbrev-commit表示格式为一行，只显示SHA1值和提交信息
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
-$ git log --graph --pretty=oneline --abbrev-commit
-*   cf810e4 (HEAD -&gt; master) conflict fixed
-|\  
-| * 14096d0 (feature1) AND simple
-* | 5dc6824 &amp; simple
-|/  
-* b17d20e branch test
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">- 实际开发中，master用于发布版本，不在上面修改，通过dev分支然后合并到master。多人合作可以自己先创建分支，然后往dev上合并。</span><br><span class="line"></span><br><span class="line">- 通常合并分支，git会使用fast forward模式，被合并的分支信息丢失，可以强制禁用，git会生成一个新的commit，历史保留</span><br><span class="line"></span><br><span class="line">  - ```</span><br><span class="line">    git merge --no-ff -m &quot;merge with no-ff&quot; dev</span><br></pre></td></tr></table></figure>
-
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">git switch -c feature1</span><br><span class="line">git add readme.txt</span><br><span class="line">//修改最后一行为AND</span><br><span class="line">git commit -m &quot;AND simple&quot;</span><br><span class="line">git switch master</span><br><span class="line">//修改最后一行为&amp;</span><br><span class="line">git add readme.txt </span><br><span class="line">git commit -m &quot;&amp; simple&quot;</span><br></pre></td></tr></table></figure>
+<p>报错</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Git is a distributed version control system.</span><br><span class="line">Git is free software distributed under the GPL.</span><br><span class="line">Git has a mutable index called stage.</span><br><span class="line">Git tracks changes of files.</span><br><span class="line">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</span><br><span class="line">&amp;</span><br><span class="line">=======</span><br><span class="line">AND</span><br><span class="line">&gt;&gt;&gt;&gt;&gt;&gt;&gt; feature1</span><br></pre></td></tr></table></figure>
+<p>人为修改</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git add readme.txt </span><br><span class="line">//修改最后一行为and</span><br><span class="line">git commit -m &quot;conflict fixed&quot;</span><br><span class="line">git branch -d feature1//删除第一个分支</span><br></pre></td></tr></table></figure>
+<p>观察分支合并图</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">git log --graph//参数表示绘制一个ASII图像</span><br><span class="line">//oneline --abbrev-commit表示格式为一行，只显示SHA1值和提交信息</span><br><span class="line">```</span><br><span class="line"></span><br><span class="line">```</span><br><span class="line">$ git log --graph --pretty=oneline --abbrev-commit</span><br><span class="line">*   cf810e4 (HEAD -&gt; master) conflict fixed</span><br><span class="line">|\  </span><br><span class="line">| * 14096d0 (feature1) AND simple</span><br><span class="line">* | 5dc6824 &amp; simple</span><br><span class="line">|/  </span><br><span class="line">* b17d20e branch test</span><br></pre></td></tr></table></figure>
 </li>
 <li>
-<pre><code>git log --graph --pretty=oneline --abbrev-commit
-*   e1e9c68 (HEAD -&gt; master) merge with no-ff
-|\  
-| * f52c633 (dev) add merge
-|/  
-*   cf810e4 conflict fixed
-...
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- bug</span><br><span class="line"></span><br><span class="line">  - 在切换分支前不必提交，当需要修复bug但是目前工作未完成时</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-git stash//存储
-git checkout master//修复bug的状态位置，比如修复master分支上的bug，指针移动到bug位置创建分支
-git checkout -b issue-101
-//修复bug
-git add readme.txt 
-git commit -m &quot;fix bug 101&quot;//bug修复后提交
-git switch master
-git merge --no-ff -m &quot;merged bug fix 101&quot; issue-101
-//以上完成了bug的修复，回到未完成的工作时间线
+<p>实际开发中，master用于发布版本，不在上面修改，通过dev分支然后合并到master。多人合作可以自己先创建分支，然后往dev上合并。</p>
+</li>
+<li>
+<p>通常合并分支，git会使用fast forward模式，被合并的分支信息丢失，可以强制禁用，git会生成一个新的commit，历史保留</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">git merge --no-ff -m &quot;merge with no-ff&quot; dev</span><br><span class="line">git log --graph --pretty=oneline --abbrev-commit</span><br><span class="line">*   e1e9c68 (HEAD -&gt; master) merge with no-ff</span><br><span class="line">|\  </span><br><span class="line">| * f52c633 (dev) add merge</span><br><span class="line">|/  </span><br><span class="line">*   cf810e4 conflict fixed</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>bug</p>
+<ul>
+<li>
+<p>在切换分支前不必提交，当需要修复bug但是目前工作未完成时</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">git stash//存储</span><br><span class="line">git checkout master//修复bug的状态位置，比如修复master分支上的bug，指针移动到bug位置创建分支</span><br><span class="line">git checkout -b issue-101</span><br><span class="line">//修复bug</span><br><span class="line">git add readme.txt </span><br><span class="line">git commit -m &quot;fix bug 101&quot;//bug修复后提交</span><br><span class="line">git switch master</span><br><span class="line">git merge --no-ff -m &quot;merged bug fix 101&quot; issue-101</span><br><span class="line">//以上完成了bug的修复，回到未完成的工作时间线</span><br><span class="line">git switch dev</span><br><span class="line">git stash pop//恢复存储，会把stash内容删除，或者使用git stash apply和git stash drop分别恢复和删除</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>查看stash的内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git stash list</span><br><span class="line">git stash apply stash@&#123;0&#125;//先查看后恢复指定stash</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>将master上修复的bug应用到其衍生的具有相同bug的版本，比如dev</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git branch</span><br><span class="line">* dev</span><br><span class="line">  master</span><br><span class="line">$ git cherry-pick 4c805e2//这里调用日志查询fix101的状态对应值是4c805e2,cherry命令重放了bug修复的提交，同理可以直接在dev上修改bug后重放到master上，不过如果依旧无法提交dev工作区部分内容，还是需要借助stash</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>实验性功能分支feature，开发新功能使用新的分支后删除</p>
+<ul>
+<li>
+<pre><code>git switch -c feature-vulcan
+git add vulcan.py
+git commit -m &quot;add feature vulcan&quot;
 git switch dev
-git stash pop//恢复存储，会把stash内容删除，或者使用git stash apply和git stash drop分别恢复和删除
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 查看stash的内容</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-git stash list
-git stash apply stash@&#123;0&#125;//先查看后恢复指定stash
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 将master上修复的bug应用到其衍生的具有相同bug的版本，比如dev</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-$ git branch
-* dev
-  master
-$ git cherry-pick 4c805e2//这里调用日志查询fix101的状态对应值是4c805e2,cherry命令重放了bug修复的提交，同理可以直接在dev上修改bug后重放到master上，不过如果依旧无法提交dev工作区部分内容，还是需要借助stash
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 实验性功能分支feature，开发新功能使用新的分支后删除</span><br><span class="line"></span><br><span class="line">  - ```</span><br><span class="line">    git switch -c feature-vulcan</span><br><span class="line">    git add vulcan.py</span><br><span class="line">    git commit -m &quot;add feature vulcan&quot;</span><br><span class="line">    git switch dev</span><br><span class="line">    git branch -d feature-vulcan</span><br><span class="line">    //如果分支未合并，会提示无法删除，这里使用强制删除指令</span><br><span class="line">    git branch -D feature-vulcan</span><br></pre></td></tr></table></figure>
+git branch -d feature-vulcan
+//如果分支未合并，会提示无法删除，这里使用强制删除指令
+git branch -D feature-vulcan
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 多人协作</span><br><span class="line"></span><br><span class="line">  - 要查看远程库的信息，如果没有推送权限，就看不到push的地址</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+$ git remote -v
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 推送分支，就是把该分支上的所有本地提交推送到远程库</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+ git push origin master
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 抓取分支</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+git checkout -b dev origin/dev //创建本地分支并修改push
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 冲突，比如同时抓取了dev并修改，但是无法两个人都push因为状态改变，可以再次pull下来后解决冲突再发送。</span><br><span class="line"></span><br><span class="line">  `git pull`也失败了，原因是没有指定本地`dev`分支与远程`origin/dev`分支的链接，根据提示，设置`dev`和`origin/dev`的链接：</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+git branch --set-upstream-to=origin/dev dev
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">  - 试图推送-失败-pull试图合并-若提示连接未创建则如上命令-合并冲突则解决后提交-push</span><br><span class="line"></span><br><span class="line">- 标签：自己打上版本号</span><br><span class="line"></span><br><span class="line">  - ```</span><br><span class="line">    git branch</span><br><span class="line">    * dev</span><br><span class="line">      master</span><br><span class="line">    git checkout master</span><br><span class="line">    git tag v1.0</span><br><span class="line">    git tag v0.9 f52c633//这里是对历史版本号进行标签</span><br><span class="line">    git tag//查看所有标签</span><br><span class="line">    git show v0.1//显示说明文字</span><br></pre></td></tr></table></figure>
 
 </code></pre>
 </li>
-</ul>
-</li>
 <li>
-<p>多人协作</p>
-<ul>
-<li>
-<p>要查看远程库的信息，如果没有推送权限，就看不到push的地址</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git remote -v</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>推送分支，就是把该分支上的所有本地提交推送到远程库</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin master</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>抓取分支</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b dev origin/dev //创建本地分支并修改push</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>冲突，比如同时抓取了dev并修改，但是无法两个人都push因为状态改变，可以再次pull下来后解决冲突再发送。</p>
-<p><code>git pull</code>也失败了，原因是没有指定本地<code>dev</code>分支与远程<code>origin/dev</code>分支的链接，根据提示，设置<code>dev</code>和<code>origin/dev</code>的链接：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch --set-upstream-to=origin/dev dev</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>试图推送-失败-pull试图合并-若提示连接未创建则如上命令-合并冲突则解决后提交-push</p>
-</li>
-</ul>
-</li>
-<li>
-<p>标签：自己打上版本号</p>
-<ul>
-<li>
-<pre><code>git branch
-* dev
-  master
-git checkout master
-git tag v1.0
-git tag v0.9 f52c633//这里是对历史版本号进行标签
-git tag//查看所有标签
-git show v0.1//显示说明文字
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- ```</span><br><span class="line">  git tag -d v0.1//未推送到远程前删除标签</span><br><span class="line">  git push origin v1.0//推送标签到远程</span><br><span class="line">  git push origin --tags//一次性</span><br><span class="line">  //若推送后删除</span><br><span class="line">  git tag -d v0.9</span><br><span class="line">  git push origin :refs/tags/v0.9</span><br></pre></td></tr></table></figure>
-
-&gt; 标签总是和某个commit挂钩。如果这个commit既出现在master分支，又出现在dev分支，那么在这两个分支上都可以看到这个标签。
+<pre><code>git tag -d v0.1//未推送到远程前删除标签
+git push origin v1.0//推送标签到远程
+git push origin --tags//一次性
+//若推送后删除
+git tag -d v0.9
+git push origin :refs/tags/v0.9
 </code></pre>
+<blockquote>
+<p>标签总是和某个commit挂钩。如果这个commit既出现在master分支，又出现在dev分支，那么在这两个分支上都可以看到这个标签。</p>
+</blockquote>
 </li>
 </ul>
 </li>
