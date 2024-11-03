@@ -221,11 +221,13 @@ template {
   -webkit-font-smoothing: antialiased;
 }
 .cardHover,
+#catalog-bar,
 .layout > div:first-child:not(.recent-posts),
+#recent-posts > #catalog-bar,
 #recent-posts > .recent-post-item,
 #aside-content .card-widget,
 .layout > .recent-posts .pagination > *:not(.space) {
-  border-radius: 8px;
+  border-radius: var(--card-border-radius);
   background: var(--card-bg);
   -webkit-box-shadow: var(--card-box-shadow);
   box-shadow: var(--card-box-shadow);
@@ -236,12 +238,15 @@ template {
   transition: all 0.3s;
 }
 .cardHover:hover,
+#catalog-bar:hover,
 .layout > div:first-child:not(.recent-posts):hover,
+#recent-posts > #catalog-bar:hover,
 #recent-posts > .recent-post-item:hover,
 #aside-content .card-widget:hover,
 .layout > .recent-posts .pagination > *:not(.space):hover {
   -webkit-box-shadow: var(--card-hover-box-shadow);
   box-shadow: var(--card-hover-box-shadow);
+  border: 1.2px solid #70adb5;
 }
 .imgHover,
 .article-sort-item-img :first-child,
@@ -1467,7 +1472,7 @@ canvas:not(#ribbon-canvas),
   --blockquote-bg: rgba(73,177,245,0.1);
   --reward-pop: #f5f5f5;
   --toc-link-color: #666261;
-  --card-box-shadow: 0 3px 8px 6px rgba(7,17,27,0.05);
+  --card-box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px 0 rgba(0,0,0,0.06);
   --card-hover-box-shadow: 0 3px 8px 6px rgba(7,17,27,0.09);
   --pseudo-hover: #ff7242;
   --headline-presudo: #a0a0a0;
@@ -1475,6 +1480,10 @@ canvas:not(#ribbon-canvas),
   --default-bg-color: #49b1f5;
   --zoom-bg: #fff;
   --mark-bg: rgba(0,0,0,0.3);
+  --card-border-radius: 8px;
+  --color-back-dark: #364f6b;
+  --color-front-light: #f6f6f6;
+  --color-front-link: #3d84a8;
 }
 body {
   position: relative;
@@ -1971,7 +1980,7 @@ figure.highlight pre .javascript .function {
 #article-container .code-expand-btn:not(.expand-done) ~ table,
 #article-container .code-expand-btn:not(.expand-done) ~ pre {
   overflow: hidden;
-  height: 50px;
+  height: 200px;
 }
 @-moz-keyframes code-expand-key {
   0% {
@@ -2178,6 +2187,63 @@ figure.highlight pre .javascript .function {
   -ms-flex: 1;
   flex: 1;
   padding: 0 16px;
+}
+#catalog-bar {
+  padding: 0.4rem 0.8rem;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-pack: justify;
+  -moz-box-pack: justify;
+  -o-box-pack: justify;
+  -ms-flex-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+#catalog-bar i {
+  line-height: inherit;
+}
+#catalog-bar > #catalog-list {
+  margin: 0 0.5rem;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  white-space: nowrap;
+}
+#catalog-bar > #catalog-list > .catalog-list-item a {
+  margin: 0 0.2em;
+  padding: 0.2em 0.3em 0.3em;
+  font-weight: bold;
+  border-radius: 3px;
+  color: var(--color-back-dark);
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+#catalog-bar > #catalog-list > .catalog-list-item a:hover {
+  background: var(--color-back-dark);
+  color: var(--color-front-light);
+}
+#catalog-bar > #catalog-list > .catalog-list-item.selected a {
+  background: var(--color-back-dark);
+  color: var(--color-front-light);
+}
+#catalog-bar > a.catalog-more {
+  min-width: fit-content;
+  font-weight: bold;
+  color: var(--color-back-dark);
+}
+#catalog-bar > a.catalog-more:hover {
+  color: var(--color-front-light);
 }
 .category-lists .category-title {
   font-size: 2.57em;
@@ -2436,6 +2502,67 @@ figure.highlight pre .javascript .function {
   font-weight: bold;
   font-size: 1.5em;
 }
+#recent-posts > #catalog-bar {
+  padding: 0.4rem 0.8rem;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-pack: justify;
+  -moz-box-pack: justify;
+  -o-box-pack: justify;
+  -ms-flex-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+#recent-posts > #catalog-bar i {
+  line-height: inherit;
+}
+#recent-posts > #catalog-bar > #catalog-list {
+  margin: 0 0.5rem;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  white-space: nowrap;
+  overflow-x: hidden;
+}
+#recent-posts > #catalog-bar > #catalog-list ::-webkit-scrollbar {
+  display: none;
+}
+#recent-posts > #catalog-bar > #catalog-list > .catalog-list-item a {
+  margin: 0 0.2em;
+  padding: 0.2em 0.3em 0.3em;
+  font-weight: bold;
+  border-radius: 3px;
+  color: var(--color-back-dark);
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+#recent-posts > #catalog-bar > #catalog-list > .catalog-list-item a:hover {
+  background: var(--color-back-dark);
+  color: var(--color-front-light);
+}
+#recent-posts > #catalog-bar > #catalog-list > .catalog-list-item.selected a {
+  background: var(--color-back-dark);
+  color: var(--color-front-light);
+}
+#recent-posts > #catalog-bar > a.catalog-more {
+  min-width: fit-content;
+  font-weight: bold;
+  color: var(--color-back-dark);
+}
+#recent-posts > #catalog-bar > a.catalog-more:hover {
+  color: var(--color-front-link);
+}
 #recent-posts > .recent-post-item:not(:first-child) {
   margin-top: 20px;
 }
@@ -2460,6 +2587,8 @@ figure.highlight pre .javascript .function {
   align-items: center;
   overflow: hidden;
   height: 16.8em;
+/*悬停微放大效果*/
+/*广告项*/
 }
 @media screen and (max-width: 768px) {
   #recent-posts > .recent-post-item {
@@ -2650,6 +2779,8 @@ h1.page-title + .tag-cloud-list {
   overflow: hidden;
   margin-top: 20px;
   padding: 20px 24px;
+  -webkit-box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px 0 rgba(0,0,0,0.06);
+  box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px 0 rgba(0,0,0,0.06);
 }
 #aside-content .card-info .author-info__name {
   font-weight: 500;

@@ -9,20 +9,7 @@ a,img {
         default;
 }
 
-  #nav .menus_items .menus_item .menus_item_child li {
-    display: inline-block;
-  }
-  /* 圆角隐藏 */
-  ul.menus_item_child {
-    overflow: hidden;
-    border-radius: 5px;
-  }
-  /* 调整空隙，确保不会天下武功唯快不破 */
-  #nav .menus_items .menus_item .menus_item_child {
-    margin-top: 0px !important;
-  }
-
-  
-  #footer{
-    background: transparent!important;
-  }
+/*设置背景，兼容不同浏览器*/
+/* body {
+    background-image: linear-gradient(-225deg, #E3FDF5 0%, #FFE6FA 100%);
+  } */
