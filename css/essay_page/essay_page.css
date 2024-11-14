@@ -1,52 +1,100 @@
-#page:has(#essay_page) {
+/* #page:has(#essay_page) {
     border: 0;
     box-shadow: none !important;
     padding: 0 !important;
     background: transparent !important;
 }
+#page:has(#category_page) {
+    border: 0;
+    box-shadow: none !important;
+    padding: 0 !important;
+    background: transparent !important;
+} */
 
 .card-content{
     position: relative;
-    height: 100%;
     width: 100%;
+    height: 100%;
 }
-/*即刻*/
 
-/*日常苟活*/
-.author-content-item-title{
-    position: relative;
-    margin-top: 15px;
-    margin-left: 15px;
-    padding: 10px;
+
+/*标题*/
+.author-content-item .card-content .author-content-item-title{
+    position:absolute;
+    font-size: 60px;
+    margin-top: 10px;
+    margin-left: 30px;
     font-size: 25px;
     font-weight: bold;
+    color: var(--color-front-light);
     
 }
-/*使用*/
-.content-bottom{
-    padding: 10px;
-    color:aliceblue;
+/*说明*/
+.author-content-item .card-content .content-bottom{
     position: absolute;
-    left: 0;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    color: var(--color-front-light);
     bottom: 0;
 }
-.banner-button-group{
+
+/*跳转*/
+.author-content-item .card-content .banner-button-group .banner-button{
     position: absolute;
     padding: 10px;
-    right: 0;
-    bottom: 0;
+    right: 20px;
+    bottom: 20px;
+    justify-content: flex-end;
+    display: flex;
+    font-size: 20px;
+    margin-right: 20px;
 }
+
+#page:has(#essay_page) .author-content-item .card-content .banner-button-group .banner-button:hover {
+    color: white;
+    border-radius: 20px !important;
+}
+#page:has(#category_page) .author-content-item .card-content .banner-button-group .banner-button:hover {
+    color: white;
+    border-radius: 20px !important;
+}
+#page:has(#tag_page) .author-content-item .card-content .banner-button-group .banner-button:hover {
+    color: white;
+    border-radius: 20px !important;
+}
+
 
 #page:has(#essay_page) .page-title {
     display: none;
 }
+#page:has(#category_page) .page-title {
+    display: none;
+}
+#page:has(#tag_page) .page-title {
+    display: none;
+}
 
 #web_bg~.page:has(#essay_page) {
-    /* background: url(/img/back-deer.jpg); */
-    background:aliceblue ;
-    
+    background: url(/img/back-deer.jpg);
+    /* background:aliceblue ;
+     */
 
 }
+#web_bg~.page:has(#category_page) {
+    background: url(/img/back-deer.jpg);
+    /* background:aliceblue ;
+     */
+
+}
+#web_bg~.page:has(#tag_page) {
+    background: url(/img/back-deer.jpg);
+    /* background:aliceblue ;
+     */
+
+}
+
 
 #bber .bber-container-img {
     display: flex;
@@ -106,7 +154,7 @@
 #bber .timeline ul li.bber-item {
     position: relative;
     width: 32%;
-    border: var(--style-border-always);
+    border: var(--card-border);
     border-radius: 12px;
     padding: 1rem 1rem 0.5rem;
     transition: all 0.3s ease 0s;
@@ -294,19 +342,34 @@
 }
 
 /* 顶部样式 */
-.author-content.author-content-item.essayPage {
+#page:has(#essay_page) .author-content.author-content-item.essayPage {
     height: 15rem;
-    background: url(https://s2.loli.net/2022/08/14/b5iJGlYcf7XzEAW.jpg) left 28% / cover no-repeat;
+    background: url(https://s2.loli.net/2022/08/14/7lXZedGRB5kt4xY.jpg) left 28% / cover no-repeat;
+    color: var(--global-bg);
+    overflow: hidden;
+    margin-top: 0px;
+    border-radius: 10px;
+}
+/*可以分别设置顶部图*/
+#page:has(#category_page) .author-content.author-content-item.categoryPage {
+    height: 15rem;
+    background: url(https://s2.loli.net/2022/08/14/7lXZedGRB5kt4xY.jpg) left 28% / cover no-repeat;
+    color: var(--global-bg);
+    overflow: hidden;
+    margin-top: 0px;
+    border-radius: 10px;
+}
+#page:has(#tag_page) .author-content.author-content-item.tagPage {
+    height: 15rem;
+    background: url(https://s2.loli.net/2022/08/14/7lXZedGRB5kt4xY.jpg) left 28% / cover no-repeat;
     color: var(--global-bg);
     overflow: hidden;
     margin-top: 0px;
     border-radius: 10px;
 }
 
-#page:has(#essay_page) .author-content-item .card-content .banner-button-group .banner-button:hover {
-    color: var(--global-bg);
-    border-radius: 20px !important;
-}
+
+
 
 /* 响应式 */
 @media screen and (max-width: 1300px) {
