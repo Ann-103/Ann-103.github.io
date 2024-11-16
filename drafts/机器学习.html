@@ -1,0 +1,526 @@
+<!--head 和 body 是 html 的直接子元素--><!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>机器学习 | Ann-Blog</title><meta name="author" content="Ann"><meta name="copyright" content="Ann"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Chapter 1 绪论  机器学习课程笔记，主要用于记录查阅，参考《机器学习》by周志华 ps：本篇用&quot;模型&quot;泛指从数据中学得的结果。有文献用&quot;模型&quot;指全局性结果(例如一棵决策树)，而用&quot;模式&quot;指局部性结呆(例如 A条规则)。  概述  本篇多使用通过特征判断好瓜的例子。  机器学习概念解释    def 解释 备注     机器学习">
+<meta property="og:type" content="website">
+<meta property="og:title" content="机器学习">
+<meta property="og:url" content="https://ann-103.github.io/drafts/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0.html">
+<meta property="og:site_name" content="Ann-Blog">
+<meta property="og:description" content="Chapter 1 绪论  机器学习课程笔记，主要用于记录查阅，参考《机器学习》by周志华 ps：本篇用&quot;模型&quot;泛指从数据中学得的结果。有文献用&quot;模型&quot;指全局性结果(例如一棵决策树)，而用&quot;模式&quot;指局部性结呆(例如 A条规则)。  概述  本篇多使用通过特征判断好瓜的例子。  机器学习概念解释    def 解释 备注     机器学习">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ann-103.github.io/img/loading.gif">
+<meta property="article:published_time" content="2024-08-24T01:03:46.000Z">
+<meta property="article:modified_time" content="2024-11-16T13:04:56.698Z">
+<meta property="article:author" content="Ann">
+<meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="notebook">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ann-103.github.io/img/loading.gif"><link rel="shortcut icon" href="https://s2.loli.net/2022/11/06/lgYVqNypjRCe3d2.png"><link rel="canonical" href="https://ann-103.github.io/drafts/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: {"appId":"TYQ16Q4ESJ","apiKey":"ea175434f2803b60c631bc11c6e24e54","indexName":"blog","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Ann","link":"链接: ","source":"来源: Ann-Blog","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '机器学习',
+  isPost: false,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2024-11-16 21:04:56'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"><link rel="stylesheet" href="/css/font.css"><link rel="stylesheet" href="/css/essay_page/essay_page.css"><link rel="stylesheet" href="/css/hot.css"><meta name="generator" content="Hexo 7.3.0"><link href="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.css" rel="stylesheet" /></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="scarecrow"><div class="scarecrow__hat"><div class="scarecrow__ribbon"></div></div><div class="scarecrow__head"><div class="scarecrow__eye"></div><div class="scarecrow__eye"></div><div class="scarecrow__mouth"></div><div class="scarecrow__pipe"></div></div><div class="scarecrow__body"><div class="scarecrow__glove scarecrow__glove--l"></div><div class="scarecrow__sleeve scarecrow__sleeve--l"></div><div class="scarecrow__bow"></div><div class="scarecrow__shirt"></div><div class="scarecrow__coat"></div><div class="scarecrow__waistcoat"></div><div class="scarecrow__sleeve scarecrow__sleeve--r"></div><div class="scarecrow__glove scarecrow__glove--r"></div><div class="scarecrow__coattails"></div><div class="scarecrow__pants"></div></div><div class="scarecrow__arms"></div><div class="scarecrow__leg">  </div></div></div><script async="async">(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load',() => { preloader.endLoading() })
+  document.getElementById('loading-box').addEventListener('click',()=> {preloader.endLoading()})
+  setTimeout(function(){preloader.endLoading();}, 10000);
+
+  if (true) {
+    document.addEventListener('pjax:send', () => { preloader.initLoading() })
+    document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+  }
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/favicon.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">14</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">13</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-heart"></i><span> About</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/about/"><i class="fa-fw iconfont icon-paper-full"></i><span> 关于</span></a></li><li><a class="site-page child" href="/essay/"><i class="fa-fw iconfont icon-shuoshuo"></i><span> 动态</span></a></li></ul></div></div></div></div><div class="page" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Ann-Blog"><span class="site-name">Ann-Blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-heart"></i><span> About</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/about/"><i class="fa-fw iconfont icon-paper-full"></i><span> 关于</span></a></li><li><a class="site-page child" href="/essay/"><i class="fa-fw iconfont icon-shuoshuo"></i><span> 动态</span></a></li></ul></div></div></div><div id="rightBank"><div id="box"> <a href="/link" title="百宝箱"><i class="iconfont icon-24gf-box2"></i></a></div><div id="random"><a class="site-page" href="javascript:toRandomPost()" title="随机前往一个文章"><i class="iconfont icon-touzi"> </i></a></div><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="page"><h1 class="page-title">机器学习</h1><div id="article-container"><h1 id="chapter-1-绪论">Chapter 1 绪论</h1>
+<blockquote>
+<p>机器学习课程笔记，主要用于记录查阅，参考《机器学习》by周志华</p>
+<p>ps：本篇用&quot;模型&quot;泛指从数据中学得的结果。有文献用&quot;模型&quot;指全局性结果(例如一棵决策树)，而用&quot;模式&quot;指局部性结呆(例如 A条规则)。</p>
+</blockquote>
+<h2 id="概述">概述</h2>
+<blockquote>
+<p>本篇多使用通过特征判断好瓜的例子。</p>
+</blockquote>
+<h3 id="机器学习概念解释">机器学习概念解释</h3>
+<table>
+<thead>
+<tr>
+<th>def</th>
+<th>解释</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>机器学习</td>
+<td>通过已有数据产生模型，在面对新情况时产生判断</td>
+<td>训练数据= 瓜的特征+实际好坏，测试数据：瓜的特征</td>
+</tr>
+<tr>
+<td>学习/训练</td>
+<td>从数据中学得模型的过程</td>
+<td>模型对应假设（hypothesis），需要逼近真实(ground-truth)</td>
+</tr>
+<tr>
+<td>训练数据、样本、集</td>
+<td>data、sample、set</td>
+<td></td>
+</tr>
+<tr>
+<td>标记</td>
+<td>需要判断的结果</td>
+<td>比如剖开前判断瓜的好坏</td>
+</tr>
+<tr>
+<td>样例(Xi ， Yi)</td>
+<td>Y是“标记空间”或“输出空间”</td>
+<td></td>
+</tr>
+<tr>
+<td>分类</td>
+<td>学习任务的一种，预测的是离散值</td>
+<td>二分类为其中一种</td>
+</tr>
+<tr>
+<td>回归</td>
+<td>学习任务的一种，预测的是离散值</td>
+<td></td>
+</tr>
+<tr>
+<td>聚类</td>
+<td>将训练集中的西瓜分成若干组，每组称为 个&quot;簇&quot; （cluster）</td>
+<td>比如分成“浅色瓜”和“深色瓜”，但簇的概念事先未知，即不拥有标记信息</td>
+</tr>
+<tr>
+<td>监督学习</td>
+<td></td>
+<td>分类、回归是代表</td>
+</tr>
+<tr>
+<td>无监督学习</td>
+<td>数据未标记</td>
+<td>聚类是代表</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>过程</th>
+<th>人</th>
+<th>人</th>
+<th>机器</th>
+<th>测试</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>机器学习</td>
+<td>确认函数集合（y=kx）</td>
+<td>如何评价函数好坏（训练）</td>
+<td>选择最好的</td>
+<td>新样本</td>
+</tr>
+<tr>
+<td>监督学习</td>
+<td><strong>建模</strong>（经验规则的传统学习or深度学习）</td>
+<td>损失函数</td>
+<td>参数学习</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="评估的概念解释">评估的概念解释</h3>
+<table>
+<thead>
+<tr>
+<th>def</th>
+<th>exp</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>训练误差</td>
+<td>模型在训练样本上的错误率</td>
+<td></td>
+</tr>
+<tr>
+<td>泛化误差</td>
+<td>模型在新样本上的错误率</td>
+<td></td>
+</tr>
+<tr>
+<td>泛化能力不足：欠拟合</td>
+<td>对训练样本的一般性质没学好，训练和测试集误差很大</td>
+<td>树-&gt;叶子：绿色的都是叶子</td>
+</tr>
+<tr>
+<td>泛化能力不足：过拟合</td>
+<td>训练样本误差小，新样本误差大</td>
+<td>残缺叶子-&gt;不是叶子：需要有完整的叶子形状</td>
+</tr>
+<tr>
+<td>准确率</td>
+<td>（真对+真错）/all</td>
+<td>所有判断真的</td>
+</tr>
+<tr>
+<td>查准/精确率</td>
+<td>真对/（真对+假对）</td>
+<td>判断为对的里面真的对的</td>
+</tr>
+<tr>
+<td>查全/召回率</td>
+<td>真对/（真对+假错）</td>
+<td>本应为对的里面真的对的</td>
+</tr>
+</tbody>
+</table>
+<h1 id="chapter-2-回归问题">Chapter  2 回归问题</h1>
+<blockquote>
+<p>建模为单变量线性函数，代价函数或者误差使用均方误差或者其他，参数优化使用最小二乘法或者极大似然法。</p>
+</blockquote>
+<h2 id="线性回归">线性回归</h2>
+<h3 id="最小二乘法">最小二乘法</h3>
+<img src="https://cdn.jsdelivr.net/gh/Ann-103/blog_img/Course/image-20230411105022042.png" alt="image-20230411105022042" style="zoom:67%;" />
+<img src="https://cdn.jsdelivr.net/gh/Ann-103/blog_img/Course/image-20230411105336762.png" alt="image-20230411105336762" style="zoom:80%;" />
+<img src="https://cdn.jsdelivr.net/gh/Ann-103/blog_img/Course/image-20230411105346605.png" alt="image-20230411105346605" style="zoom:80%;" />
+<details class="toggle" ><summary class="toggle-button" style="">推导过程</summary><div class="toggle-content"><img src="https://cdn.jsdelivr.net/gh/Ann-103/blog_img/Course/image-20230411105100201.png" alt="image-20230411105100201" style="zoom: 80%;" />
+<img src="https://cdn.jsdelivr.net/gh/Ann-103/blog_img/Course/image-20230411105125495.png" alt="image-20230411105125495" style="zoom: 80%;" />
+<p><img src="https://cdn.jsdelivr.net/gh/Ann-103/blog_img/Course/image-20230411105211866.png" alt="image-20230411105211866"></p>
+<img src="https://cdn.jsdelivr.net/gh/Ann-103/blog_img/Course/image-20230411105223500.png" alt="image-20230411105223500" style="zoom:80%;" />
+<img src="https://cdn.jsdelivr.net/gh/Ann-103/blog_img/Course/image-20230411105311867.png" alt="image-20230411105311867" style="zoom:80%;" />
+<img src="https://cdn.jsdelivr.net/gh/Ann-103/blog_img/Course/image-20230411105327002.png" alt="image-20230411105327002" style="zoom:80%;" />
+<img src="https://cdn.jsdelivr.net/gh/Ann-103/blog_img/Course/image-20230411105336762.png" alt="image-20230411105336762" style="zoom:80%;" />
+<img src="https://cdn.jsdelivr.net/gh/Ann-103/blog_img/Course/image-20230411105346605.png" alt="image-20230411105346605" style="zoom:80%;" />
+</div></details>
+<h3 id="极大似然法">极大似然法</h3>
+<img src="assets/image-20230411105535494.png" alt="image-20230411105535494" style="zoom:80%;" />
+<img src="assets/image-20230411105549907.png" alt="image-20230411105549907" style="zoom:80%;" />
+<img src="assets/image-20230411105612349.png" alt="image-20230411105612349" style="zoom:80%;" />
+<img src="assets/image-20230411105559448.png" alt="image-20230411105559448" style="zoom:80%;" />
+<img src="assets/image-20230411105650735.png" alt="image-20230411105650735" style="zoom:80%;" />
+<blockquote>
+<p>这里需要做一些更正：这里正态分布的假设和我们推导的普遍性矛盾的原因是我们误差函数使用的是均方误差即欧式误差，如果使用柯西距离则不同</p>
+</blockquote>
+<h2 id="非线性回归">非线性回归</h2>
+<p><img src="assets/image-20230411110107326.png" alt="image-20230411110107326"></p>
+<p><img src="assets/image-20230411110115377.png" alt="image-20230411110115377"></p>
+<p><img src="assets/image-20230411110126960.png" alt="image-20230411110126960"></p>
+<p><img src="assets/image-20230411110151183.png" alt="image-20230411110151183"></p>
+<h1 id="chapter-3-分类">Chapter  3 分类</h1>
+<p><img src="assets/image-20230411111856380.png" alt="image-20230411111856380"></p>
+<h3 id="分类任务">分类任务</h3>
+<p><img src="assets/image-20230411110228173.png" alt="image-20230411110228173"></p>
+<p><img src="assets/image-20230411110242235.png" alt="image-20230411110242235"></p>
+<h3 id="分类任务性能评价">分类任务性能评价</h3>
+<img src="assets/image-20230411110347947.png" alt="image-20230411110347947" style="zoom:80%;" />
+<h3 id="非线性分类器-决策树">非线性分类器（决策树）</h3>
+<img src="assets/image-20230411110447275.png" alt="image-20230411110447275" style="zoom:80%;" />
+<p><img src="assets/image-20230411110513525.png" alt="image-20230411110513525"></p>
+<p><strong>构建</strong>：通过训练样本构建一个能够判断新样本的决策树</p>
+<p><img src="assets/image-20230411110535601.png" alt="image-20230411110535601"></p>
+<p><img src="assets/image-20230411110624124.png" alt="image-20230411110624124"></p>
+<p><img src="assets/image-20230411110639560.png" alt="image-20230411110639560"></p>
+<img src="assets/image-20230411110720433.png" alt="image-20230411110720433" style="zoom:80%;" />
+<img src="assets/image-20230411110740943.png" alt="image-20230411110740943" style="zoom:80%;" />
+<img src="assets/image-20230411110817860.png" alt="image-20230411110817860" style="zoom:80%;" />
+<img src="assets/image-20230411110825490.png" alt="image-20230411110825490" style="zoom:80%;" />
+<img src="assets/image-20230411110845588.png" alt="image-20230411110845588" style="zoom:67%;" />
+<img src="assets/image-20230411110859413.png" alt="image-20230411110859413" style="zoom:80%;" />
+<img src="assets/image-20230411110911729.png" alt="image-20230411110911729" style="zoom:80%;" />
+<img src="assets/image-20230411110923638.png" alt="image-20230411110923638" style="zoom:80%;" />
+<h3 id="线性分类器-贝叶斯">线性分类器 （贝叶斯）</h3>
+<p><img src="assets/image-20230411111004850.png" alt="image-20230411111004850"></p>
+<p><img src="assets/image-20230411111021165.png" alt="image-20230411111021165"></p>
+<p><img src="assets/image-20230411111045282.png" alt="image-20230411111045282"></p>
+<p><img src="assets/image-20230411111054802.png" alt="image-20230411111054802"></p>
+<p><img src="assets/image-20230411111102929.png" alt="image-20230411111102929"></p>
+<p><img src="assets/image-20230411111111001.png" alt="image-20230411111111001"></p>
+<p><img src="assets/image-20230411111120429.png" alt="image-20230411111120429"></p>
+<p><img src="assets/image-20230411111127550.png" alt="image-20230411111127550"></p>
+<p><img src="assets/image-20230411111136202.png" alt="image-20230411111136202"></p>
+<p><img src="assets/image-20230411111149332.png" alt="image-20230411111149332"></p>
+<h3 id="感知机-线性">感知机——线性</h3>
+<p><img src="assets/image-20230411111327959.png" alt="image-20230411111327959"></p>
+<p><img src="assets/image-20230411111335455.png" alt="image-20230411111335455"></p>
+<p><img src="assets/image-20230411111343599.png" alt="image-20230411111343599"></p>
+<p><img src="assets/image-20230411111353117.png" alt="image-20230411111353117"></p>
+<p><img src="assets/image-20230411111406206.png" alt="image-20230411111406206"></p>
+<p><img src="assets/image-20230411111415937.png" alt="image-20230411111415937"></p>
+<p><img src="assets/image-20230411111427579.png" alt="image-20230411111427579"></p>
+<p><img src="assets/image-20230411111445517.png" alt="image-20230411111445517"></p>
+<h3 id="svm">SVM</h3>
+<p><img src="assets/image-20230411111523544.png" alt="image-20230411111523544"></p>
+<p><img src="assets/image-20230411111532608.png" alt="image-20230411111532608"></p>
+<p><img src="assets/image-20230411111540124.png" alt="image-20230411111540124"></p>
+<p><img src="assets/image-20230411111548235.png" alt="image-20230411111548235"></p>
+<p><img src="assets/image-20230411111556428.png" alt="image-20230411111556428"></p>
+<p><img src="assets/image-20230411111615477.png" alt="image-20230411111615477"></p>
+<p><img src="assets/image-20230411111626970.png" alt="image-20230411111626970"></p>
+<p><img src="assets/image-20230411111637085.png" alt="image-20230411111637085"></p>
+<p><img src="assets/image-20230411111653272.png" alt="image-20230411111653272"></p>
+<p><img src="assets/image-20230411111701064.png" alt="image-20230411111701064"></p>
+<p><img src="assets/image-20230411111710358.png" alt="image-20230411111710358"></p>
+<p><img src="assets/image-20230411111735261.png" alt="image-20230411111735261"></p>
+<p><img src="assets/image-20230411111802154.png" alt="image-20230411111802154"></p>
+<p><img src="assets/image-20230411111817827.png" alt="image-20230411111817827"></p>
+<p><img src="assets/image-20230411111837074.png" alt="image-20230411111837074"></p>
+<h1 id="chpater-4-聚类">Chpater 4 聚类</h1>
+<p><img src="assets/image-20230411111940346.png" alt="image-20230411111940346"></p>
+<p><img src="assets/image-20230411112011203.png" alt="image-20230411112011203"></p>
+<h1 id="chapter-5-降维">Chapter 5 降维</h1>
+<p><img src="assets/image-20230411112103362.png" alt="image-20230411112103362"></p>
+<p><img src="assets/image-20230411112113034.png" alt="image-20230411112113034"></p>
+<p><img src="assets/image-20230411112120389.png" alt="image-20230411112120389"></p>
+<p><img src="assets/image-20230411112131007.png" alt="image-20230411112131007"></p>
+<p><img src="assets/image-20230411112144059.png" alt="image-20230411112144059"></p>
+<p><img src="assets/image-20230411112159812.png" alt="image-20230411112159812"></p>
+<p><img src="assets/image-20230411112226516.png" alt="image-20230411112226516"></p>
+<h1 id="chapter-6">Chapter 6</h1>
+<h1 id="chapter-7">Chapter 7</h1>
+</div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/favicon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Ann</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">14</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">13</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Ann-103"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Ann-103" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:ajw0822@mail.ustc.edu.cn" target="_blank" title="Em"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="iconfont icon-gonggao"></i><span>公告</span></div><div class="announcement_content">欢迎访问我的小破站 ❤</div></div><div class="sticky_layout"><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/CSS/" style="font-size: 1.1em; color: #999">CSS</a> <a href="/tags/windows/" style="font-size: 1.1em; color: #999">windows</a> <a href="/tags/Blockchain/" style="font-size: 1.1em; color: #999">Blockchain</a> <a href="/tags/js/" style="font-size: 1.1em; color: #999">js</a> <a href="/tags/C/" style="font-size: 1.1em; color: #999">C++</a> <a href="/tags/vue/" style="font-size: 1.1em; color: #999">vue</a> <a href="/tags/HTML/" style="font-size: 1.1em; color: #999">HTML</a> <a href="/tags/%E6%A6%82%E7%8E%87%E8%AE%BA/" style="font-size: 1.1em; color: #999">概率论</a> <a href="/tags/md/" style="font-size: 1.1em; color: #999">md</a> <a href="/tags/notebook/" style="font-size: 1.1em; color: #999">notebook</a> <a href="/tags/Git/" style="font-size: 1.1em; color: #999">Git</a> <a href="/tags/Code/" style="font-size: 1.1em; color: #999">Code</a> <a href="/tags/Hexo/" style="font-size: 1.5em; color: #99a9bf">Hexo</a></div></div><div class="card-widget card-hot"> <div class="card-content"><div class="item-headline"><i class="fab fa-weibo"></i><span>微博热搜</span></div><div id="hot-container"><div class="hot-list"></div></div></div></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">14</div></div><div class="webinfo-item"><div class="item-name">已运行时间 :</div><div class="item-count" id="runtimeshow" data-publishDate="2024-11-13T16:00:00.000Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总字数 :</div><div class="item-count">64.9k</div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2024-11-16T13:08:31.707Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer" style="background: transparent"><div id="footer-wrap"><div class="copyright">&copy;2024 By Ann</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"> </i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="iconfont icon-triangleupfill"></i></button><button id="go-down" type="button" title="to_bottom" onclick="btf.scrollToDest(document.body.scrollHeight, 500)"><i class="iconfont icon-triangledownfill"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.8/dist/lazyload.iife.min.js"></script><div class="js-pjax"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/copy-tex.min.js"></script><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script><script>(() => {
+  const initValine = () => {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'jlgkfToE73FxTz8kyHsmvdzb-gzGzoHsz',
+      appKey: 'NN6nCIT47fGwz5Q1UyvFcGKP',
+      avatar: 'retro',
+      serverURLs: '',
+      emojiMaps: "",
+      path: window.location.pathname,
+      visitor: false
+    }, null))
+  }
+
+  const loadValine = async () => {
+    if (typeof Valine === 'function') initValine()
+    else {
+      await getScript('https://cdn.jsdelivr.net/npm/valine@1.5.1/dist/Valine.min.js')
+      initValine()
+    }
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})()</script></div><script async data-pjax src="/js/custom.js"></script><script async data-pjax src="/js/waterfall/waterfall.js"></script><script src="/Ann/random.js"></script><script src="/js/snowflake.js"></script><script src="/js/hot.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener
+  btf.removeGlobalFnEvent('pjax')
+  btf.removeGlobalFnEvent('themeChange')
+
+  document.getElementById('rightside').classList.remove('rightside-show')
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><div id="algolia-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="search-wrap"><div id="algolia-search-input"></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-info"><div class="algolia-stats"></div><div class="algolia-poweredBy"></div></div></div></div></div><div id="search-mask"></div><script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.22.1/dist/algoliasearch-lite.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.65.0/dist/instantsearch.production.min.js"></script><script src="/js/search/algolia.js?v=4.13.0"></script></div></div></body></html>
