@@ -1,0 +1,1019 @@
+<!--head 和 body 是 html 的直接子元素--><!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>算法排序 | Ann-Blog</title><meta name="author" content="Ann"><meta name="copyright" content="Ann"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="排序算法时间复杂度比较 1.算法实现与复杂度分析 1.1 数据结构与部分通用函数 实验说明：  实验使用c语言编写，并使用了c++的一些函数，实验环境是vscode，实测不同环境中可能会对constant char*转化报错，关闭即可。 本次实验使用动态分配空间的方式生成数组，源数组放在source.txt文件中 排序结果分别写在同级目录生成的对应排序的txt文件里面。 数组排序的范围分别从a[1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="算法排序">
+<meta property="og:url" content="https://ann-103.github.io/post/2122796003.html">
+<meta property="og:site_name" content="Ann-Blog">
+<meta property="og:description" content="排序算法时间复杂度比较 1.算法实现与复杂度分析 1.1 数据结构与部分通用函数 实验说明：  实验使用c语言编写，并使用了c++的一些函数，实验环境是vscode，实测不同环境中可能会对constant char*转化报错，关闭即可。 本次实验使用动态分配空间的方式生成数组，源数组放在source.txt文件中 排序结果分别写在同级目录生成的对应排序的txt文件里面。 数组排序的范围分别从a[1">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2024/11/22/GXwuEP8UlBzOyAe.jpg">
+<meta property="article:published_time" content="2022-10-21T00:13:01.000Z">
+<meta property="article:modified_time" content="2024-11-22T07:00:44.654Z">
+<meta property="article:author" content="Ann">
+<meta property="article:tag" content="notebook">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="排序">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2024/11/22/GXwuEP8UlBzOyAe.jpg"><link rel="shortcut icon" href="https://s2.loli.net/2022/11/06/lgYVqNypjRCe3d2.png"><link rel="canonical" href="https://ann-103.github.io/post/2122796003.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: {"appId":"TYQ16Q4ESJ","apiKey":"ea175434f2803b60c631bc11c6e24e54","indexName":"blog","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":200,"languages":{"author":"作者: Ann","link":"链接: ","source":"来源: Ann-Blog","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '算法排序',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-11-22 15:00:44'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"><link rel="stylesheet" href="/css/font.css"><link rel="stylesheet" href="/css/essay_page/essay_page.css"><link rel="stylesheet" href="/css/hot.css"><meta name="generator" content="Hexo 7.3.0"><link href="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.css" rel="stylesheet" /></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="scarecrow"><div class="scarecrow__hat"><div class="scarecrow__ribbon"></div></div><div class="scarecrow__head"><div class="scarecrow__eye"></div><div class="scarecrow__eye"></div><div class="scarecrow__mouth"></div><div class="scarecrow__pipe"></div></div><div class="scarecrow__body"><div class="scarecrow__glove scarecrow__glove--l"></div><div class="scarecrow__sleeve scarecrow__sleeve--l"></div><div class="scarecrow__bow"></div><div class="scarecrow__shirt"></div><div class="scarecrow__coat"></div><div class="scarecrow__waistcoat"></div><div class="scarecrow__sleeve scarecrow__sleeve--r"></div><div class="scarecrow__glove scarecrow__glove--r"></div><div class="scarecrow__coattails"></div><div class="scarecrow__pants"></div></div><div class="scarecrow__arms"></div><div class="scarecrow__leg">  </div></div></div><script async="async">(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load',() => { preloader.endLoading() })
+  document.getElementById('loading-box').addEventListener('click',()=> {preloader.endLoading()})
+  setTimeout(function(){preloader.endLoading();}, 10000);
+
+  if (true) {
+    document.addEventListener('pjax:send', () => { preloader.initLoading() })
+    document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+  }
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/favicon.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">22</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">21</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-heart"></i><span> About</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/about/"><i class="fa-fw iconfont icon-paper-full"></i><span> 关于</span></a></li><li><a class="site-page child" href="/essay/"><i class="fa-fw iconfont icon-shuoshuo"></i><span> 动态</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Ann-Blog"><span class="site-name">Ann-Blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-heart"></i><span> About</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/about/"><i class="fa-fw iconfont icon-paper-full"></i><span> 关于</span></a></li><li><a class="site-page child" href="/essay/"><i class="fa-fw iconfont icon-shuoshuo"></i><span> 动态</span></a></li></ul></div></div></div><div id="rightBank"><div id="box"> <a href="/link" title="百宝箱"><i class="iconfont icon-24gf-box2"></i></a></div><div id="random"><a class="site-page" href="javascript:toRandomPost()" title="随机前往一个文章"><i class="iconfont icon-touzi"> </i></a></div><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">算法排序</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-10-21T00:13:01.000Z" title="发表于 2022-10-21 08:13:01">2022-10-21</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-11-22T07:00:44.654Z" title="更新于 2024-11-22 15:00:44">2024-11-22</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Course/">Course</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">6.9k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>28分钟</span></span></div></div></div><div class="top-img gist" style="background-image: url(/false)"></div><article class="post-content" id="article-container"><h1 id="排序算法时间复杂度比较">排序算法时间复杂度比较</h1>
+<h2 id="1-算法实现与复杂度分析">1.算法实现与复杂度分析</h2>
+<h3 id="1-1-数据结构与部分通用函数">1.1 数据结构与部分通用函数</h3>
+<p><strong>实验说明</strong>：</p>
+<ol>
+<li>实验使用c语言编写，并使用了c++的一些函数，实验环境是vscode，实测不同环境中可能会对constant char*转化报错，关闭即可。</li>
+<li>本次实验使用<strong>动态分配</strong>空间的方式生成数组，<strong>源数组</strong>放在<strong>source.txt</strong>文件中</li>
+<li>排序<strong>结果</strong>分别写在<strong>同级目录生成</strong>的对应排序的<strong>txt</strong>文件里面。</li>
+<li>数组排序的范围分别<strong>从a[1]到a[n]</strong>，而<strong>a[0]作为空闲项</strong>，更加直观排序</li>
+<li>不需要进行环境或者路径的配置，所有的内容均在sort.cpp文件里，直接运行即可</li>
+<li>如果需要<strong>手动输入</strong>测试数组，直接更改<strong>source.txt</strong>文件的内容并<strong>在main函数中注释掉update_file()函数</strong></li>
+</ol>
+<p><strong>通用函数及设置介绍</strong>：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*宏定义内容*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> max 10000<span class="comment">//设置数组的上限</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> R 4<span class="comment">//设置基数排序数字的位数 这里设置成了4位 1000</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> maxran 1000<span class="comment">//生成1-1000范围的数</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> bucket_num 1000</span></span><br><span class="line"><span class="comment">/*交换函数*/</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">swap</span><span class="params">(<span class="type">int</span> &amp;a,<span class="type">int</span> &amp;b)</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> temp;</span><br><span class="line">    temp=a;</span><br><span class="line">    a=b;</span><br><span class="line">    b=temp;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*复制函数，将需要排序的数组生成副本从而比较不同排序算法的作用*/</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">copy</span><span class="params">(<span class="type">int</span> origin[],<span class="type">int</span> ta[])</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> i=<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (i;i&lt;= max;i++) ta[i]=origin[i];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>文件生成和写入函数介绍</strong>：</p>
+<ul>
+<li>生成文件函数<code> update_file()</code>：初始化数据并放入source.txt文件中</li>
+<li>从源文件中读取数组（考虑到不需要每次都要生成新的数组）<code>init_byfile(int ta[])</code></li>
+<li>结果写回文件函数<code>printfile(int ta[],char a[],long start,long finish)</code></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//产生新的需要排序的数字序列并写入文件scource.txt中</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">update_file</span><span class="params">()</span></span>&#123;</span><br><span class="line">    ofstream f;</span><br><span class="line">    f.<span class="built_in">open</span>(<span class="string">&quot;source_data.txt&quot;</span>,ios::trunc);<span class="comment">//替换</span></span><br><span class="line">    <span class="built_in">srand</span>((<span class="type">int</span>)<span class="built_in">time</span>(<span class="number">0</span>)); <span class="comment">// 产生随机种子</span></span><br><span class="line">    f &lt;&lt; (<span class="built_in">rand</span>()%(<span class="number">1000</span>)<span class="number">+1</span>) ;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; max<span class="number">-1</span>; i++)</span><br><span class="line">        f&lt;&lt;<span class="string">&quot; &quot;</span> &lt;&lt; (<span class="built_in">rand</span>()%(<span class="number">1000</span>)<span class="number">+1</span>) ;<span class="comment">//如果不把空格放在前面，会feof到最后的空格处，不加空格数字也识别不了</span></span><br><span class="line">    f.<span class="built_in">close</span>();</span><br><span class="line">&#125;</span><br><span class="line"> <span class="comment">//将源文件中的数字读入需要排序的数组中</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">init_byfile</span><span class="params">(<span class="type">int</span> ta[])</span> </span>&#123;</span><br><span class="line">    <span class="function">ifstream <span class="title">f</span><span class="params">(<span class="string">&quot;source_data.txt&quot;</span>)</span></span>;</span><br><span class="line">    <span class="type">int</span> i=<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span>(!f.<span class="built_in">eof</span>()) &#123;f&gt;&gt;ta[i++];&#125;</span><br><span class="line">    f.<span class="built_in">close</span>();</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//将数组中的内容写入生成的文件中，同时在终端输出对应的运行时间</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">printfile</span><span class="params">(<span class="type">int</span> ta[],<span class="type">char</span> a[],<span class="type">long</span> start,<span class="type">long</span> finish)</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> j;</span><br><span class="line">    ofstream f;</span><br><span class="line">    <span class="type">char</span> *filename=<span class="keyword">new</span> <span class="type">char</span>[<span class="number">20</span>];</span><br><span class="line">    <span class="built_in">strcpy</span>(filename,a);</span><br><span class="line">    <span class="built_in">strcat</span>(filename,<span class="string">&quot;.txt&quot;</span>);</span><br><span class="line">    f.<span class="built_in">open</span>(filename,ios::trunc);</span><br><span class="line">    f&lt;&lt;ta[<span class="number">1</span>];</span><br><span class="line">     <span class="keyword">for</span>(j=<span class="number">2</span>;j&lt;= max;j++) f&lt;&lt;<span class="string">&quot; &quot;</span>&lt;&lt;ta[j];</span><br><span class="line">    cout&lt;&lt;a&lt;&lt;<span class="string">&quot;time:&quot;</span>&lt;&lt;<span class="built_in">double</span>(finish-start)/CLOCKS_PER_SEC &lt;&lt;endl;</span><br><span class="line">    <span class="keyword">delete</span> []filename;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="1-2-插入排序">1.2 插入排序</h3>
+<p><strong>算法原理</strong>：</p>
+<ul>
+<li>从第二个数字a[i]开始和前面比较，小于则将**a[i]**移动到 ta[0]，得到空余位置ta[i]</li>
+<li><strong>ta[0]<strong>则继续和前面更小的数字比较，如果仍小于，前面的数</strong>向后覆盖空余位置</strong>，直到a[0]≤ ta[j]</li>
+<li>将ta[0]放在 ta[j]的后面，也就是ta[j+1]的位置</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">insert</span><span class="params">(<span class="type">int</span> ta[])</span></span>;<span class="comment">//代码见源文件</span></span><br></pre></td></tr></table></figure>
+<p><strong>算法稳定度</strong>：<br>
+可以看出来在后面的数字前移的过程中，碰到相同的数字将放在后面的一个位置，故插入排序是稳定排序</p>
+<p><strong>算法复杂度</strong>：</p>
+<p>最坏情况：极端逆序，每次都需要移动到最前面 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mn>1</mn><mo>+</mo><mi>n</mi><mo>−</mo><mn>2</mn><mo>+</mo><mi>n</mi><mo>−</mo><mn>3</mn><mo>+</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo>=</mo><mi>O</mi><mo stretchy="false">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">n-1+n-2+n-3+....=O(n^2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">2</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">3</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.36687em;vertical-align:0em;"></span><span class="mord">.</span><span class="mord">.</span><span class="mord">.</span><span class="mord">.</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></p>
+<p>最好情况：完全有序的情况下，每个元素只需要比较一次故为O(n)</p>
+<p>平均情况和最坏情况相同。</p>
+<h3 id="1-3归并排序">1.3归并排序</h3>
+<p><strong>算法原理</strong>：</p>
+<ul>
+<li>分：将数组进行递归拆分，直到小数组里面只有一个元素</li>
+<li>合：对有序的小数组进行合并</li>
+</ul>
+<p><strong>代码</strong></p>
+<ul>
+<li>
+<p>merge 函数</p>
+<ul>
+<li>
+<p>相较于书上每次使用都要创建两个小数组分别存放左右半边的数，我们做一点改变，利用之前分配好空间的辅助数组b进行数据的临时存储</p>
+</li>
+<li>
+<p>主要功能和书上的相同，将a[m,n]和a[n+1,s]进行排序得到a[m,s]</p>
+</li>
+</ul>
+</li>
+<li>
+<p>msort 函数</p>
+<ul>
+<li>从上往下递归运算，分别对左半边和右半边使用归并排序，可以从树的角度理解</li>
+<li>函数一直在将当前的数组分为左半边和右半边。</li>
+<li>当最小单位的左右半边结束后，得到二元有序数组，此时会期望完成右侧对应二元数组，右边继续分成单个元素后合并。回到该层时，两个有序二元数组合并成一个四元数组，期望右侧四元数组完成，开始对右侧四个元素进行4,2,1分割，以此类推完成回溯的逆过程。</li>
+<li>过程中可能并不是严格的整除2的幂次关系</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">merge</span><span class="params">(<span class="type">int</span> b[],<span class="type">int</span> a[],<span class="type">int</span> m,<span class="type">int</span> n,<span class="type">int</span> s)</span></span>&#123;<span class="comment">//b作为临时数组</span></span><br><span class="line">    <span class="type">int</span> i,j,k;</span><br><span class="line">    <span class="keyword">for</span>(i=m,j=n<span class="number">+1</span>,k=i;i&lt;=n&amp;&amp;j&lt;=s;k++)&#123;<span class="comment">////当ij的指针都没有到边界的时候</span></span><br><span class="line">       <span class="keyword">if</span>(a[i]&lt;=a[j]) b[k]=a[i++];</span><br><span class="line">       <span class="keyword">else</span> b[k]=a[j++];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span>(i&lt;=n) b[k++]=a[i++];<span class="comment">//循环结束是到达边界，将剩下的直接复制</span></span><br><span class="line">    <span class="keyword">while</span>(j&lt;=s) b[k++]=a[j++];</span><br><span class="line">    <span class="keyword">for</span>(i=m;i&lt;=s;i++) a[i]=b[i];</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">msort</span><span class="params">(<span class="type">int</span> temp[],<span class="type">int</span> rt[],<span class="type">int</span> s,<span class="type">int</span> t)</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> m;</span><br><span class="line">    <span class="keyword">if</span>(s&lt;t)&#123;</span><br><span class="line">    m=(s+t)/<span class="number">2</span>;</span><br><span class="line">    <span class="built_in">msort</span>(temp,rt,s,m);</span><br><span class="line">    <span class="built_in">msort</span>(temp,rt,m<span class="number">+1</span>,t);</span><br><span class="line">    <span class="built_in">merge</span>(temp,rt,s,m,t);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>时间复杂度分析</strong>：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo fence="true">{</mo><mtable rowspacing="0.3599999999999999em" columnalign="left left" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mi>T</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo><mo>=</mo><mi mathvariant="normal">Θ</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo><mtext> </mtext></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mi>i</mi><mi>f</mi><mtext> </mtext><mi>n</mi><mo>=</mo><mn>1</mn></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mi>T</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo><mo>=</mo><mn>2</mn><mi>T</mi><mo stretchy="false">(</mo><mi>n</mi><mi mathvariant="normal">/</mi><mn>2</mn><mo stretchy="false">)</mo><mo>+</mo><mi mathvariant="normal">Θ</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo><mtext> </mtext></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mi>i</mi><mi>f</mi><mtext> </mtext><mi>n</mi><mo>&gt;</mo><mn>1</mn></mrow></mstyle></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\begin{cases}
+    T(n)=\Theta(1) \ &amp;if\  n=1 \\
+    T(n)= 2T(n/2)+\Theta(n)\  &amp;if\  n&gt;1
+\end{cases}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:3.0000299999999998em;vertical-align:-1.25003em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size4">{</span></span><span class="mord"><span class="mtable"><span class="col-align-l"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.69em;"><span style="top:-3.69em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mord">Θ</span><span class="mopen">(</span><span class="mord">1</span><span class="mclose">)</span><span class="mspace"> </span></span></span><span style="top:-2.25em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mord">2</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mord">/</span><span class="mord">2</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">Θ</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mclose">)</span><span class="mspace"> </span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.19em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:1em;"></span><span class="col-align-l"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.69em;"><span style="top:-3.69em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord mathdefault">i</span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mspace"> </span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mord">1</span></span></span><span style="top:-2.25em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord mathdefault">i</span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mspace"> </span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.19em;"><span></span></span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+<p>由主函数方法求解递归的得到 T[n]=O(nlgn)</p>
+<h3 id="1-4快速排序">1.4快速排序</h3>
+<p><strong>算法原理</strong>：</p>
+<ol>
+<li>和书上的算法略有不同，不需要两个指针同向遍历数组，而是从两边到中间，会更加快速</li>
+<li>选取数组范围内<strong>中间元素作为基准</strong></li>
+<li>两个指针分别从数组<strong>两端向中间移动</strong>，分别找到第一个需要交换的元素，交换位置</li>
+<li>当两个指针相遇，此时多交换了一次，需要交换回来</li>
+<li>返回大于基准的第一个元素</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">parti1</span><span class="params">(<span class="type">int</span> ta[],<span class="type">int</span> i,<span class="type">int</span> r,<span class="type">int</span> pivot)</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> l=i<span class="number">-1</span>;</span><br><span class="line">   <span class="keyword">do</span>&#123;</span><br><span class="line">        <span class="keyword">while</span>(ta[++l]&lt;pivot);</span><br><span class="line">        <span class="keyword">while</span>(ta[--r]&gt;pivot&amp;&amp;r&gt;i);</span><br><span class="line">        <span class="built_in">swap</span>(ta[l],ta[r]);<span class="comment">//l到达了右侧本来就大于pivot的位置，同理r，故最后一次的交换是不必要的</span></span><br><span class="line">    &#125;<span class="keyword">while</span>(l&lt;r);</span><br><span class="line">    <span class="built_in">swap</span>(ta[r],ta[l]);<span class="comment">//处理最后一次交换问题</span></span><br><span class="line">    <span class="keyword">return</span> l;<span class="comment">//返回大于基准的第一个数</span></span><br><span class="line">&#125; </span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">quicksort1</span><span class="params">(<span class="type">int</span> ta[],<span class="type">int</span> i ,<span class="type">int</span> j)</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> point=(i+j)/<span class="number">2</span>;</span><br><span class="line">    <span class="type">int</span> k;</span><br><span class="line">    <span class="built_in">swap</span>(ta[point],ta[j]);</span><br><span class="line">    k=<span class="built_in">parti1</span>(ta,i,j,ta[j]);</span><br><span class="line">    <span class="built_in">swap</span>(ta[k],ta[j]);</span><br><span class="line">    <span class="keyword">if</span>(k&gt;i<span class="number">+1</span>) <span class="built_in">quicksort1</span>(ta,i,k<span class="number">-1</span>);</span><br><span class="line">    <span class="keyword">if</span>(j&gt;k<span class="number">+1</span>) <span class="built_in">quicksort1</span>(ta,k<span class="number">+1</span>,j);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>所写代码中有另外一种快排，将<strong>最右侧元素</strong>作为<strong>基准</strong>并移动到<strong>a[0]</strong>,从两边到中间扫描时，并不需要交换，而是左侧找到可以交换的数字后，直接<strong>赋值</strong>给最右侧元素，此时左侧对应位置相当于<strong>空出</strong>，当右边指针找到向左边交换的数字后，直接放置在新空出的位置即可，以此类推。</p>
+<p>两种快排速度差不多，故不做详细分析了。</p>
+</blockquote>
+<p><strong>算法复杂度分析：</strong></p>
+<p>快排属于递归算法，每次将数组进行以基准为界的划分，</p>
+<p><strong>最坏情况</strong>：</p>
+<p>进行数组划分：</p>
+<p class='katex-block katex-error' title='ParseError: KaTeX parse error: Expected &#039;EOF&#039;, got &#039;&amp;&#039; at position 5: T(n)&amp;̲=&amp;\max_{1\leq q…'>T(n)&amp;=&amp;\max_{1\leq q\leq n}\{T(q-1)+T(n-q)\}+\theta(n)\\
+&amp;=&amp;\max_{0\leq k\leq n-1}\{T(k)+T(n-k-1)\}+\theta(n)
+</p>
+<p>猜测函数解T(n)=O(n<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mrow></mrow><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span>)成立，证明：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>假设</mtext><mi>k</mi><mo>&lt;</mo><mi>n</mi><mtext>成立</mtext><mo>:</mo><mspace linebreak="newline"></mspace><mi>T</mi><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo><mo>≤</mo><mi>c</mi><msup><mi>k</mi><mn>2</mn></msup><mo separator="true">,</mo><mi>T</mi><mo stretchy="false">(</mo><mi>n</mi><mo>−</mo><mi>k</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo><mo>≤</mo><mi>c</mi><mo stretchy="false">(</mo><mi>n</mi><mo>−</mo><mi>k</mi><mo>+</mo><mn>1</mn><msup><mo stretchy="false">)</mo><mn>2</mn></msup><mspace linebreak="newline"></mspace><mtext>当</mtext><mi>k</mi><mo>≥</mo><mi>n</mi><mo>:</mo><mspace linebreak="newline"></mspace><mi>T</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo><mo>≤</mo><munder><mo><mi>max</mi><mo>⁡</mo></mo><mrow><mn>0</mn><mo>≤</mo><mi>k</mi><mo>≤</mo><mi>n</mi><mo>−</mo><mn>1</mn></mrow></munder><mo stretchy="false">{</mo><mi>c</mi><msup><mi>k</mi><mn>2</mn></msup><mo>+</mo><mi>c</mi><mo stretchy="false">(</mo><mi>n</mi><mo>−</mo><mi>k</mi><mo>+</mo><mn>1</mn><msup><mo stretchy="false">)</mo><mn>2</mn></msup><mo stretchy="false">}</mo><mo>+</mo><mi>θ</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo><mspace linebreak="newline"></mspace><mo>≤</mo><mi>c</mi><mo>∗</mo><munder><mo><mi>max</mi><mo>⁡</mo></mo><mrow><mn>0</mn><mo>≤</mo><mi>k</mi><mo>≤</mo><mi>n</mi><mo>−</mo><mn>1</mn></mrow></munder><mo stretchy="false">{</mo><msup><mi>k</mi><mn>2</mn></msup><mo>+</mo><mo stretchy="false">(</mo><mi>n</mi><mo>−</mo><mi>k</mi><mo>+</mo><mn>1</mn><msup><mo stretchy="false">)</mo><mn>2</mn></msup><mo stretchy="false">}</mo><mo>+</mo><mi>θ</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo><mspace linebreak="newline"></mspace><mo>≤</mo><mi>c</mi><mo stretchy="false">(</mo><mi>n</mi><mo>−</mo><mn>1</mn><msup><mo stretchy="false">)</mo><mn>2</mn></msup><mo>+</mo><mi>θ</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo><mspace linebreak="newline"></mspace><mo>≤</mo><mi>c</mi><msup><mi>n</mi><mn>2</mn></msup><mo>−</mo><mi>c</mi><mo stretchy="false">(</mo><mn>2</mn><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo><mo>+</mo><mi>θ</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo><mspace linebreak="newline"></mspace><mo>≤</mo><mi>c</mi><msup><mi>n</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">假设k&lt;n成立:\\
+T(k)\leq ck^2,T(n-k-1)\leq c(n-k+1)^2\\
+当k \geq n:\\
+T(n)\leq \max_{0\leq k\leq n-1} \lbrace ck^2+ c(n-k+1)^2 \rbrace+\theta(n)\\
+\leq c *\max_{0\leq k\leq n-1} \lbrace k^2+ (n-k+1)^2 \rbrace+\theta(n)\\
+\leq c(n-1)^2+\theta(n)\\
+\leq cn^2-c(2n-1)+\theta (n)\\
+\leq cn^2
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.73354em;vertical-align:-0.0391em;"></span><span class="mord cjk_fallback">假</span><span class="mord cjk_fallback">设</span><span class="mord mathdefault" style="margin-right:0.03148em;">k</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault">n</span><span class="mord cjk_fallback">成</span><span class="mord cjk_fallback">立</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.03148em;">k</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.1141079999999999em;vertical-align:-0.25em;"></span><span class="mord mathdefault">c</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03148em;">k</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641079999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.77777em;vertical-align:-0.08333em;"></span><span class="mord mathdefault" style="margin-right:0.03148em;">k</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">c</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.77777em;vertical-align:-0.08333em;"></span><span class="mord mathdefault" style="margin-right:0.03148em;">k</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.1141079999999999em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641079999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height:0.83041em;vertical-align:-0.13597em;"></span><span class="mord cjk_fallback">当</span><span class="mord mathdefault" style="margin-right:0.03148em;">k</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.7113949999999998em;vertical-align:-0.8472869999999999em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.43055999999999994em;"><span style="top:-2.347892em;margin-left:0em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">0</span><span class="mrel mtight">≤</span><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span><span class="mrel mtight">≤</span><span class="mord mathdefault mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span><span class="mop">max</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.8472869999999999em;"><span></span></span></span></span></span><span class="mopen">{</span><span class="mord mathdefault">c</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03148em;">k</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641079999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">c</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.77777em;vertical-align:-0.08333em;"></span><span class="mord mathdefault" style="margin-right:0.03148em;">k</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.1141079999999999em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641079999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">}</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height:0.7719400000000001em;vertical-align:-0.13597em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.46528em;vertical-align:0em;"></span><span class="mord mathdefault">c</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.7113949999999998em;vertical-align:-0.8472869999999999em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.43055999999999994em;"><span style="top:-2.347892em;margin-left:0em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">0</span><span class="mrel mtight">≤</span><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span><span class="mrel mtight">≤</span><span class="mord mathdefault mtight">n</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span><span class="mop">max</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.8472869999999999em;"><span></span></span></span></span></span><span class="mopen">{</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03148em;">k</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641079999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.77777em;vertical-align:-0.08333em;"></span><span class="mord mathdefault" style="margin-right:0.03148em;">k</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.1141079999999999em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641079999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">}</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height:0.7719400000000001em;vertical-align:-0.13597em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">c</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.1141079999999999em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641079999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height:0.7719400000000001em;vertical-align:-0.13597em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.9474379999999999em;vertical-align:-0.08333em;"></span><span class="mord mathdefault">c</span><span class="mord"><span class="mord mathdefault">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641079999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">c</span><span class="mopen">(</span><span class="mord">2</span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height:0.7719400000000001em;vertical-align:-0.13597em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8641079999999999em;vertical-align:0em;"></span><span class="mord mathdefault">c</span><span class="mord"><span class="mord mathdefault">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641079999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></span></p>
+<ul>
+<li>最坏情况每次分割比例都是 1 比上剩下的数，则 T(n)=θ（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>n</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">n^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord mathdefault">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span>）</li>
+</ul>
+<p><strong>最好情况</strong>：</p>
+<ul>
+<li>
+<p>由于子问题的问题规模不可能大于 n/2故递归表达式为:</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo><mo>≤</mo><mn>2</mn><mi>T</mi><mo stretchy="false">(</mo><mfrac><mi>n</mi><mn>2</mn></mfrac><mo>+</mo><mi>θ</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">T(n) \leq2T(\frac{n}{2}+ \theta(n)
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.7935600000000003em;vertical-align:-0.686em;"></span><span class="mord">2</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mopen">(</span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.10756em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mclose">)</span></span></span></span></span></p>
+</li>
+<li>
+<p>根据主定理，该递归式的解为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo><mo>=</mo><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mi>l</mi><mi>g</mi><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">T(n)=O(nlgn)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mord mathdefault">n</span><span class="mclose">)</span></span></span></span></p>
+</li>
+<li>
+<p>如果以固定比例进行划分，即使该比例很不平衡(如1000： 1)， 运行时间依旧是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mi>l</mi><mi>g</mi><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(nlgn)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mord mathdefault">n</span><span class="mclose">)</span></span></span></span></p>
+</li>
+</ul>
+<p><strong>平均划分情况</strong></p>
+<p>好和差的划分都是随机分布 的。 假设好和差的划分交替出现在树的各层次上<br>
+， 产生3个子数组0，   (n-1)/2-1和 （n-1）/2，则该组合的划分代价是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo><mo>+</mo><mi>θ</mi><mo stretchy="false">(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo><mo>=</mo><mi>θ</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\theta(n)+\theta(n-1)=\theta(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mclose">)</span></span></span></span>，所得到的划分结果也是好的，故仍然为O(nlgn)</p>
+<h3 id="1-6堆排序">1.6堆排序</h3>
+<p><strong>算法原理</strong>：</p>
+<ul>
+<li>使用书上算法并将递归改进为while函数</li>
+<li>建立大根堆，从第一个非叶子节点开始，首先找左孩子，无则直接返回，有则继续判断是否有右孩子</li>
+<li>如果只有一个子节点，和父节点比较交换，不需要考虑子树，返回即可</li>
+<li>如果有两个节点，找到孩子最大的那个和父节点比较，如果要交换，将变动的孩子作为下一个需要调整的子树头头</li>
+<li>将根节点和最后一个数交换，更新len继续调整大根堆</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">heapmax</span><span class="params">(<span class="type">int</span> ta[],<span class="type">int</span> i,<span class="type">int</span> len)</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> largest,left,right;</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)&#123;</span><br><span class="line">    <span class="keyword">if</span>(i*<span class="number">2</span>&lt;=len) left=i*<span class="number">2</span>;<span class="comment">//找左孩子</span></span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">return</span>;<span class="comment">//叶子节点返回</span></span><br><span class="line">    <span class="keyword">if</span>(i*<span class="number">2</span><span class="number">+1</span>&lt;=len) right=i*<span class="number">2</span><span class="number">+1</span>;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">         <span class="keyword">if</span>(ta[i]&gt;=ta[left]) <span class="keyword">return</span>;<span class="comment">//只有一个节点，</span></span><br><span class="line">         <span class="keyword">else</span> <span class="built_in">swap</span>(ta[i],ta[left]);<span class="comment">//不需要考虑子树</span></span><br><span class="line">         <span class="keyword">return</span>;</span><br><span class="line">     &#125;</span><br><span class="line">    <span class="keyword">if</span> (ta[left]&lt;ta[right]) largest=right;</span><br><span class="line">    <span class="keyword">else</span> largest=left;</span><br><span class="line">    <span class="keyword">if</span>(ta[largest]&gt;ta[i]) &#123;<span class="built_in">swap</span>(ta[largest],ta[i]); i=largest;&#125; <span class="comment">//继续找左孩子 </span></span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">return</span>;</span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">HeapSort_book</span><span class="params">(<span class="type">int</span> ta[])</span> </span>&#123;  <span class="comment">//len用来判断左右孩子是否存在</span></span><br><span class="line">    <span class="type">int</span> i;</span><br><span class="line">    <span class="type">int</span> len= max;</span><br><span class="line">  	<span class="keyword">for</span> (i= max/<span class="number">2</span>; i&gt;<span class="number">0</span>; i--) <span class="built_in">heapmax</span> ( ta, i ,len);<span class="comment">//从叶子节点往上完成建堆操作</span></span><br><span class="line"> 	<span class="keyword">for</span> (i= max; i&gt;<span class="number">1</span>; i--) </span><br><span class="line">    &#123;<span class="built_in">swap</span>(ta[i] , ta[<span class="number">1</span>]); len--;<span class="built_in">heapmax</span>(ta, <span class="number">1</span>,len); &#125;<span class="comment">//取出最大值后继续保持堆的性质，由于这里左右孩子依靠len判断，故一定要减去</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>源码中写了<strong>另外一个</strong>堆排序的调整方式，整体代码更加简洁，首先确认是否有左孩子，再判断如果有右孩子则和左孩子比较，没有则跳过，最大的孩子和需要调整的父节点比较，如果小于则没事，如果大于则交换。msort中更改m的值，性能差不多，不做详细分析。</p>
+</blockquote>
+<p><strong>时间复杂度分析</strong>：</p>
+<ul>
+<li>
+<p>建堆操作：作用在高度为ℎ的结点上的运行时间为  O（h）</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo><mo>≤</mo><munderover><mo>∑</mo><mrow><mi>h</mi><mo>=</mo><mn>0</mn></mrow><mrow><mo stretchy="false">[</mo><mi>l</mi><mi>g</mi><mi>n</mi><mo stretchy="false">]</mo></mrow></munderover><mo stretchy="false">⌈</mo><mfrac><mi>n</mi><msup><mn>2</mn><mrow><mi>h</mi><mo>+</mo><mn>1</mn></mrow></msup></mfrac><mo stretchy="false">⌉</mo><mi>O</mi><mo stretchy="false">(</mo><mi>h</mi><mo stretchy="false">)</mo><mo>=</mo><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><munderover><mo>∑</mo><mrow><mi>h</mi><mo>=</mo><mn>0</mn></mrow><mrow><mo stretchy="false">[</mo><mi>l</mi><mi>g</mi><mi>n</mi><mo stretchy="false">]</mo></mrow></munderover><mfrac><mi>n</mi><msup><mn>2</mn><mrow><mi>h</mi><mo>+</mo><mn>1</mn></mrow></msup></mfrac><mo stretchy="false">)</mo><mspace linebreak="newline"></mspace><mo>≤</mo><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><munderover><mo>∑</mo><mrow><mi>h</mi><mo>=</mo><mn>0</mn></mrow><mi mathvariant="normal">∞</mi></munderover><mfrac><mi>n</mi><msup><mn>2</mn><mrow><mi>h</mi><mo>+</mo><mn>1</mn></mrow></msup></mfrac><mo stretchy="false">)</mo><mspace linebreak="newline"></mspace><mo>=</mo><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">T(n)\leq \sum^{[lgn]}_{h=0}\lceil \frac{n}{2^{h+1}}\rceil O(h)=O(n\sum^{[lgn]}_{h=0}\frac{n}{2^{h+1}})\\
+\leq O(n\sum^{\infty}_{h=0}\frac{n}{2^{h+1}})\\
+=O(n)
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:3.2631180000000004em;vertical-align:-1.302113em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.961005em;"><span style="top:-1.8478869999999998em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">h</span><span class="mrel mtight">=</span><span class="mord mtight">0</span></span></span></span><span style="top:-3.0500049999999996em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.386005em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">[</span><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span><span class="mord mathdefault mtight" style="margin-right:0.03588em;">g</span><span class="mord mathdefault mtight">n</span><span class="mclose mtight">]</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.302113em;"><span></span></span></span></span></span><span class="mopen">⌈</span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.10756em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7751079999999999em;"><span style="top:-2.989em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">h</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose">⌉</span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault">h</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:3.2631180000000004em;vertical-align:-1.302113em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.961005em;"><span style="top:-1.8478869999999998em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">h</span><span class="mrel mtight">=</span><span class="mord mtight">0</span></span></span></span><span style="top:-3.0500049999999996em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.386005em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">[</span><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span><span class="mord mathdefault mtight" style="margin-right:0.03588em;">g</span><span class="mord mathdefault mtight">n</span><span class="mclose mtight">]</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.302113em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.10756em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7751079999999999em;"><span style="top:-2.989em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">h</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height:0.7719400000000001em;vertical-align:-0.13597em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.9535100000000005em;vertical-align:-1.302113em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.6513970000000002em;"><span style="top:-1.8478869999999998em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">h</span><span class="mrel mtight">=</span><span class="mord mtight">0</span></span></span></span><span style="top:-3.0500049999999996em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.300005em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">∞</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.302113em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.10756em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7751079999999999em;"><span style="top:-2.989em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">h</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height:0.36687em;vertical-align:0em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mclose">)</span></span></span></span></span></p>
+</li>
+<li>
+<p>当调整函数作用在一棵以结点 i为根的、 大小为n子树上时， 对以 i的某个子节点为根的子树大小最多为  2n/3。</p>
+</li>
+</ul>
+<blockquote>
+<p>在最后一层之前，i  的左右子树大小相同为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mi>h</mi></msup><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">2^h-1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.932438em;vertical-align:-0.08333em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.849108em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">h</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span>,左孩子最后一行可以为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mi>h</mi></msup></mrow><annotation encoding="application/x-tex">2^h</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.849108em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.849108em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">h</span></span></span></span></span></span></span></span></span></span></span>, 则左子树最大是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo stretchy="false">(</mo><msup><mn>2</mn><mi>h</mi></msup><mo>+</mo><msup><mn>2</mn><mi>h</mi></msup><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo><mi mathvariant="normal">/</mi><mo stretchy="false">(</mo><msup><mn>2</mn><mi>h</mi></msup><mo>+</mo><mn>2</mn><mo>∗</mo><mo stretchy="false">(</mo><msup><mn>2</mn><mi>h</mi></msup><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo><mo>+</mo><mn>1</mn><mo stretchy="false">)</mo><mo>≈</mo><mn>2</mn><mi>n</mi><mi mathvariant="normal">/</mi><mn>3</mn></mrow><annotation encoding="application/x-tex">n(2^h+2^h-1)/(2^h+2*(2^h-1)+1)\approx 2n/3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.099108em;vertical-align:-0.25em;"></span><span class="mord mathdefault">n</span><span class="mopen">(</span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.849108em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">h</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.932438em;vertical-align:-0.08333em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.849108em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">h</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.099108em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span><span class="mord">/</span><span class="mopen">(</span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.849108em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">h</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.099108em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.849108em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">h</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">2</span><span class="mord mathdefault">n</span><span class="mord">/</span><span class="mord">3</span></span></span></span></p>
+</blockquote>
+<p>​        运行时间：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo><mo>≤</mo><mi>T</mi><mo stretchy="false">(</mo><mfrac><mrow><mn>2</mn><mi>n</mi></mrow><mn>3</mn></mfrac><mo>+</mo><mi>θ</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">T(n)\leq T(\frac{2n}{3}+\theta(1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.190108em;vertical-align:-0.345em;"></span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mopen">(</span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.845108em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">3</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span><span class="mord mathdefault mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span><span class="mopen">(</span><span class="mord">1</span><span class="mclose">)</span></span></span></span></p>
+<p>​        运用主定理：T(n)=O(lgn)</p>
+<ul>
+<li>sort函数中，建堆操作O（n），调整函函数为 O(lgn)，一共调用n-1次，总共时间复杂度： O(nlgn)</li>
+</ul>
+<h3 id="1-7-基数排序">1.7 基数排序</h3>
+<p><strong>算法原理</strong>：</p>
+<ul>
+<li>分别从小优先级的位置开始统计出现频次，计算在辅助空间内应在哪个范围内，直接放置</li>
+<li>按照更高优先级重复</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">radpas</span><span class="params">(<span class="type">int</span> a[],<span class="type">int</span> b[],<span class="type">int</span> n,<span class="type">int</span> k)</span></span>&#123;</span><br><span class="line">    <span class="comment">//对关键字的第k项进行分配收集，结果放在b,共n个数</span></span><br><span class="line">    <span class="type">int</span> count[<span class="number">10</span>]=&#123;<span class="number">0</span>&#125;,p,j,i=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(j=<span class="number">1</span>;j&lt;=n;j++)   count[a[j]/k%<span class="number">10</span>]++;</span><br><span class="line">    <span class="keyword">for</span>(j=<span class="number">1</span>;j&lt;<span class="number">10</span>;j++) count[j]+=count[j<span class="number">-1</span>];<span class="comment">//得到累计分布</span></span><br><span class="line">    <span class="keyword">for</span>(j=n;j&gt;=<span class="number">1</span>;j--)&#123;</span><br><span class="line">        p=a[j]/k%<span class="number">10</span>;</span><br><span class="line">        b[count[p]]=a[j];</span><br><span class="line">        count[p]--;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">radsort</span><span class="params">(<span class="type">int</span> ta[])</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> *t=<span class="keyword">new</span> <span class="type">int</span>[max*<span class="built_in">sizeof</span>(<span class="type">int</span>)];</span><br><span class="line">    <span class="type">int</span> rank[R];<span class="comment">//建立辅助数组</span></span><br><span class="line">    <span class="type">int</span> k=<span class="number">0</span>,i;</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;R;i++) rank[i]=<span class="built_in">int</span>(<span class="built_in">pow</span>(<span class="number">10</span>,i));</span><br><span class="line">    <span class="keyword">while</span>(k&lt;R)&#123;</span><br><span class="line">        <span class="built_in">radpas</span>(ta,t, max,rank[k]); k++;</span><br><span class="line">        <span class="keyword">if</span>(k&lt;R)&#123;<span class="built_in">radpas</span>(t,ta, max,rank[k]); k++;&#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;= max;i++) ta[i]=t[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">delete</span> []t;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>时间复杂度分析</strong>：</p>
+<p><strong>引理8.3</strong>：给定<em>n</em>个<em>d</em>位数,每一个数位可以取<em>k</em>种可能的值。基数排序算法能以θ(d(n+k))的时间正确地对这些数进行排序。能以<em>θ</em>(<em>d</em>(<em>n</em>+<em>k</em>))的时间正确地对这些数进行排序。</p>
+<p><strong>引理8.4</strong>：给定n个b位数和任何正整数r&lt;b,Radix−Sort能在<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi><mo stretchy="false">(</mo><mo stretchy="false">(</mo><mfrac><mi>b</mi><mi>r</mi></mfrac><mo stretchy="false">)</mo><mo stretchy="false">(</mo><mi>n</mi><mo>+</mo><msup><mn>2</mn><mi>r</mi></msup><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">θ((\frac{b}{r})(n+2^r))</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.2251079999999999em;vertical-align:-0.345em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">θ</span><span class="mopen">(</span><span class="mopen">(</span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8801079999999999em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.02778em;">r</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">b</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose">)</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.02778em;">r</span></span></span></span></span></span></span></span><span class="mclose">)</span><span class="mclose">)</span></span></span></span>时间内正确地对这些数进行排序。</p>
+<p>对于给定的n值和b值，我们希望所选择的<em>r</em>值能够最小化表达式<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mfrac><mi>b</mi><mi>r</mi></mfrac><mo stretchy="false">)</mo><mo stretchy="false">(</mo><mi>n</mi><mo>+</mo><msup><mn>2</mn><mi>r</mi></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(\frac{b}{r})(n+2^r)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.2251079999999999em;vertical-align:-0.345em;"></span><span class="mopen">(</span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8801079999999999em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.02778em;">r</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">b</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose">)</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.02778em;">r</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>。</p>
+<p>①如果<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mo>&lt;</mo><mi>f</mi><mi>l</mi><mi>o</mi><mi>o</mi><mi>r</mi><mo stretchy="false">(</mo><mi>lg</mi><mo>⁡</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">b &lt; floor( \lg n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.73354em;vertical-align:-0.0391em;"></span><span class="mord mathdefault">b</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">o</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mopen">(</span><span class="mop">l<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">n</span><span class="mclose">)</span></span></span></span>,选择r=b，此时$ \theta (n)$.</p>
+<p>② 如果<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mo>≥</mo><mi>f</mi><mi>l</mi><mi>o</mi><mi>o</mi><mi>r</mi><mo stretchy="false">(</mo><mi>lg</mi><mo>⁡</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">b \geq floor( \lg n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83041em;vertical-align:-0.13597em;"></span><span class="mord mathdefault">b</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">o</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mopen">(</span><span class="mop">l<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">n</span><span class="mclose">)</span></span></span></span>,选择r=floor( lg n)，此时$ \theta (bn/ \lg n)$.</p>
+<p>值得说明的是，由于基数排序对于快排一类的原址排序而言，当主存容量宝贵时仍然会倾向于快排等。</p>
+<h3 id="1-8-桶排序">1.8 桶排序</h3>
+<p><strong>算法参数设置</strong>：</p>
+<ul>
+<li>在<strong>宏</strong>定义部分定义了<strong>数字范围</strong>和<strong>桶的数量</strong>（可任意修改）</li>
+<li>如果<strong>数字最大值和桶的数量</strong>设置一致，插入桶时直接插入最后</li>
+</ul>
+<p><strong>数据结构介绍</strong>:</p>
+<ul>
+<li>链表表示数据，linktable[]表示所有桶<strong>链表头的数组</strong>，tail[]表示所有<strong>链表尾</strong>的数组</li>
+<li>为了减少大规模数组遍历的次数，引入tail[]，进而有效<strong>减少排序时间</strong></li>
+</ul>
+<p><strong>算法原理</strong>：</p>
+<ul>
+<li>将数字范围划分成多个桶</li>
+<li>扫描数组，计算数字属于哪个范围，插入对应桶的链表正确顺序位置</li>
+<li>将链表组合起来</li>
+</ul>
+<p><strong>代码</strong></p>
+<ul>
+<li>链表操作</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">initlist</span><span class="params">(linklist &amp;L)</span> </span>&#123;L=<span class="literal">NULL</span>;&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">DestroyList_L</span><span class="params">(linklist &amp;L)</span></span>&#123;</span><br><span class="line">    linklist p;</span><br><span class="line">    <span class="keyword">while</span>(L)&#123;</span><br><span class="line">        p=L;</span><br><span class="line">        L=L-&gt;next;</span><br><span class="line">        <span class="built_in">delete</span>(p);<span class="comment">//注意这里不能直接delete(L);因为会失去下一个节点的指向</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>插入桶链表和桶链表的连接函数</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">listinsert_sort</span><span class="params">(linklist &amp;L,node *p, linklist &amp;tail)</span></span>&#123;<span class="comment">//插入的时候排序链表</span></span><br><span class="line">    linklist k=L,pior=L;</span><br><span class="line">    <span class="keyword">if</span>(!L) &#123;L=<span class="built_in">new</span>(node);L-&gt;key=p-&gt;key;L-&gt;next=<span class="literal">NULL</span>;tail=L;<span class="keyword">return</span>;&#125; <span class="comment">//插入第一个元素,这里不能将tail=p，因为p是一个单独的节点和L无关</span></span><br><span class="line">    <span class="keyword">for</span>(k;k&amp;&amp;(p-&gt;key&gt;=k-&gt;key);pior=k,k=k-&gt;next);</span><br><span class="line">    <span class="keyword">if</span>(k==L) &#123;p-&gt;next=L;L=p;&#125;<span class="comment">//如果在第一个元素前面，tail前面的连接仍然被保证</span></span><br><span class="line">    <span class="keyword">else</span> &#123;pior-&gt;next=p;p-&gt;next=k;&#125;</span><br><span class="line">    <span class="keyword">if</span>(!k) tail=p;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">append_bucket</span><span class="params">(linklist &amp;L,node *p,linklist &amp;tail)</span></span>&#123;<span class="comment">//桶的数量很多=maxran</span></span><br><span class="line">    <span class="keyword">if</span>(!L) &#123;L=p;L-&gt;next=<span class="literal">NULL</span>;tail=p;<span class="keyword">return</span>;&#125;</span><br><span class="line">    p-&gt;next=L;</span><br><span class="line">    L=p;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">connect</span> <span class="params">(linklist link[],<span class="type">int</span> n,<span class="type">int</span> ta[],linklist tail[])</span></span>&#123;<span class="comment">//</span></span><br><span class="line">    linklist result=link[<span class="number">0</span>],p,q=tail[<span class="number">0</span>];<span class="comment">//有可能第一个链表是空的</span></span><br><span class="line">    <span class="type">int</span> i;</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;n;i++)&#123;</span><br><span class="line">       p=link[i];<span class="comment">//获取剩余的link头部</span></span><br><span class="line">       <span class="keyword">if</span>(!p) <span class="keyword">continue</span>;<span class="comment">//基本上不可能</span></span><br><span class="line">       <span class="keyword">if</span>(result==<span class="literal">NULL</span>)&#123;result=p;q=tail[i];<span class="keyword">continue</span>;&#125;<span class="comment">//如果在此之前result都没有赋值</span></span><br><span class="line">       q-&gt;next=p;<span class="comment">//q指向新加入的链表的末尾</span></span><br><span class="line">       q=tail[i];   </span><br><span class="line">    &#125;</span><br><span class="line">    p=result;</span><br><span class="line">    finish=<span class="built_in">clock</span>();<span class="comment">//已经得到了排好序的链表，则直接结束，后续链表的两次遍历就不用了，时间耗费太久了</span></span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;= max;i++) &#123;ta[i]=result-&gt;key;result=result-&gt;next;&#125;</span><br><span class="line">    <span class="built_in">DestroyList_L</span>(p);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>排序算法</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">bucketsort</span><span class="params">(<span class="type">int</span> ta[])</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> i;</span><br><span class="line">    <span class="type">int</span> index;</span><br><span class="line">    linklist linktable[bucket_num],p;<span class="comment">//假设有10个桶,数字上限是1000则除以100</span></span><br><span class="line">    linklist tail[bucket_num];</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;bucket_num;i++) &#123;<span class="built_in">initlist</span>(linktable[i]);<span class="built_in">initlist</span>(tail[i]);&#125;<span class="comment">//初始化链表</span></span><br><span class="line">    start=<span class="built_in">clock</span>();<span class="comment">//链表操作不计入时间</span></span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;= max;i++) &#123; </span><br><span class="line">        p=<span class="built_in">new</span>(node);</span><br><span class="line">        p-&gt;key=ta[i];</span><br><span class="line">        <span class="keyword">if</span>(maxran%bucket_num)  index=(ta[i]<span class="number">-1</span>)/((maxran/bucket_num)<span class="number">+1</span>);</span><br><span class="line">        <span class="keyword">else</span> index=(ta[i]<span class="number">-1</span>)/(maxran/bucket_num);<span class="comment">//这里选取的桶子的数目可以整除数字的范围0-bucket_num-1</span></span><br><span class="line">        <span class="keyword">if</span>(bucket_num==maxran) <span class="built_in">append_bucket</span>(linktable[index],p,tail[index]);</span><br><span class="line">        <span class="keyword">else</span> <span class="built_in">listinsert_sort</span>(linktable[index],p,tail[index]);&#125;</span><br><span class="line">    <span class="built_in">connect</span>(linktable,bucket_num,ta,tail);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>时间复杂度分析</strong>：</p>
+<p>假定分到第 i 个桶的元素个数是  <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>n</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">n_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>:</p>
+<ol>
+<li>
+<p>最坏：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo><mo>=</mo><mi>O</mi><mo stretchy="false">(</mo><mi>N</mi><mo stretchy="false">)</mo><mo>+</mo><munder><mo>∑</mo><mrow><mn>1</mn><mo>≤</mo><mi>i</mi><mo>≤</mo><mi>n</mi></mrow></munder><msup><mi>n</mi><mn>2</mn></msup><mo>=</mo><mi>O</mi><mo stretchy="false">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">T(n)=O(N)+\sum _{1\leq i\leq n }n^2=O(n^2)
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.10903em;">N</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:2.422853em;vertical-align:-1.372848em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.050005em;"><span style="top:-1.8723309999999997em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mrel mtight">≤</span><span class="mord mathdefault mtight">i</span><span class="mrel mtight">≤</span><span class="mord mathdefault mtight">n</span></span></span></span><span style="top:-3.0500049999999996em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.372848em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641079999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.1141079999999999em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641079999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span></p>
+</li>
+<li>
+<p>平均：输入期望的线性性质，可以证明</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mo stretchy="false">[</mo><msubsup><mi>n</mi><mi>i</mi><mn>2</mn></msubsup><mo stretchy="false">]</mo><mo>=</mo><mn>2</mn><mo>−</mo><mn>1</mn><mi mathvariant="normal">/</mi><mi>n</mi></mrow><annotation encoding="application/x-tex">E[n_i^2]=2-1/n
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.1141079999999999em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.05764em;">E</span><span class="mopen">[</span><span class="mord"><span class="mord mathdefault">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8641079999999999em;"><span style="top:-2.4530000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">2</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mord">/</span><span class="mord mathdefault">n</span></span></span></span></span></p>
+<p>故算法的时间复杂度为：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo><mo>=</mo><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo><mo>+</mo><munder><mo>∑</mo><mrow><mn>1</mn><mo>≤</mo><mi>i</mi><mo>≤</mo><mi>n</mi></mrow></munder><mi>O</mi><mo stretchy="false">(</mo><mi>E</mi><mo stretchy="false">[</mo><msup><mi>n</mi><mn>2</mn></msup><mo stretchy="false">]</mo><mo stretchy="false">)</mo><mo>=</mo><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo><mo>+</mo><munder><mo>∑</mo><mrow><mn>1</mn><mo>≤</mo><mi>i</mi><mo>≤</mo><mi>n</mi></mrow></munder><mi>O</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo><mo>=</mo><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">T(n)=O(n)+\sum_{1\leq i \leq n }O(E[n^2])=O(n)+\sum_{1\leq i \leq n }O(1)=O(n)
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:2.422853em;vertical-align:-1.372848em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.050005em;"><span style="top:-1.8723309999999997em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mrel mtight">≤</span><span class="mord mathdefault mtight">i</span><span class="mrel mtight">≤</span><span class="mord mathdefault mtight">n</span></span></span></span><span style="top:-3.0500049999999996em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.372848em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.05764em;">E</span><span class="mopen">[</span><span class="mord"><span class="mord mathdefault">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641079999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mclose">]</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:2.422853em;vertical-align:-1.372848em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.050005em;"><span style="top:-1.8723309999999997em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mrel mtight">≤</span><span class="mord mathdefault mtight">i</span><span class="mrel mtight">≤</span><span class="mord mathdefault mtight">n</span></span></span></span><span style="top:-3.0500049999999996em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.372848em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">1</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mclose">)</span></span></span></span></span></p>
+</li>
+<li>
+<p>上面的分析条件基于的都是排序的n个元素直接加入<strong>n个桶</strong>里，当桶的数量减少时，需要另外实现插入排序算法。</p>
+<p>事实上实际的复杂度为O(n+k)，k为桶的数量</p>
+</li>
+</ol>
+<p>在元素排布及其不均衡的情况下，有很多空的桶，则可能变成了单纯的插入排序的时间复杂度，也就是O（nlgn）</p>
+<p><strong>说明</strong>：</p>
+<ul>
+<li>由于链表操作都是自己写的，冗余较大，导致桶排的速度一直偏低，实际上桶排应该是较好的排序手段。</li>
+<li>尝试了许多提高速度的方法，包括设置很大的桶的数量，额外记录tail数组省的连接链表的时候遍历等。有很明显的改善，但是还是链表操作太频繁了，速度不快。</li>
+</ul>
+<h2 id="2-数组规模与排序时间">2 数组规模与排序时间</h2>
+<h3 id="2-1-规模统计">2.1  规模统计</h3>
+<p><strong>参数设置</strong> （时间单位：s）</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> max 50000<span class="comment">//设置数组的上限</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> R 5<span class="comment">//设置基数排序数字的位数 </span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> maxran 10000<span class="comment">//生成1-1000的数</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> bucket_num 10000<span class="comment">//可以设置成和maxran相同的数，也可随便设置，更慢</span></span></span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>n</th>
+<th>插入排序</th>
+<th>归并排序</th>
+<th>快速排序</th>
+<th>堆排序</th>
+<th>基数排序</th>
+<th>桶排序</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5万</td>
+<td>4.817</td>
+<td>0.016</td>
+<td>0.008</td>
+<td>0.016</td>
+<td>0.008</td>
+<td>0.068</td>
+</tr>
+<tr>
+<td>10万</td>
+<td>17.392</td>
+<td>0.032</td>
+<td>0.024</td>
+<td>0.024</td>
+<td>0.016</td>
+<td>0.112</td>
+</tr>
+<tr>
+<td>20万</td>
+<td>74.724</td>
+<td>0.056</td>
+<td>0.04</td>
+<td>0.073</td>
+<td>0.056</td>
+<td>0.28</td>
+</tr>
+<tr>
+<td>30万</td>
+<td>102.085</td>
+<td>0.056</td>
+<td>0.043</td>
+<td>0.058</td>
+<td>0.036</td>
+<td>0.191</td>
+</tr>
+<tr>
+<td>50万</td>
+<td>319.878</td>
+<td>0.21</td>
+<td>0.152</td>
+<td>0.264</td>
+<td>0.153</td>
+<td>0.614</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>n</th>
+<th>插入排序</th>
+<th>归并排序</th>
+<th>快速排序</th>
+<th>堆排序</th>
+<th>基数排序</th>
+<th>桶排序</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5万</td>
+<td>3.833</td>
+<td>0.016</td>
+<td>0.024</td>
+<td>0.016</td>
+<td>0.016</td>
+<td>0.082</td>
+</tr>
+<tr>
+<td>10万</td>
+<td>17.705</td>
+<td>0.032</td>
+<td>0.025</td>
+<td>0.033</td>
+<td>0.016</td>
+<td>0.112</td>
+</tr>
+<tr>
+<td>20万</td>
+<td>38.343</td>
+<td>0.038</td>
+<td>0.036</td>
+<td>0.045</td>
+<td>0.026</td>
+<td>0.148</td>
+</tr>
+<tr>
+<td>30万</td>
+<td>86.116</td>
+<td>0.057</td>
+<td>0.041</td>
+<td>0.064</td>
+<td>0.042</td>
+<td>0.199</td>
+</tr>
+<tr>
+<td>50万</td>
+<td>573.12</td>
+<td>0.228</td>
+<td>0.12</td>
+<td>0.281</td>
+<td>0.12</td>
+<td>0.537</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>n</th>
+<th>插入排序</th>
+<th>归并排序</th>
+<th>快速排序</th>
+<th>堆排序</th>
+<th>基数排序</th>
+<th>桶排序</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5万</td>
+<td>4.378</td>
+<td>0.016</td>
+<td>0.016</td>
+<td>0.014</td>
+<td>0.008</td>
+<td>0.078</td>
+</tr>
+<tr>
+<td>10万</td>
+<td>17.678</td>
+<td>0.032</td>
+<td>0.024</td>
+<td>0.032</td>
+<td>0.024</td>
+<td>0.104</td>
+</tr>
+<tr>
+<td>20万</td>
+<td>50.247</td>
+<td>0.049</td>
+<td>0.035</td>
+<td>0.043</td>
+<td>0.032</td>
+<td>0.165</td>
+</tr>
+<tr>
+<td>30万</td>
+<td>108.998</td>
+<td>0.06</td>
+<td>0.045</td>
+<td>0.058</td>
+<td>0.037</td>
+<td>0.175</td>
+</tr>
+<tr>
+<td>50万</td>
+<td>425.5</td>
+<td>0.16</td>
+<td>0.131</td>
+<td>0.208</td>
+<td>0.16</td>
+<td>0.653</td>
+</tr>
+</tbody>
+</table>
+<p><strong>平均</strong></p>
+<table>
+<thead>
+<tr>
+<th>n</th>
+<th>插入排序</th>
+<th>归并排序</th>
+<th>快速排序</th>
+<th>堆排序</th>
+<th>基数排序</th>
+<th>桶排序</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5万</td>
+<td>4.342667</td>
+<td>0.016</td>
+<td>0.016</td>
+<td>0.015333</td>
+<td>0.010667</td>
+<td>0.076</td>
+</tr>
+<tr>
+<td>10万</td>
+<td>17.59167</td>
+<td>0.032</td>
+<td>0.024333</td>
+<td>0.029667</td>
+<td>0.018667</td>
+<td>0.109333</td>
+</tr>
+<tr>
+<td>20万</td>
+<td>54.00</td>
+<td>0.047667</td>
+<td>0.037</td>
+<td>0.053667</td>
+<td>0.038</td>
+<td>0.197667</td>
+</tr>
+<tr>
+<td>30万</td>
+<td>99.06633</td>
+<td>0.057667</td>
+<td>0.043</td>
+<td>0.06</td>
+<td>0.038333</td>
+<td>0.188333</td>
+</tr>
+<tr>
+<td>50万</td>
+<td>439.4993</td>
+<td>0.199333</td>
+<td>0.134333</td>
+<td>0.251</td>
+<td>0.144333</td>
+<td>0.601333</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>插入排序： O(<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>n</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">n^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord mathdefault">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span>)，可以看出来比例接近于 1:4:16:36:100</li>
+<li>基数排序，桶排序：分别接近于线性</li>
+<li>归并，快速，堆，接近于nlgn的时间复杂度：比例应该接近于 1:3:7:12:24，但是观察可得几乎以线性速度增加，一方面是因为计算机硬件问题，没有观察更多更大的数据集，一方面是在编写函数的时候，有时候数据集过小反而会让某些操作更加繁琐。另外和数据分布有关，观察原数据集可以发现不同分布的数据集在排序的时候差异性较大。</li>
+</ul>
+<h3 id="2-1-不同分布对算法排序时间的影响-n-10万">2.1  不同分布对算法排序时间的影响（n=10万）</h3>
+<p><strong>随机扰乱</strong></p>
+<p>编写shuffle函数将数据集进行扰乱，观测随机性对数据的影响</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*shuffle扰乱函数*/</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">shuffle_file</span><span class="params">()</span></span>&#123;</span><br><span class="line">    ifstream fout;</span><br><span class="line">    ofstream fin;</span><br><span class="line">    <span class="type">int</span> i;</span><br><span class="line">    fout.<span class="built_in">open</span>(<span class="string">&quot;source_data.txt&quot;</span>);</span><br><span class="line">    <span class="type">int</span> *temp=<span class="keyword">new</span> <span class="type">int</span>[(max*<span class="built_in">sizeof</span>(<span class="type">int</span>))];</span><br><span class="line">    <span class="keyword">for</span> (i=<span class="number">0</span>;i&lt;max;i++) fout&gt;&gt;temp[i];</span><br><span class="line">    fout.<span class="built_in">close</span>();</span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">tem</span><span class="params">(temp,temp+max)</span></span>;</span><br><span class="line">    std::random_device rd;</span><br><span class="line">    <span class="function">std::mt19937 <span class="title">rng</span><span class="params">(rd())</span></span>;</span><br><span class="line">    <span class="built_in">srand</span>((<span class="type">int</span>)<span class="built_in">time</span>(<span class="number">0</span>));</span><br><span class="line">    std::<span class="built_in">shuffle</span>(tem.<span class="built_in">begin</span>(),tem.<span class="built_in">end</span>(),rng);</span><br><span class="line">    <span class="built_in">memcpy</span>(temp,&amp;tem[<span class="number">0</span>],tem.<span class="built_in">size</span>()*<span class="built_in">sizeof</span>(tem[<span class="number">0</span>]));</span><br><span class="line">    fin.<span class="built_in">open</span>(<span class="string">&quot;source_data.txt&quot;</span>,ios::trunc);</span><br><span class="line">    fin&lt;&lt;temp[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">for</span> (i=<span class="number">1</span>;i&lt;max;i++) fin&lt;&lt;<span class="string">&quot; &quot;</span>&lt;&lt;temp[i];</span><br><span class="line">    fin.<span class="built_in">close</span>();</span><br><span class="line">    <span class="keyword">delete</span> []temp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>设置参数</strong></p>
+<ul>
+<li>更改宏定义</li>
+<li>主函数中注释掉文件更新函数update_file</li>
+<li>主函数中新增数组扰乱函数shuffle_file()</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> max 100000<span class="comment">//设置数组的上限</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> R 5<span class="comment">//设置基数排序数字的位数</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> maxran 10000<span class="comment">//生成1-1000的数</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> bucket_num 10000</span></span><br></pre></td></tr></table></figure>
+<p>数据集：</p>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th>插入排序</th>
+<th>归并排序</th>
+<th>快速排序</th>
+<th>堆排序</th>
+<th>基数排序</th>
+<th>桶排序</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>9.831</td>
+<td>0.02</td>
+<td>0.014</td>
+<td>0.018</td>
+<td>0.014</td>
+<td>0.307</td>
+</tr>
+<tr>
+<td>2</td>
+<td>10.132</td>
+<td>0.019</td>
+<td>0.014</td>
+<td>0.02</td>
+<td>0.018</td>
+<td>0.329</td>
+</tr>
+<tr>
+<td>3</td>
+<td>10.031</td>
+<td>0.019</td>
+<td>0.014</td>
+<td>0.02</td>
+<td>0.012</td>
+<td>0.306</td>
+</tr>
+<tr>
+<td>4</td>
+<td>10.473</td>
+<td>0.018</td>
+<td>0.018</td>
+<td>0.024</td>
+<td>0.016</td>
+<td>0.309</td>
+</tr>
+<tr>
+<td>5</td>
+<td>11.879</td>
+<td>0.019</td>
+<td>0.016</td>
+<td>0.02</td>
+<td>0.013</td>
+<td>0.306</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>观察可知，受到数组分布混乱度影响较大的<strong>插入排序</strong>，剩下的表现得并不是很明显。</li>
+<li>按理来说<strong>快速排序</strong>会受到限制，但是这里并不是很明显，原因是我的快排算法进行了改动，使得<strong>基准的选择是中间元素而不是最右侧</strong>。反而加快了排序。</li>
+</ul>
+<p><strong>改进方案</strong>：</p>
+<p>新增函数: 生成一个有序的数组文件，然后在这个基础上进行打乱操作。执行的时候需要注释掉shuffle函数和update函数。（也可以直接复制到source文件中）</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">initfile_special</span><span class="params">()</span></span>&#123;</span><br><span class="line">    ofstream f;<span class="comment">//写入文件,可以跳过生成的一部直接从文件里读</span></span><br><span class="line">    <span class="function">ifstream <span class="title">f2</span><span class="params">(<span class="string">&quot;radsort.txt&quot;</span>)</span></span>;<span class="comment">//从别的函数中调取</span></span><br><span class="line">    <span class="type">int</span> *temp=<span class="keyword">new</span> <span class="type">int</span>[(max<span class="number">+1</span>)*<span class="built_in">sizeof</span>(<span class="type">int</span>)],i=<span class="number">1</span>;</span><br><span class="line">    f.<span class="built_in">open</span>(<span class="string">&quot;source_data.txt&quot;</span>,ios::trunc);<span class="comment">//替换</span></span><br><span class="line">    <span class="built_in">srand</span>((<span class="type">int</span>)<span class="built_in">time</span>(<span class="number">0</span>)); <span class="comment">// 产生随机种子</span></span><br><span class="line">    <span class="keyword">while</span>(!f<span class="number">2.</span><span class="built_in">eof</span>()) f2&gt;&gt;temp[i++];</span><br><span class="line">    f &lt;&lt; temp[<span class="number">1</span>] ;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">2</span>; i &lt;= max; i++)</span><br><span class="line">        f&lt;&lt;<span class="string">&quot; &quot;</span> &lt;&lt; temp[i] ;</span><br><span class="line">    <span class="keyword">delete</span> []temp;</span><br><span class="line">    f.<span class="built_in">close</span>();</span><br><span class="line">    f<span class="number">2.</span><span class="built_in">close</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>为了增加对比，将<strong>传统的快排算法</strong>也写一下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">parti2</span><span class="params">(<span class="type">int</span> ta[],<span class="type">int</span> l,<span class="type">int</span> r)</span></span>&#123;</span><br><span class="line">    ta[<span class="number">0</span>]=ta[r];<span class="comment">//把最右边的元素放置在闲置的位置，作为基准</span></span><br><span class="line">    <span class="type">int</span> point=ta[r];</span><br><span class="line">    <span class="keyword">while</span>(l&lt;r)&#123;</span><br><span class="line">        <span class="keyword">while</span>(l&lt;r&amp;&amp;ta[l]&lt;=point) ++l;</span><br><span class="line">        <span class="keyword">if</span>(l&lt;r) ta[r--]=ta[l];</span><br><span class="line">        <span class="keyword">while</span>(l&lt;r&amp;&amp;ta[r]&gt;=point) --r;</span><br><span class="line">        <span class="keyword">if</span>(l&lt;r) ta[l++]=ta[r];</span><br><span class="line">    &#125;</span><br><span class="line">    ta[l]=ta[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">return</span> l;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//快速排序第二种</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">quicksort2</span><span class="params">(<span class="type">int</span> ta[],<span class="type">int</span> i,<span class="type">int</span> j)</span></span>&#123;</span><br><span class="line">   <span class="type">int</span> k;</span><br><span class="line">   <span class="keyword">if</span>(i&lt;j)&#123;</span><br><span class="line">   k=<span class="built_in">parti2</span>(ta,i,j);</span><br><span class="line">   <span class="built_in">quicksort2</span>(ta,k<span class="number">+1</span>,j);</span><br><span class="line">   <span class="built_in">quicksort2</span>(ta,i,k<span class="number">-1</span>);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>记录</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th>插入排序</th>
+<th>归并排序</th>
+<th>传统快排</th>
+<th>快速排序</th>
+<th>堆排序</th>
+<th>基数排序</th>
+<th>桶排序</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0.013</td>
+<td>1.268</td>
+<td>0.008</td>
+<td>0.012</td>
+<td>0.015</td>
+<td>0.059</td>
+<td>完全有序</td>
+</tr>
+<tr>
+<td>2</td>
+<td>9.884</td>
+<td>0.021</td>
+<td>0.013</td>
+<td>0.018</td>
+<td>0.02</td>
+<td>0.012</td>
+<td>0.311</td>
+<td>一次扰乱</td>
+</tr>
+<tr>
+<td>3</td>
+<td>11.391</td>
+<td>0.02</td>
+<td>0.014</td>
+<td>0.017</td>
+<td>0.023</td>
+<td>0.016</td>
+<td>0.304</td>
+<td>二次扰乱</td>
+</tr>
+<tr>
+<td>4</td>
+<td>10.002</td>
+<td>0.021</td>
+<td>0.015</td>
+<td>0.019</td>
+<td>0.019</td>
+<td>0.018</td>
+<td>0.364</td>
+<td>三次扰乱</td>
+</tr>
+<tr>
+<td>5</td>
+<td>12.195</td>
+<td>0.021</td>
+<td>0.014</td>
+<td>0.013</td>
+<td>0.022</td>
+<td>0.016</td>
+<td>0.296</td>
+<td>四次扰乱</td>
+</tr>
+<tr>
+<td>6</td>
+<td>11.258</td>
+<td>0.02</td>
+<td>0.013</td>
+<td>0.015</td>
+<td>0.023</td>
+<td>0.016</td>
+<td>0.369</td>
+<td>五次扰乱</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>传统的快排在数据有序时受到影响较大</li>
+<li>插入排序随着扰乱次数的增加有递增趋势，但是由于用的这个函数扰乱的比较彻底，其实从第一次扰乱后的增幅就不明显了</li>
+<li>其余的排序受到影响不大，桶排可能是软件内部优化</li>
+</ul>
+<h2 id="3总结">3总结</h2>
+<h3 id="3-1总结">3.1总结</h3>
+<table>
+<thead>
+<tr>
+<th>算法</th>
+<th>平均时间</th>
+<th>最坏情况</th>
+<th>最好情况</th>
+<th>辅助空间</th>
+<th>稳定性</th>
+<th>有序性影响</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>插入</td>
+<td>O(n<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mrow></mrow><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span>)</td>
+<td>O(n<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mrow></mrow><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span>)</td>
+<td>O(n)</td>
+<td>O(1)</td>
+<td>Y</td>
+<td>好</td>
+</tr>
+<tr>
+<td>归并</td>
+<td>O(nLogn)</td>
+<td>O(nLogn)</td>
+<td>O(nLogn)</td>
+<td>O(n)</td>
+<td>Y</td>
+<td>无</td>
+</tr>
+<tr>
+<td>快速</td>
+<td>O(nLogn)</td>
+<td>O(n<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mrow></mrow><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span>)</td>
+<td>O(nLogn)</td>
+<td>O(Logn)</td>
+<td>N</td>
+<td>坏</td>
+</tr>
+<tr>
+<td>堆</td>
+<td>O(nLogn)</td>
+<td>O(nLogn)</td>
+<td>O(nLogn)</td>
+<td>O(1)</td>
+<td>N</td>
+<td>无</td>
+</tr>
+<tr>
+<td>基数</td>
+<td>O(n*d)</td>
+<td>O(n*d)</td>
+<td>O(n*d)</td>
+<td>O(n)</td>
+<td>Y</td>
+<td>无</td>
+</tr>
+<tr>
+<td>桶排</td>
+<td>O(n+k)</td>
+<td>O(n<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mrow></mrow><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span>)</td>
+<td>O(n+k)</td>
+<td>O(k)</td>
+<td>Y</td>
+<td>无</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>当数据规模 较小时，差别不大，采用简单排序方法较为合适</li>
+<li>当文件的初态已基本有序时， 可选择简单的排序方法 ，比如插入排序或者冒泡</li>
+<li>当数据规模较大时， 应选用速度快的排序算法 比如快速排序算法，但是有可能出现最坏情况，结合数组扰乱函数可以有效避免</li>
+</ul>
+<h3 id="3-2实验遇到的问题及解决">3.2实验遇到的问题及解决</h3>
+<ol>
+<li>在文件函数生成的时候遇到的问题
+<ul>
+<li>使用feof函数的时候，写入文件先输入数字后输入空格，导致最后一个数字并不是文件结尾的地方，读取文件的时候容易导致数组越界</li>
+<li>解决：先输入空格再输入函数，后面读取文件内容就不需要多作更改</li>
+</ul>
+</li>
+<li>在进行桶排序的时候遇到的断链问题
+<ul>
+<li>由于tail指针和L的割裂性，如果赋值错误容易导致后面链路连接的时候断开</li>
+<li>找到错误点在于插入桶的时候，第一个元素中tail的赋值不应该是新的节点，而应该是头结点</li>
+</ul>
+</li>
+<li>如有错误，还望指正，谢谢。</li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://Ann-103.github.io">Ann</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://ann-103.github.io/post/2122796003.html">https://ann-103.github.io/post/2122796003.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://Ann-103.github.io" target="_blank">Ann-Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/notebook/">notebook</a><a class="post-meta__tags" href="/tags/%E7%AE%97%E6%B3%95/">算法</a><a class="post-meta__tags" href="/tags/%E6%8E%92%E5%BA%8F/">排序</a></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2024/11/22/GXwuEP8UlBzOyAe.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/post/2635928687.html" title="计算机网络学习笔记"><img class="cover" src="https://s2.loli.net/2024/11/14/RbtQCHjSEMZJoUs.jpg" onerror="onerror=null;src='/img/loading.gif'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">计算机网络学习笔记</div></div></a></div><div class="next-post pull-right"><a href="/post/2635928688.html" title="计算机网络学习笔记（三）"><img class="cover" src="https://s2.loli.net/2024/11/22/tskKGfpo2LTOzQ5.jpg" onerror="onerror=null;src='/img/loading.gif'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">计算机网络学习笔记（三）</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/post/3295482393.html" title="C语言速成"><img class="cover" src="https://s2.loli.net/2024/11/22/5URrAIsnJQOFhvV.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-08-30</div><div class="title">C语言速成</div></div></a></div><div><a href="/post/2735458860.html" title="概率论学习笔记"><img class="cover" src="https://s2.loli.net/2022/10/01/p6CQoLxsIWcu5zq.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-08-23</div><div class="title">概率论学习笔记</div></div></a></div><div><a href="/post/127297243.html" title="数据结构"><img class="cover" src="https://s2.loli.net/2024/11/22/B9HgYzGE6oS3UWL.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-08-22</div><div class="title">数据结构</div></div></a></div><div><a href="/post/2635928686.html" title="计算机网络学习笔记（一）"><img class="cover" src="https://s2.loli.net/2024/11/22/mXWGr3dYoDjVHy8.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-10-18</div><div class="title">计算机网络学习笔记（一）</div></div></a></div><div><a href="/post/4227902866.html" title="计算机网络学习笔记（二）"><img class="cover" src="https://s2.loli.net/2024/11/22/HgvTujcKwQVEzUp.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-10-19</div><div class="title">计算机网络学习笔记（二）</div></div></a></div><div><a href="/post/2635928688.html" title="计算机网络学习笔记（三）"><img class="cover" src="https://s2.loli.net/2024/11/22/tskKGfpo2LTOzQ5.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-10-21</div><div class="title">计算机网络学习笔记（三）</div></div></a></div></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/favicon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Ann</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">22</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">21</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Ann-103"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Ann-103" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:ajw0822@mail.ustc.edu.cn" target="_blank" title="Em"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="iconfont icon-gonggao"></i><span>公告</span></div><div class="announcement_content">欢迎访问我的小破站 ❤</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6%E6%AF%94%E8%BE%83"><span class="toc-number">1.</span> <span class="toc-text">排序算法时间复杂度比较</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0%E4%B8%8E%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%88%86%E6%9E%90"><span class="toc-number">1.1.</span> <span class="toc-text">1.算法实现与复杂度分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E9%83%A8%E5%88%86%E9%80%9A%E7%94%A8%E5%87%BD%E6%95%B0"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.1 数据结构与部分通用函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F"><span class="toc-number">1.1.2.</span> <span class="toc-text">1.2 插入排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F"><span class="toc-number">1.1.3.</span> <span class="toc-text">1.3归并排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F"><span class="toc-number">1.1.4.</span> <span class="toc-text">1.4快速排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-6%E5%A0%86%E6%8E%92%E5%BA%8F"><span class="toc-number">1.1.5.</span> <span class="toc-text">1.6堆排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-7-%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F"><span class="toc-number">1.1.6.</span> <span class="toc-text">1.7 基数排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-8-%E6%A1%B6%E6%8E%92%E5%BA%8F"><span class="toc-number">1.1.7.</span> <span class="toc-text">1.8 桶排序</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%95%B0%E7%BB%84%E8%A7%84%E6%A8%A1%E4%B8%8E%E6%8E%92%E5%BA%8F%E6%97%B6%E9%97%B4"><span class="toc-number">1.2.</span> <span class="toc-text">2 数组规模与排序时间</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E8%A7%84%E6%A8%A1%E7%BB%9F%E8%AE%A1"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1  规模统计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E4%B8%8D%E5%90%8C%E5%88%86%E5%B8%83%E5%AF%B9%E7%AE%97%E6%B3%95%E6%8E%92%E5%BA%8F%E6%97%B6%E9%97%B4%E7%9A%84%E5%BD%B1%E5%93%8D-n-10%E4%B8%87"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.1  不同分布对算法排序时间的影响（n&#x3D;10万）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E6%80%BB%E7%BB%93"><span class="toc-number">1.3.</span> <span class="toc-text">3总结</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1%E6%80%BB%E7%BB%93"><span class="toc-number">1.3.1.</span> <span class="toc-text">3.1总结</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2%E5%AE%9E%E9%AA%8C%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3"><span class="toc-number">1.3.2.</span> <span class="toc-text">3.2实验遇到的问题及解决</span></a></li></ol></li></ol></li></ol></div></div></div></div></main><footer id="footer" style="background: transparent"><div id="footer-wrap"><div class="copyright">&copy;2024 By Ann</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"> </i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="iconfont icon-triangleupfill"></i></button><button id="go-down" type="button" title="to_bottom" onclick="btf.scrollToDest(document.body.scrollHeight, 500)"><i class="iconfont icon-triangledownfill"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.8/dist/lazyload.iife.min.js"></script><div class="js-pjax"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/copy-tex.min.js"></script><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script><script>(() => {
+  const initValine = () => {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'jlgkfToE73FxTz8kyHsmvdzb-gzGzoHsz',
+      appKey: 'NN6nCIT47fGwz5Q1UyvFcGKP',
+      avatar: 'retro',
+      serverURLs: '',
+      emojiMaps: "",
+      path: window.location.pathname,
+      visitor: false
+    }, null))
+  }
+
+  const loadValine = async () => {
+    if (typeof Valine === 'function') initValine()
+    else {
+      await getScript('https://cdn.jsdelivr.net/npm/valine@1.5.1/dist/Valine.min.js')
+      initValine()
+    }
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})()</script></div><script async data-pjax src="/js/custom.js"></script><script async data-pjax src="/js/waterfall/waterfall.js"></script><script src="/Ann/random.js"></script><script src="/js/snowflake.js"></script><script src="/js/hot.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener
+  btf.removeGlobalFnEvent('pjax')
+  btf.removeGlobalFnEvent('themeChange')
+
+  document.getElementById('rightside').classList.remove('rightside-show')
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><div id="algolia-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="search-wrap"><div id="algolia-search-input"></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-info"><div class="algolia-stats"></div><div class="algolia-poweredBy"></div></div></div></div></div><div id="search-mask"></div><script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.22.1/dist/algoliasearch-lite.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.65.0/dist/instantsearch.production.min.js"></script><script src="/js/search/algolia.js?v=4.13.0"></script></div></div></body></html>
