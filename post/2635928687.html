@@ -1,13 +1,13 @@
-<!--head 和 body 是 html 的直接子元素--><!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>计算机网络学习笔记（四） | Ann-Blog</title><meta name="author" content="Ann"><meta name="copyright" content="Ann"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Chapter 6 Internet Protocol    IP协议 英文  AS自洽系统 IGP 外部网关路由协议EGP RIP  概述   因特网是世界上最大IP网络，开放，任何接入Internet设备都必须运行IP协议 路由器：处理IP分组，包括L3交换机 ，连接不同的网络  ，数据转发 网络侧设备 用户侧设备   由于路由器里面所有层的功能都会配置（拥有完整的TCPIP协议族），但是出于">
+<!--head 和 body 是 html 的直接子元素--><!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>计算机网络学习笔记（四） | Ann-Blog</title><meta name="author" content="Ann"><meta name="copyright" content="Ann"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Chapter 6 Internet Protocol    IP协议 英文  AS自洽系统 IGP 外部网关路由协议EGP RIP  概述  因特网是世界上最大IP网络，开放，任何接入Internet设备都必须运行IP协议 路由器：处理IP分组，包括L3交换机 ，连接不同的网络  ，数据转发 网络侧设备 用户侧设备   由于路由器里面所有层的功能都会配置（拥有完整的TCPIP协议族），但是出于我">
 <meta property="og:type" content="article">
 <meta property="og:title" content="计算机网络学习笔记（四）">
 <meta property="og:url" content="https://ann-103.github.io/post/2635928687.html">
 <meta property="og:site_name" content="Ann-Blog">
-<meta property="og:description" content="Chapter 6 Internet Protocol    IP协议 英文  AS自洽系统 IGP 外部网关路由协议EGP RIP  概述   因特网是世界上最大IP网络，开放，任何接入Internet设备都必须运行IP协议 路由器：处理IP分组，包括L3交换机 ，连接不同的网络  ，数据转发 网络侧设备 用户侧设备   由于路由器里面所有层的功能都会配置（拥有完整的TCPIP协议族），但是出于">
+<meta property="og:description" content="Chapter 6 Internet Protocol    IP协议 英文  AS自洽系统 IGP 外部网关路由协议EGP RIP  概述  因特网是世界上最大IP网络，开放，任何接入Internet设备都必须运行IP协议 路由器：处理IP分组，包括L3交换机 ，连接不同的网络  ，数据转发 网络侧设备 用户侧设备   由于路由器里面所有层的功能都会配置（拥有完整的TCPIP协议族），但是出于我">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://s2.loli.net/2024/11/14/RbtQCHjSEMZJoUs.jpg">
 <meta property="article:published_time" content="2022-10-24T00:07:22.000Z">
-<meta property="article:modified_time" content="2024-11-25T02:26:15.425Z">
+<meta property="article:modified_time" content="2024-12-02T06:23:27.800Z">
 <meta property="article:author" content="Ann">
 <meta property="article:tag" content="notebook">
 <meta property="article:tag" content="network">
@@ -57,7 +57,7 @@
   isHome: false,
   isHighlightShrink: false,
   isToc: true,
-  postUpdate: '2024-11-25 10:26:15'
+  postUpdate: '2024-12-02 14:23:27'
 }</script><script>(win=>{
       win.saveToLocal = {
         set: (key, value, ttl) => {
@@ -177,7 +177,7 @@
     document.addEventListener('pjax:send', () => { preloader.initLoading() })
     document.addEventListener('pjax:complete', () => { preloader.endLoading() })
   }
-})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/favicon.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">22</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">21</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-heart"></i><span> About</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/about/"><i class="fa-fw iconfont icon-paper-full"></i><span> 关于</span></a></li><li><a class="site-page child" href="/essay/"><i class="fa-fw iconfont icon-shuoshuo"></i><span> 动态</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Ann-Blog"><span class="site-name">Ann-Blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-heart"></i><span> About</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/about/"><i class="fa-fw iconfont icon-paper-full"></i><span> 关于</span></a></li><li><a class="site-page child" href="/essay/"><i class="fa-fw iconfont icon-shuoshuo"></i><span> 动态</span></a></li></ul></div></div></div><div id="rightBank"><div id="box"> <a href="/link" title="百宝箱"><i class="iconfont icon-24gf-box2"></i></a></div><div id="random"><a class="site-page" href="javascript:toRandomPost()" title="随机前往一个文章"><i class="iconfont icon-touzi"> </i></a></div><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">计算机网络学习笔记（四）</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-10-24T00:07:22.000Z" title="发表于 2022-10-24 08:07:22">2022-10-24</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-11-25T02:26:15.425Z" title="更新于 2024-11-25 10:26:15">2024-11-25</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Course/">Course</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">11.3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>34分钟</span></span></div></div></div><div class="top-img gist" style="background-image: url(/false)"></div><article class="post-content" id="article-container"><h1 id="chapter-6-internet-protocol-ip协议">Chapter 6 Internet Protocol    IP协议</h1>
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/favicon.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">25</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">26</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-heart"></i><span> About</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/about/"><i class="fa-fw iconfont icon-paper-full"></i><span> 关于</span></a></li><li><a class="site-page child" href="/essay/"><i class="fa-fw iconfont icon-shuoshuo"></i><span> 动态</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Ann-Blog"><span class="site-name">Ann-Blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-heart"></i><span> About</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/about/"><i class="fa-fw iconfont icon-paper-full"></i><span> 关于</span></a></li><li><a class="site-page child" href="/essay/"><i class="fa-fw iconfont icon-shuoshuo"></i><span> 动态</span></a></li></ul></div></div></div><div id="rightBank"><div id="box"> <a href="/link" title="百宝箱"><i class="iconfont icon-24gf-box2"></i></a></div><div id="random"><a class="site-page" href="javascript:toRandomPost()" title="随机前往一个文章"><i class="iconfont icon-touzi"> </i></a></div><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">计算机网络学习笔记（四）</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-10-24T00:07:22.000Z" title="发表于 2022-10-24 08:07:22">2022-10-24</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-12-02T06:23:27.800Z" title="更新于 2024-12-02 14:23:27">2024-12-02</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Course/">Course</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">11.3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>34分钟</span></span></div></div></div><div class="top-img gist" style="background-image: url(/false)"></div><article class="post-content" id="article-container"><h1 id="chapter-6-internet-protocol-ip协议">Chapter 6 Internet Protocol    IP协议</h1>
 <h2 id="英文">英文</h2>
 <ul>
 <li>AS自洽系统</li>
@@ -185,8 +185,7 @@
 <li>外部网关路由协议EGP</li>
 <li>RIP</li>
 </ul>
-<div class="note info flat"><p>概述</p>
-</div>
+<p>概述</p>
 <ul>
 <li>因特网是世界上最大IP网络，开放，任何接入Internet设备都必须运行IP协议</li>
 <li>路由器：处理IP分组，包括L3交换机 ，连接不同的网络  ，数据转发</li>
@@ -211,8 +210,8 @@
 <p>不同的网络可能有相同的主机号，和mac不同。</p>
 <p>ip必须要有位置信息，不然路由器无法根据目的地进行分组</p>
 </blockquote>
-<details class="toggle" ><summary class="toggle-button" style="">IP 地址</summary><div class="toggle-content"><img src="https://cdn.jsdelivr.net/gh/A-624/blog_img/img/image-20221031110247738.png" alt="image-20221031110247738" style="zoom:80%;" />
-</div></details>
+<h3 id="ip">IP</h3>
+<img src="https://cdn.jsdelivr.net/gh/A-624/blog_img/course/image-20221031110247738.png" alt="image-20221031110247738" style="zoom:80%;" />
 <p>通过类别快速找到网络号</p>
 <table>
 <thead>
@@ -263,10 +262,13 @@
 <ul>
 <li>RFC 2131</li>
 <li>采用客户/服务器模式，消息采用UDP协议封装</li>
-<li>IP地址分配机制<br>
-◼ 自动分配： DHCP给客户端分配一个永久的IP地址<br>
-◼ 动态分配： DHCP给客户端分配一个一段时间内有效的IP地址<br>
-◼ 手动分配：客户端IP地址由网络管理员分配， DHCP仅用来将分配的地址通报给客户端</li>
+<li>IP地址分配机制
+<ul>
+<li>自动分配： DHCP给客户端分配一 个永久的IP地址</li>
+<li>动态分配： DHCP给客户端分配一个一段时间内有效的IP地址</li>
+<li>手动分配：客户端IP地址由网络管理员分配， DHCP仅用来将分配的地址通报给客户端</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -315,7 +317,7 @@
 </li>
 <li>
 <p>Relay中继将客户端的请求啥的，通过单播的方式发送给服务器</p>
-<img src="https://cdn.jsdelivr.net/gh/A-624/blog_img/img/image-20221102081125210.png" alt="image-20221102081125210" style="zoom: 67%;" />
+<img src="https://cdn.jsdelivr.net/gh/A-624/blog_img/course/image-20221102081125210.png" alt="image-20221102081125210" style="zoom: 80%;" />
 </li>
 </ul>
 <p><strong>IP地址和MAC地址</strong></p>
@@ -376,8 +378,8 @@
 </ul>
 </li>
 </ul>
-<img src="https://cdn.jsdelivr.net/gh/A-624/blog_img/img/image-20221102081006597.png" alt="image-20221102081006597" style="zoom:67%;" />
-<img src="assets/image-20221102082508040.png" alt="image-20221102082508040" style="zoom:67%;" />
+<img src="https://cdn.jsdelivr.net/gh/A-624/blog_img/course/image-20221102081006597.png" alt="image-20221102081006597" style="zoom:67%;" />
+<img src="assets/image-20221102082508040.png" alt="image-20221102082508040" style="zoom: 80%;" />
 <div class="note info flat"><p>数据帧在不同链路上传输时，源和目的MAC地址变化，而源和目的IP地址不变</p>
 <p>从路由器转发表的内容可以发现，不同端口确实MAC地址也不同，路由表和转发表可以看成一个</p>
 </div>
@@ -398,8 +400,8 @@
 </blockquote>
 <div class="note info flat"><p>如果数据不通，传不到别的网络，很大可能是mac解析出现问题！</p>
 </div>
-<details class="toggle" ><summary class="toggle-button" style="">图</summary><div class="toggle-content"><img src="assets/image-20221102083612326.png" alt="image-20221102083612326" style="zoom:67%;" />
-<img src="assets/image-20221102084430224.png" alt="image-20221102084430224" style="zoom:67%;" />
+<details class="toggle" ><summary class="toggle-button" style="">图</summary><div class="toggle-content"><img src="https://cdn.jsdelivr.net/gh/Ann-103/blog_img/course/image-20221102083612326.png" alt="image-20221102083612326" style="zoom: 80%;" />
+<img src="https://cdn.jsdelivr.net/gh/Ann-103/blog_img/course/image-20221102084430224.png" alt="image-20221102084430224" style="zoom: 80%;" />
 </div></details>
 <h3 id="地址解析-地址解析作用和过程">地址解析（地址解析作用和过程）</h3>
 <div class="note info flat"><p>ARP过程被限制在链路范围(同一个网络)内，始终是查找转发表得到转发的下一跳节点的IP地址，然后对该IP地址做ARP。</p>
@@ -421,7 +423,7 @@
 </ul>
 </li>
 </ul>
-<details class="toggle" ><summary class="toggle-button" style="">一个实例</summary><div class="toggle-content"><img src="assets/image-20221102085502695.png" alt="image-20221102085502695" style="zoom:67%;" />
+<details class="toggle" ><summary class="toggle-button" style="">一个实例</summary><div class="toggle-content"><img src="https://cdn.jsdelivr.net/gh/Ann-103/blog_img/course/image-20221102085502695.png" alt="image-20221102085502695" style="zoom: 80%;" />
 </div></details>
 <p><strong>ARP攻击</strong></p>
 <ul>
@@ -429,7 +431,7 @@
 <li>划分子网，VLAN等方式限制ARP广播域</li>
 <li>在ARP Cache中静态配置IP和MAC地址的映射表项  ，重要节点，主要是缺省路由器</li>
 </ul>
-<img src="assets/image-20221102090058071.png" alt="image-20221102090058071" style="zoom:67%;" />
+<img src="https://cdn.jsdelivr.net/gh/Ann-103/blog_img/course/image-20221102090058071.png" alt="image-20221102090058071" style="zoom: 80%;" />
 <blockquote>
 <p>把A发到B的所有的ARP请求劫持</p>
 </blockquote>
@@ -458,7 +460,7 @@
 </ul>
 </li>
 </ul>
-<img src="assets/image-20221102090559135.png" alt="image-20221102090559135" style="zoom:67%;" />
+<img src="https://cdn.jsdelivr.net/gh/Ann-103/blog_img/course/image-20221102090559135.png" alt="image-20221102090559135" style="zoom:67%;" />
 <h2 id="ip协议-计算：ip分段原因原理-8字节-的整数倍">IP协议（计算：IP分段原因原理，8字节 的整数倍）</h2>
 <p><strong>路由器对IP分组的操作</strong></p>
 <ol>
@@ -467,12 +469,15 @@
 <li>重新计算校验和</li>
 <li>根据需要执行分段操作</li>
 <li>处理一些需要路由器处理的选项</li>
-<li>分组转发<br>
-◼ 根据目的IP地址查找转发表<br>
-◼ 交换</li>
+<li>分组转发
+<ul>
+<li>根据目的IP地址查找转发表</li>
+<li>交换</li>
+</ul>
+</li>
 </ol>
 <p><strong>IPv4头标格式</strong>  ：32bit 和之前的32位机对应，保留，可能要填充</p>
-<p><img src="assets/image-20221107100550544.png" alt="image-20221107100550544"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Ann-103/blog_img/course/image-20221107100550544.png" alt="image-20221107100550544"></p>
 <blockquote>
 <p>选项不定，表示新功能，可扩展，但不固定使得路由器处理复杂，但是大部分都不用选项，只用了前20byte</p>
 </blockquote>
@@ -507,14 +512,13 @@
 </blockquote>
 </li>
 </ul>
-<details class="toggle" ><summary class="toggle-button" style="">分段原因</summary><div class="toggle-content"><img src="assets/image-20221102092222023.png" alt="image-20221102092222023" style="zoom:67%;" />
+<img src="https://cdn.jsdelivr.net/gh/Ann-103/blog_img/course/image-20221102092222023.png" alt="image-20221102092222023" style="zoom: 80%;" />
+<img src="https://cdn.jsdelivr.net/gh/Ann-103/blog_img/course/image-20221107095506309.png" alt="image-20221107095506309" style="zoom: 80%;" />
 </li>
-</ul>
-<img src="assets/image-20221107095506309.png" alt="image-20221107095506309" style="zoom: 80%;" />
-</div></details></div><div class="tab-item-content" id="ip帧-3"><p><strong>TTL和协议</strong></p>
+</ul></div><div class="tab-item-content" id="ip帧-3"><p><strong>TTL和协议</strong></p>
 <p>生存时间(TTL: Time to Live)： 8bits，单位秒，表示分组的生存时间。实际操作时，分组每经过一个路由器， TTL值减一，当TTL值为0时，该分组被丢弃</p>
 <p>协议（Protocol）：表示封装在IP分组中的载荷的协议类型。</p>
-<img src="assets/image-20221107095717272.png" alt="image-20221107095717272" style="zoom:80%;" />
+<img src="https://cdn.jsdelivr.net/gh/Ann-103/blog_img/course/image-20221107095717272.png" alt="image-20221107095717272" style="zoom:80%;" />
 <p><strong>校验和与地址</strong></p>
 <p>分组头校验和： 16bits，用来检验IP头标在传输过程中是否被破坏。<br>
 源地址： 32bits，分组发送者的IP地址。<br>
@@ -522,7 +526,7 @@
 填充（padding）：分组头长度必须为4字节的整数倍，如果选项<br>
 的长度不是4字节的整数倍，那么就要进行填充。</p>
 <p><strong>校验过程</strong></p>
-<p><img src="assets/image-20221107105742931.png" alt="image-20221107105742931"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Ann-103/blog_img/course/image-20221107105742931.png" alt="image-20221107105742931"></p>
 <p><strong>选项</strong></p>
 <p>可选SR（source routing 源路由选择）的源路由选择，即确定具体的路由路径</p>
 <blockquote>
@@ -556,20 +560,15 @@
 <td>和所有的目的ip地址都匹配，连接到互联网</td>
 <td>总能找到表项（完备性），有效减少路由表表项数目，同时会有一个default路由</td>
 </tr>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-</tr>
 </tbody>
 </table>
-<img src="assets/image-20221107102020343.png" alt="image-20221107102020343" style="zoom:80%;" />
+<img src="https://cdn.jsdelivr.net/gh/Ann-103/blog_img/course/image-20221107102020343.png" alt="image-20221107102020343" style="zoom:80%;" />
 <blockquote>
 <p>/24表示前24位表示网络号c类网络。下一跳是在相同链路，故端口也是限定的，我们描述下一跳的时候也要说明端口网络，而不是某个网络。比如网络210.1.2.0 对应端口 210.1.2.2作为下一跳。</p>
 <p>建议使用ip命令，比ifconfig等更加强大</p>
 </blockquote>
 <h3 id="路由协议">路由协议</h3>
-<img src="assets/image-20221107110654552.png" alt="image-20221107110654552" style="zoom:80%;" />
+<img src="https://cdn.jsdelivr.net/gh/Ann-103/blog_img/course/image-20221107110654552.png" alt="image-20221107110654552" style="zoom:80%;" />
 <table>
 <thead>
 <tr>
@@ -582,11 +581,6 @@
 <tr>
 <td>AS自治系统  （因特称<strong>路由选择器</strong>）</td>
 <td>同一个管理实体控制，具有相同路由选择策略（算法）的IP网络和路由器集合</td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
 <td></td>
 </tr>
 <tr>
@@ -627,7 +621,7 @@
 </tbody>
 </table>
 <p><strong>RIP</strong></p>
-<img src="assets/image-20221107105357412.png" alt="image-20221107105357412" style="zoom:80%;" />
+<img src="https://cdn.jsdelivr.net/gh/Ann-103/blog_img/course/image-20221107105357412.png" alt="image-20221107105357412" style="zoom:80%;" />
 <ul>
 <li>子网掩码，32bit特殊ip地址，用于获得网络前缀，直接进行逻辑与运算，比如c类网络24位前缀是 255.255.255.0</li>
 </ul>
@@ -637,10 +631,16 @@
 <li>增加了特性
 <ul>
 <li>路由选择消息的认证（信任）</li>
-<li>附加的层次性<br>
-◼ 允许将路由选择域（Domain）划分为区（Area），多个网络组成一个区，对于AS的其余部分隐藏 ，以减少路由信令开销，<strong>区域内的路由选择</strong>仅仅由区域自己的拓扑来决定</li>
-<li>负载均衡<br>
-◼ k最短路径，允许到同一位置的多条路由具有相同的开销，网络业务在这些路径上均匀分配。防止都选择最短路径导致拥塞</li>
+<li>附加的层次性
+<ul>
+<li>允许将路由选择域（Domain）划分为区（Area），多个网络组成一个区，对于AS的其余部分隐藏 ，以减少路由信令开销，<strong>区域内的路由选择</strong>仅仅由区域自己的拓扑来决定</li>
+</ul>
+</li>
+<li>负载均衡
+<ul>
+<li>k最短路径，允许到同一位置的多条路由具有相同的开销，网络业务在这些路径上均匀分配。防止都选择最短路径导致拥塞</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -725,9 +725,8 @@
 </li>
 </ul>
 <div class="tabs" id="不足"><ul class="nav-tabs"><button type="button" class="tab  active" data-href="不足-1">子网划分</button><button type="button" class="tab " data-href="不足-2">CIDR</button><button type="button" class="tab " data-href="不足-3">NAT</button></ul><div class="tab-contents"><div class="tab-item-content active" id="不足-1"><p><strong>子网划分</strong></p>
-<div class="note info flat"><p>划分子网空间不能重叠！</p>
-<p>本质是将一个大的地址块根据需要划分成地址空间互不重叠的小的地址块 ，要求这些小的地址块的子网号不同</p>
-</div>
+<p>划分子网空间不能重叠！</p>
+<p>本质是将一个大的地址块根据需要划分成地址空间<strong>互不重叠</strong>的小的地址块 ，要求这些小的地址块的子网号不同</p>
 <p><strong>子网</strong>：对外仍然表现为一个单独的网络，只有一个网络号 。但是给每个主机一个特定的IP地址，网络号+子网ID+主机号  ，其中子网号是网络号加子网ID</p>
 <ul>
 <li>子网id可以为全零全一（有的说不对），只要保证子网号即可</li>
@@ -741,7 +740,7 @@
 <li>确定主机号，给子网内的主机分配IP地址，注意主机号最大值由主机号的长度决定</li>
 <li>根据子网掩码、子网号等信息配置每个路由器上的转发表</li>
 </ol>
-<img src="assets/image-20221109085513229.png" alt="image-20221109085513229" style="zoom:67%;" />
+<img src="https://cdn.jsdelivr.net/gh/Ann-103/blog_img/course/image-20221109085513229.png" alt="image-20221109085513229" style="zoom:80%;" />
 <ul>
 <li>如果要求的是设备数量，可以通过主机数判断子网ID的长度，然后选择合适的子网ID</li>
 <li>对于一个网络可以划分成不同子网，子网掩码可以不同，对应子网号是自己选的，但是假设有m位的子网ID可以找，可能取某个ID和其他子网的IP会重合，比如前两位子网号为10 ,后面就不能选三位子网为100，而是必须找111或者110</li>
@@ -764,9 +763,8 @@
 <p>基本思想：</p>
 <p>对于用户来说透明，因为操作在NAT设备而非用户主机上进行，重复利用IP地址</p>
 </blockquote>
-<div class="note info flat"><p>网络内的多台主机共享一个或者少量全局的IP地址 ，那么给定IP地址如何知道对应哪个主机，哪个应用？</p>
+<p>网络内的多台主机共享一个或者少量全局的IP地址 ，那么给定IP地址如何知道对应哪个主机，哪个应用？</p>
 <p>NAT设备上需维护一个全局IP地址池，对于每个访问外部网络的内部主机，都需要使用一个全局的IP地址</p>
-</div>
 <p>NAT设备（网关），使用的TCP或UDP协议，<strong>应用会话</strong>：&lt;源IP地址、目的IP地址、源端 号、目的端口号、协议&gt;</p>
 <blockquote>
 <p>网关是在传输层以上的所有设备。NATPT网络地址转化IPV4-6，</p>
@@ -781,10 +779,10 @@
 </li>
 <li>
 <p>私有IP地址：用于指定网络内的分组转发，只要求在指定网内部唯一</p>
-<img src="assets/image-20221114100751559.png" alt="image-20221114100751559" style="zoom:67%;" />
+<img src="https://cdn.jsdelivr.net/gh/Ann-103/blog_img/course/image-20221114100751559.png" alt="image-20221114100751559" style="zoom:67%;" />
 </li>
 </ul>
-<p><img src="assets/image-20221114100421477.png" alt="image-20221114100421477"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Ann-103/blog_img/course/image-20221114100421477.png" alt="image-20221114100421477"></p>
 <p>网络地址和端口转换NAPT  ：</p>
 <ul>
 <li>更改IP投标和TCP UDP头标端口号，导致NAT表项记录每一个应用会话，十分庞大</li>
@@ -811,18 +809,18 @@
 <ul>
 <li>地址长度变长，但更简洁，处理效率更高</li>
 </ul>
-<p><img src="assets/image-20221114104804115.png" alt="image-20221114104804115"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Ann-103/blog_img/course/image-20221114104804115.png" alt="image-20221114104804115"></p>
 <blockquote>
 <p>IPV6简化TTL校验和等，不支持中间路由器分段，但可以发送主机分段等，扩展功能支持校验等</p>
 </blockquote>
 <ul>
 <li>
 <p>128bit 分配8个四位十六进制，连续的0可以省略（只能1处）</p>
-<p><img src="assets/image-20221114105304302.png" alt="image-20221114105304302"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Ann-103/blog_img/course/image-20221114105304302.png" alt="image-20221114105304302"></p>
 </li>
 <li>
 <p>访问需要中括号，否则被认为是字符串</p>
-<p><img src="assets/image-20221114105351722.png" alt="image-20221114105351722"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Ann-103/blog_img/course/image-20221114105351722.png" alt="image-20221114105351722"></p>
 </li>
 </ul>
 <h1 id="chapter-7-传输层-端到端-传输层原因-传输层端口寻址-tcp拥塞-重传定时器-socket-tcp序列号和速率">Chapter 7 传输层（端到端，传输层原因，传输层端口寻址，tcp拥塞，重传定时器，socket，tcp序列号和速率）</h1>
@@ -851,7 +849,7 @@
 <div class="note success flat"><p>用户可以控制选择，是面向传输部分的最高层，同时也是用户功能中的最低层  。</p>
 </div>
 <p>TSAP：传输层地址，TCP和UDP上的端口号等，表示应用进程，在<strong>TSAP之间建立逻辑通信管道</strong></p>
-<img src="assets/image-20221114110305047.png" alt="image-20221114110305047" style="zoom:80%;" />
+<img src="https://cdn.jsdelivr.net/gh/Ann-103/blog_img/course/image-20221114110305047.png" alt="image-20221114110305047" style="zoom:80%;" />
 <p><strong>传输层导入原因</strong></p>
 <ul>
 <li>不同主机上的进程之间的通信  ，每个应用进程都至少与一个传输层地址（TSAP）相关联</li>
@@ -881,7 +879,7 @@
 <li>主机1在其发送的第一个数据中采用序列号为x， 并确认主机2的序列号y</li>
 </ul>
 <p>序列号确认后，收到延迟重复的包 主机1拒绝，</p>
-<img src="assets/image-20221114111800841.png" alt="image-20221114111800841" style="zoom:67%;" />
+<img src="assets/image-20221114111800841.png" alt="image-20221114111800841"  />
 <h3 id="释放连接">释放连接</h3>
 <p>非对称释放：单方断开，可能丢失信息</p>
 <p>对称释放</p>
@@ -930,7 +928,7 @@
 <li>发送数据包括：发送方的地址和端口（源），接收方（目的）。跨越网络传输保持不变</li>
 <li>MAC地址，链路唯一，帧的源和目的MAC地址随链路变化</li>
 </ul>
-<p><img src="assets/image-20221116080930187.png" alt="image-20221116080930187"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Ann-103/blog_img/course/image-20221116080930187.png" alt="image-20221116080930187"></p>
 <h3 id="用户数据报协议-udp">用户数据报协议-UDP</h3>
 <blockquote>
 <p>UDP： RFC 768  ，数据报，不可靠效率高的</p>
@@ -942,12 +940,12 @@
 <li>将校验和域的值置为0</li>
 <li>（伪头标+UDP头标+数据+可能的填充）以16比特为单位反码<strong>求和，再取反</strong>， 当结果为0时，将校验和置为全1。 除此之外的情况，将结果原封不动地作为校验和</li>
 </ul>
-<img src="assets/image-20221116081928703.png" alt="image-20221116081928703" style="zoom:80%;" />
+<img src="https://cdn.jsdelivr.net/gh/Ann-103/blog_img/course/image-20221116081928703.png" alt="image-20221116081928703" style="zoom:80%;" />
 <p><strong>UDP协议传输消息</strong></p>
 <blockquote>
 <p>将所有的数据都处理成数据报，编程简单直接发送，但极易丢包。</p>
 </blockquote>
-<img src="assets/image-20221116082203908.png" alt="image-20221116082203908" style="zoom:80%;" />
+<img src="https://cdn.jsdelivr.net/gh/Ann-103/blog_img/course/image-20221116082203908.png" alt="image-20221116082203908" style="zoom:80%;" />
 <p><strong>UDP应用</strong></p>
 <ul>
 <li>效率高，可靠性不敏感的引入，比如视频（事与愿违）。</li>
@@ -982,9 +980,8 @@
 <li>定时器：重传使用</li>
 <li>参数：初始的窗口大小，数据段大小等</li>
 </ul>
-<img src="assets/image-20221116084724619.png" alt="image-20221116084724619" style="zoom:80%;" />
-<p><strong>TCP头标</strong></p>
-<div class="tabs" id="toubiao"><ul class="nav-tabs"><button type="button" class="tab  active" data-href="toubiao-1">基础</button><button type="button" class="tab " data-href="toubiao-2">标志</button><button type="button" class="tab " data-href="toubiao-3">参数设置</button></ul><div class="tab-contents"><div class="tab-item-content active" id="toubiao-1"><ul>
+<img src="https://cdn.jsdelivr.net/gh/Ann-103/blog_img/course/image-20221116084724619.png" alt="image-20221116084724619" style="zoom:80%;" />
+<div class="tabs" id="tcp头标"><ul class="nav-tabs"><button type="button" class="tab  active" data-href="tcp头标-1">基础</button><button type="button" class="tab " data-href="tcp头标-2">标志</button><button type="button" class="tab " data-href="tcp头标-3">参数设置</button></ul><div class="tab-contents"><div class="tab-item-content active" id="tcp头标-1"><ul>
 <li>
 <p>源/目的端口</p>
 </li>
@@ -1004,7 +1001,7 @@
 <p>保留：6bit 置零</p>
 </li>
 </ul>
-<img src="assets/image-20221116083559533.png" alt="image-20221116083559533" style="zoom:80%;" /></div><div class="tab-item-content" id="toubiao-2"><ul>
+<img src="https://cdn.jsdelivr.net/gh/Ann-103/blog_img/course/image-20221116083559533.png" alt="image-20221116083559533" style="zoom:80%;" /></div><div class="tab-item-content" id="tcp头标-2"><ul>
 <li>URG：指示紧急指针有效，特殊用途</li>
 <li>ACK：指示确认段有效</li>
 <li>PSH：Push 操作，告诉接收主机立即将数据递交给应用进程</li>
@@ -1012,13 +1009,13 @@
 <li>SYN：同步序列号，用于建立连接</li>
 <li>FIN：发送此数据段的一端已发送完数据，用于释放连接</li>
 </ul>
-<img src="assets/image-20221116084800580.png" alt="image-20221116084800580" style="zoom:80%;" /></div><div class="tab-item-content" id="toubiao-3"><ul>
+<img src="https://cdn.jsdelivr.net/gh/Ann-103/blog_img/course/image-20221116084800580.png" alt="image-20221116084800580" style="zoom:80%;" /></div><div class="tab-item-content" id="tcp头标-3"><ul>
 <li>窗口大小：接收的字节数</li>
 <li>检验和：检验TCP头标和数要加上伪IP头标</li>
 <li>紧急指针： 指向紧急数据的最后一个字节，该指针仅在URG置1时有效，不讨论</li>
 <li>选项：最大数据段尺寸选项，窗口尺度选项</li>
 </ul>
-<img src="assets/image-20221116084844706.png" alt="image-20221116084844706" style="zoom: 80%;" /></div></div><div class="tab-to-top"><button type="button" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div>
+<img src="https://cdn.jsdelivr.net/gh/Ann-103/blog_img/course/image-20221116084844706.png" alt="image-20221116084844706" style="zoom: 80%;" /></div></div><div class="tab-to-top"><button type="button" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div>
 <p><strong>TCP连接</strong></p>
 <div class="note info flat"><p>在计算机网络中，五元组常用来标识一个应用层会话（session），包括基于UDP和TCP的会话</p>
 </div>
@@ -1028,7 +1025,7 @@
 </li>
 <li>
 <p>套接口和端口、 IP 地址的关系</p>
-<img src="assets/image-20221116090903737.png" alt="image-20221116090903737" style="zoom:80%;" />
+<img src="https://cdn.jsdelivr.net/gh/Ann-103/blog_img/course/image-20221116090903737.png" alt="image-20221116090903737" style="zoom:80%;" />
 </li>
 <li>
 <p>TCP连接是由五元组&lt;源端IP地址、源端口号、目的IP地址、目的端口号、协议&gt;来唯一标识</p>
@@ -1053,7 +1050,7 @@
 <li>主机2 ACK=x+1 ，SYN=y</li>
 <li>主机1 ACK=y+1 希望接收的帧 SEQ=x+1</li>
 </ol>
-<img src="assets/image-20221116091945498.png" alt="image-20221116091945498" style="zoom:80%;" />
+<img src="https://cdn.jsdelivr.net/gh/Ann-103/blog_img/course/image-20221116091945498.png" alt="image-20221116091945498" style="zoom:80%;" />
 <p>TCP<strong>请求连接碰撞</strong>：相互奔赴（相同的套接口建立连接）的时候建立一个连接，五元组唯一</p>
 <p>TCP<strong>连接建立定时器</strong> ： 当SYN数据段发出时开始计时，一定时间未收到响应，则连接建立失败</p>
 <p>TCP<strong>采用对称释放法释放连接</strong>  ：两边单独释放，都发送FIN=1的段和应答才可以。可以合并成<strong>三步握手</strong></p>
@@ -1061,7 +1058,7 @@
 <p>主机发送FIN后就不再发送数据了</p>
 <p>计时器防止一方没有收到信号前另一方下线，即半连接状态一方还可以发数据</p>
 </blockquote>
-<img src="assets/image-20221116092541391.png" alt="image-20221116092541391" style="zoom:80%;" />
+<img src="https://cdn.jsdelivr.net/gh/Ann-103/blog_img/course/image-20221116092541391.png" alt="image-20221116092541391" style="zoom:80%;" />
 <p><strong>TCP的有限自动机</strong></p>
 <ul>
 <li>通过事件触发状态的转化，简化版本</li>
@@ -1071,7 +1068,7 @@
 </ul>
 </li>
 </ul>
-<img src="assets/image-20221121095134320.png" alt="image-20221121095134320" style="zoom:67%;" />
+<img src="https://cdn.jsdelivr.net/gh/Ann-103/blog_img/course/image-20221121095134320.png" alt="image-20221121095134320"  />
 <p><strong>TCP释放连接相关定时器</strong></p>
 <p><strong>闲置定时器</strong>(Quiet Timer)： 当TCP连接断开后，为防止该连接上的数据段还在网络上，并被后续打开的相同五元组的连接接收，要设置闲置定时器以<strong>防止刚刚断开连接的端口号被立即重新使用</strong></p>
 <p><strong>保持存活定时器</strong>(Keep-Alive Timer)： 当一个<strong>连接长时间闲置</strong>时，保持存活定时器会超时而使一方去检测另一方是否仍然存在，如果它未得到响应，便<strong>终止该连接</strong>  。很多网络应用不管一会就断了。</p>
@@ -1089,9 +1086,9 @@
 <ul>
 <li>发送端只要收到了对方的确认，这里以数据段为单位，发送窗口就可前移</li>
 </ul>
-<img src="assets/image-20221121101555981.png" alt="image-20221121101555981" style="zoom:67%;" />
-<img src="assets/image-20221121101611282.png" alt="image-20221121101611282" style="zoom:67%;" />
-<img src="assets/image-20221121101626061.png" alt="image-20221121101626061" style="zoom:67%;" />
+<img src="https://cdn.jsdelivr.net/gh/Ann-103/blog_img/course/image-20221121101555981.png" alt="image-20221121101555981"  />
+<img src="https://cdn.jsdelivr.net/gh/Ann-103/blog_img/course/image-20221121101611282.png" alt="image-20221121101611282"  />
+<img src="https://cdn.jsdelivr.net/gh/Ann-103/blog_img/course/image-20221121101626061.png" alt="image-20221121101626061"  />
 <ul>
 <li>丢失情况
 <ul>
@@ -1102,14 +1099,14 @@
 </ul>
 </li>
 </ul>
-<img src="assets/image-20221121102351735.png" alt="image-20221121102351735" style="zoom:67%;" />
+<img src="https://cdn.jsdelivr.net/gh/Ann-103/blog_img/course/image-20221121102351735.png" alt="image-20221121102351735" style="zoom: 80%;" />
 <ul>
 <li>
 <p>接收端缓存区管理</p>
 <ul>
 <li>乱序确定和读取速度适配</li>
 </ul>
-<img src="assets/image-20221121103125058.png" alt="image-20221121103125058" style="zoom: 80%;" />
+<img src="https://cdn.jsdelivr.net/gh/Ann-103/blog_img/course/image-20221121103125058.png" alt="image-20221121103125058" style="zoom: 80%;" />
 </li>
 </ul>
 <p><strong>傻瓜窗口症状</strong>：一个一个耗</p>
@@ -1143,13 +1140,13 @@
 </li>
 <li>
 <p>发送启动定时器，超时重弄，否则记录时间M并使用修正公式</p>
-<img src="assets/image-20221121105302011.png" alt="image-20221121105302011" style="zoom:67%;" />
+<img src="assets/image-20221121105302011.png" alt="image-20221121105302011" style="zoom: 80%;" />
 </li>
 </ul>
 </li>
 <li>
 <p>Timeout设置</p>
-<img src="assets/image-20221121110213040.png" alt="image-20221121110213040" style="zoom:67%;" />
+<img src="assets/image-20221121110213040.png" alt="image-20221121110213040" style="zoom: 80%;" />
 </li>
 <li>
 <p>几点说明</p>
@@ -1237,7 +1234,7 @@
 <blockquote>
 <p>慢启动阈值，即当前网络的粗略估计，那我们不需要每次都降低到慢启动。</p>
 </blockquote>
-<img src="assets/image-20221123083225839.png" alt="image-20221123083225839" style="zoom: 67%;" />
+<img src="assets/image-20221123083225839.png" alt="image-20221123083225839" style="zoom: 80%;" />
 <h2 id="berkeley-socket">Berkeley Socket</h2>
 <h1 id="chapter-8-应用层-域名系统的资源类型a-mx-ns-mime基于传统">Chapter 8 应用层（域名系统的资源类型A,MX,NS，MIME基于传统）</h1>
 <p>域名系统（DNS： Domain Name System）负责域名的维护和管理</p>
@@ -1280,7 +1277,15 @@
 <li>当解析器给名字服务器一个域名，取回的是一个与该域名相对应的资源记录。所以DNS系统的实际功能就是把域名映射到一条记录上</li>
 <li>时间是因为，ip和域名并不是静态对应的，可以将服务器放在任何位置</li>
 </ul>
-<p><img src="assets/image-20221123091252436.png" alt="image-20221123091252436"></p>
+</li>
+<li>
+<p>一条资源记录共有5个字段：</p>
+<ul>
+<li>Domain_name, Time_to_live, Type, Class, Value</li>
+<li>Time_to_live：生存时间，例如，时间较长的有一天（86400秒），短的有一分钟（60秒）</li>
+<li>Type：指出记录的类型（下一页详细解释）Class:对Internet,是IN</li>
+<li>Value：可以是数字、域名或ASCII字符，其语义基于记录类型</li>
+</ul>
 </li>
 </ul>
 <p><strong>资源记录类型</strong></p>
@@ -1338,11 +1343,8 @@
 <p>路径和文件名缺省则指向index.html的缺省页面</p>
 </li>
 <li>
-<p><img src="https://cdn.jsdelivr.net/gh/A-624/blog_img/img/image-20221128102008833.png" alt="image-20221128102008833"></p>
-</li>
-<li>
-<pre><code>http://abc.com:8080/tech/index.html
-</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/A-624/blog_img/course/image-20221128102008833.png" alt="image-20221128102008833"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://abc.com:8080/tech/index.html</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 <h3 id="超文本传输协议http">超文本传输协议HTTP</h3>
@@ -1369,20 +1371,28 @@
 <li>浏览器在本机上显示web页面</li>
 </ul>
 <h3 id="http消息格式">HTTP消息格式</h3>
-<div class="tabs" id="请求格式"><ul class="nav-tabs"><button type="button" class="tab  active" data-href="请求格式-1">请求信息格式</button><button type="button" class="tab " data-href="请求格式-2">响应信息格式</button></ul><div class="tab-contents"><div class="tab-item-content active" id="请求格式-1"><img src="https://cdn.jsdelivr.net/gh/A-624/blog_img/img/image-20221128103555878.png" alt="image-20221128103555878" style="zoom:67%;" />
-<img src="https://cdn.jsdelivr.net/gh/A-624/blog_img/img/image-20221128103827039.png" alt="image-20221128103827039" style="zoom: 67%;" /></div><div class="tab-item-content" id="请求格式-2"><img src="https://cdn.jsdelivr.net/gh/A-624/blog_img/img/image-20221128103918487.png" alt="image-20221128103918487" style="zoom: 67%;" />
-<img src="https://cdn.jsdelivr.net/gh/A-624/blog_img/img/image-20221128103934623.png" alt="image-20221128103934623" style="zoom: 67%;" /></div></div><div class="tab-to-top"><button type="button" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div>
+<div class="tabs" id="http请求格式"><ul class="nav-tabs"><button type="button" class="tab  active" data-href="http请求格式-1">请求信息格式</button><button type="button" class="tab " data-href="http请求格式-2">响应信息格式</button></ul><div class="tab-contents"><div class="tab-item-content active" id="http请求格式-1"><img src="https://cdn.jsdelivr.net/gh/A-624/blog_img/course/image-20221128103555878.png" alt="image-20221128103555878" style="zoom:67%;" />
+<img src="https://cdn.jsdelivr.net/gh/A-624/blog_img/course/image-20221128103827039.png" alt="image-20221128103827039" style="zoom: 67%;" /></div><div class="tab-item-content" id="http请求格式-2"><img src="https://cdn.jsdelivr.net/gh/A-624/blog_img/course/image-20221128103918487.png" alt="image-20221128103918487" style="zoom: 80%;" />
+<img src="https://cdn.jsdelivr.net/gh/A-624/blog_img/course/image-20221128103934623.png" alt="image-20221128103934623" style="zoom: 80%;" /></div></div><div class="tab-to-top"><button type="button" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div>
 <h2 id="电子邮件">电子邮件</h2>
 <blockquote>
 <p>非实时非可靠的系统</p>
 </blockquote>
 <p><strong>消息交换协议</strong></p>
 <ul>
-<li>发送email<br>
-◼ 简单邮件传输协议 <strong>SMTP</strong> （Simple Mail Transfer Protocol）</li>
-<li>接收email<br>
-◼ 邮局协议第3版<strong>POP3</strong>（Post Office Protocol version 3）<br>
-◼ Internet消息访问协议IMAP（Internet Message AccessProtocol）</li>
+<li>
+<p>发送email</p>
+<ul>
+<li>简单邮件传输协议 <strong>SMTP</strong> （Simple Mail Transfer Protocol）</li>
+</ul>
+</li>
+<li>
+<p>接收email</p>
+<ul>
+<li>邮局协议第3版<strong>POP3</strong>（Post Office Protocol version 3）</li>
+<li>Internet消息访问协议IMAP（Internet Message AccessProtocol）</li>
+</ul>
+</li>
 </ul>
 <p><strong>消息格式协议</strong></p>
 <ul>
@@ -1400,9 +1410,9 @@
 <li>发送运行在2  ，基于Push  ，MTA之间运行SMTP协议</li>
 <li>接收运行在 8，以及Pull，MAA之间POP3，IMAP协议</li>
 </ul>
-<img src="https://cdn.jsdelivr.net/gh/A-624/blog_img/img/image-20221128104900839.png" alt="image-20221128104900839" style="zoom: 67%;" />
-<details class="toggle" ><summary class="toggle-button" style="">邮件格式</summary><div class="toggle-content"><img src="https://cdn.jsdelivr.net/gh/A-624/blog_img/img/image-20221128105914289.png" alt="image-20221128105914289" style="zoom:80%;" />
-</div></details>
+<img src="https://cdn.jsdelivr.net/gh/A-624/blog_img/course/image-20221128104900839.png" alt="image-20221128104900839" style="zoom: 80%;" />
+<p>邮件格式：</p>
+<img src="https://cdn.jsdelivr.net/gh/A-624/blog_img/course/image-20221128105914289.png" alt="image-20221128105914289" style="zoom:80%;" />
 <p><strong>MIME协议</strong></p>
 <ul>
 <li>
@@ -1413,12 +1423,12 @@
 </li>
 <li>
 <p>通过六个01确定a，然后找a的ascii码</p>
-<img src="https://cdn.jsdelivr.net/gh/A-624/blog_img/img/image-20221128110350422.png" alt="image-20221128110350422" style="zoom:67%;" />
+<img src="https://cdn.jsdelivr.net/gh/A-624/blog_img/course/image-20221128110350422.png" alt="image-20221128110350422" style="zoom: 80%;" />
 </li>
 </ul>
 <p><strong>ESMTP (Extended SMTP)</strong>：相比于SMTP增加了认证，即输入账号密码才能使用电子邮件的服务器-</p>
-<img src="https://cdn.jsdelivr.net/gh/A-624/blog_img/img/image-20221128111308642.png" alt="image-20221128111308642" style="zoom:67%;" />
-</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://Ann-103.github.io">Ann</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://ann-103.github.io/post/2635928687.html">https://ann-103.github.io/post/2635928687.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://Ann-103.github.io" target="_blank">Ann-Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/notebook/">notebook</a><a class="post-meta__tags" href="/tags/network/">network</a></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2024/11/14/RbtQCHjSEMZJoUs.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/post/671154427.html" title="vim"><img class="cover" src="https://s2.loli.net/2024/11/22/Mi3joHI7l5nNh28.jpg" onerror="onerror=null;src='/img/loading.gif'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">vim</div></div></a></div><div class="next-post pull-right"><a href="/post/2122796003.html" title="算法排序"><img class="cover" src="https://s2.loli.net/2024/11/22/GXwuEP8UlBzOyAe.jpg" onerror="onerror=null;src='/img/loading.gif'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">算法排序</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/post/2635928686.html" title="计算机网络学习笔记（一）"><img class="cover" src="https://s2.loli.net/2024/11/22/mXWGr3dYoDjVHy8.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-10-18</div><div class="title">计算机网络学习笔记（一）</div></div></a></div><div><a href="/post/4227902866.html" title="计算机网络学习笔记（二）"><img class="cover" src="https://s2.loli.net/2024/11/22/HgvTujcKwQVEzUp.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-10-19</div><div class="title">计算机网络学习笔记（二）</div></div></a></div><div><a href="/post/2635928688.html" title="计算机网络学习笔记（三）"><img class="cover" src="https://s2.loli.net/2024/11/22/tskKGfpo2LTOzQ5.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-10-21</div><div class="title">计算机网络学习笔记（三）</div></div></a></div><div><a href="/post/3295482393.html" title="C语言速成"><img class="cover" src="https://s2.loli.net/2024/11/22/5URrAIsnJQOFhvV.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-08-30</div><div class="title">C语言速成</div></div></a></div><div><a href="/post/2735458860.html" title="概率论学习笔记"><img class="cover" src="https://s2.loli.net/2022/10/01/p6CQoLxsIWcu5zq.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-08-23</div><div class="title">概率论学习笔记</div></div></a></div><div><a href="/post/2122796003.html" title="算法排序"><img class="cover" src="https://s2.loli.net/2024/11/22/GXwuEP8UlBzOyAe.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-10-21</div><div class="title">算法排序</div></div></a></div></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/favicon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Ann</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">22</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">21</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Ann-103"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Ann-103" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:ajw0822@mail.ustc.edu.cn" target="_blank" title="Em"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="iconfont icon-gonggao"></i><span>公告</span></div><div class="announcement_content">欢迎访问我的小破站 ❤</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#chapter-6-internet-protocol-ip%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.</span> <span class="toc-text">Chapter 6 Internet Protocol    IP协议</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8B%B1%E6%96%87"><span class="toc-number">1.1.</span> <span class="toc-text">英文</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ip%E5%9C%B0%E5%9D%80-%E5%BD%A2%E5%BC%8F%E5%92%8C%E9%85%8D%E7%BD%AE%E6%96%B9%E6%B3%95-%E5%92%8Cmac%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">1.2.</span> <span class="toc-text">IP地址（形式和配置方法，和mac的区别）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%B0%E5%9D%80%E8%A7%A3%E6%9E%90%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.3.</span> <span class="toc-text">地址解析协议</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%BB%E5%9D%80"><span class="toc-number">1.3.1.</span> <span class="toc-text">寻址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%B0%E5%9D%80%E8%A7%A3%E6%9E%90-%E5%9C%B0%E5%9D%80%E8%A7%A3%E6%9E%90%E4%BD%9C%E7%94%A8%E5%92%8C%E8%BF%87%E7%A8%8B"><span class="toc-number">1.3.2.</span> <span class="toc-text">地址解析（地址解析作用和过程）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#arp%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.3.3.</span> <span class="toc-text">ARP协议</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ip%E5%8D%8F%E8%AE%AE-%E8%AE%A1%E7%AE%97%EF%BC%9Aip%E5%88%86%E6%AE%B5%E5%8E%9F%E5%9B%A0%E5%8E%9F%E7%90%86-8%E5%AD%97%E8%8A%82-%E7%9A%84%E6%95%B4%E6%95%B0%E5%80%8D"><span class="toc-number">1.4.</span> <span class="toc-text">IP协议（计算：IP分段原因原理，8字节 的整数倍）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ip%E8%B7%AF%E7%94%B1%E5%92%8C%E8%BD%AC%E5%8F%91"><span class="toc-number">1.5.</span> <span class="toc-text">IP路由和转发</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.5.1.</span> <span class="toc-text">路由协议</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#icmp%E5%8D%8F%E8%AE%AE%EF%BC%9Ainternet-%E6%8E%A7%E5%88%B6%E6%B6%88%E6%81%AF%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.6.</span> <span class="toc-text">ICMP协议：Internet 控制消息协议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ip%E7%BB%84%E6%92%AD"><span class="toc-number">1.7.</span> <span class="toc-text">IP组播</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ipv4%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7-%E5%AD%90%E7%BD%91%E5%88%92%E5%88%86-%E6%9C%80%E9%95%BF%E5%89%8D%E7%BC%80%E6%98%AF%E4%B8%8D%E7%9F%A5%E9%81%93%E9%95%BF%E5%BA%A6-cidr%E6%9C%89%E5%89%8D%E7%BC%80%E6%B1%87%E8%81%9A%E5%92%8C%E6%9C%80%E9%95%BF%E5%8C%B9%E9%85%8D%E8%A7%84%E5%88%99-%E5%B0%BD%E9%87%8F%E5%B0%91"><span class="toc-number">1.8.</span> <span class="toc-text">IPv4可扩展性（子网划分，最长前缀是不知道长度，CIDR有前缀汇聚和最长匹配规则，尽量少）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ipv6"><span class="toc-number">1.9.</span> <span class="toc-text">IPv6</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#chapter-7-%E4%BC%A0%E8%BE%93%E5%B1%82-%E7%AB%AF%E5%88%B0%E7%AB%AF-%E4%BC%A0%E8%BE%93%E5%B1%82%E5%8E%9F%E5%9B%A0-%E4%BC%A0%E8%BE%93%E5%B1%82%E7%AB%AF%E5%8F%A3%E5%AF%BB%E5%9D%80-tcp%E6%8B%A5%E5%A1%9E-%E9%87%8D%E4%BC%A0%E5%AE%9A%E6%97%B6%E5%99%A8-socket-tcp%E5%BA%8F%E5%88%97%E5%8F%B7%E5%92%8C%E9%80%9F%E7%8E%87"><span class="toc-number">2.</span> <span class="toc-text">Chapter 7 传输层（端到端，传输层原因，传输层端口寻址，tcp拥塞，重传定时器，socket，tcp序列号和速率）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8B%B1%E6%96%87"><span class="toc-number">2.1.</span> <span class="toc-text">英文</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%A0%E8%BE%93%E5%B1%82%E6%9C%8D%E5%8A%A1"><span class="toc-number">2.2.</span> <span class="toc-text">传输层服务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5"><span class="toc-number">2.3.</span> <span class="toc-text">建立连接</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5"><span class="toc-number">2.3.1.</span> <span class="toc-text">建立连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%87%8A%E6%94%BE%E8%BF%9E%E6%8E%A5"><span class="toc-number">2.3.2.</span> <span class="toc-text">释放连接</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#internet-%E4%BC%A0%E8%BE%93%E5%B1%82%E5%8D%8F%E8%AE%AE"><span class="toc-number">2.4.</span> <span class="toc-text">Internet 传输层协议</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#interinternet%E5%AF%BB%E5%9D%80%E6%A8%A1%E5%9E%8B"><span class="toc-number">2.4.1.</span> <span class="toc-text">InterInternet寻址模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E6%95%B0%E6%8D%AE%E6%8A%A5%E5%8D%8F%E8%AE%AE-udp"><span class="toc-number">2.4.2.</span> <span class="toc-text">用户数据报协议-UDP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%A0%E8%BE%93%E6%8E%A7%E5%88%B6%E5%8D%8F%E8%AE%AE-tcp-%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6"><span class="toc-number">2.4.3.</span> <span class="toc-text">传输控制协议-TCP（拥塞控制</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#tcp-%E8%BF%9E%E6%8E%A5%E5%BB%BA%E7%AB%8B%E5%92%8C%E9%87%8A%E6%94%BE"><span class="toc-number">2.4.3.1.</span> <span class="toc-text">TCP 连接建立和释放</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#tcp%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E6%9C%BA%E5%88%B6"><span class="toc-number">2.5.</span> <span class="toc-text">TCP滑动窗口机制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6"><span class="toc-number">2.5.1.</span> <span class="toc-text">流量控制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A1%AE%E8%AE%A4%E9%87%8D%E4%BC%A0"><span class="toc-number">2.5.2.</span> <span class="toc-text">确认重传</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6"><span class="toc-number">2.5.3.</span> <span class="toc-text">拥塞控制</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#tcp%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95"><span class="toc-number">2.5.3.1.</span> <span class="toc-text">TCP拥塞控制算法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#berkeley-socket"><span class="toc-number">2.6.</span> <span class="toc-text">Berkeley Socket</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#chapter-8-%E5%BA%94%E7%94%A8%E5%B1%82-%E5%9F%9F%E5%90%8D%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%B5%84%E6%BA%90%E7%B1%BB%E5%9E%8Ba-mx-ns-mime%E5%9F%BA%E4%BA%8E%E4%BC%A0%E7%BB%9F"><span class="toc-number">3.</span> <span class="toc-text">Chapter 8 应用层（域名系统的资源类型A,MX,NS，MIME基于传统）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E5%9F%9F%E5%90%8D%E7%AE%A1%E7%90%86"><span class="toc-number">3.0.1.</span> <span class="toc-text">分布式域名管理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#www-%E4%B8%87%E7%BB%B4%E7%BD%91"><span class="toc-number">3.1.</span> <span class="toc-text">WWW 万维网</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#url%EF%BC%9A%E7%BB%9F%E4%B8%80%E8%B5%84%E6%BA%90%E5%AE%9A%E4%BD%8D%E7%AC%A6-%E5%BA%94%E7%94%A8%E5%B1%82%E5%9C%B0%E5%9D%80-%E4%B8%83%E5%B1%82%E5%9C%B0%E5%9D%80"><span class="toc-number">3.1.1.</span> <span class="toc-text">URL：统一资源定位符 （应用层地址&#x2F;七层地址）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B6%85%E6%96%87%E6%9C%AC%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AEhttp"><span class="toc-number">3.1.2.</span> <span class="toc-text">超文本传输协议HTTP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#www%E5%B7%A5%E4%BD%9C%E8%BF%87%E7%A8%8B"><span class="toc-number">3.1.3.</span> <span class="toc-text">WWW工作过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#http%E6%B6%88%E6%81%AF%E6%A0%BC%E5%BC%8F"><span class="toc-number">3.1.4.</span> <span class="toc-text">HTTP消息格式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%B5%E5%AD%90%E9%82%AE%E4%BB%B6"><span class="toc-number">3.2.</span> <span class="toc-text">电子邮件</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer" style="background: transparent"><div id="footer-wrap"><div class="copyright">&copy;2024 By Ann</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"> </i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="iconfont icon-triangleupfill"></i></button><button id="go-down" type="button" title="to_bottom" onclick="btf.scrollToDest(document.body.scrollHeight, 500)"><i class="iconfont icon-triangledownfill"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.8/dist/lazyload.iife.min.js"></script><div class="js-pjax"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/copy-tex.min.js"></script><script>(() => {
+<img src="https://cdn.jsdelivr.net/gh/A-624/blog_img/course/image-20221128111308642.png" alt="image-20221128111308642" style="zoom:67%;" />
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://Ann-103.github.io">Ann</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://ann-103.github.io/post/2635928687.html">https://ann-103.github.io/post/2635928687.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://Ann-103.github.io" target="_blank">Ann-Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/notebook/">notebook</a><a class="post-meta__tags" href="/tags/network/">network</a></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2024/11/14/RbtQCHjSEMZJoUs.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/post/671154427.html" title="vim"><img class="cover" src="https://s2.loli.net/2024/11/22/Mi3joHI7l5nNh28.jpg" onerror="onerror=null;src='/img/loading.gif'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">vim</div></div></a></div><div class="next-post pull-right"><a href="/post/2122796003.html" title="算法排序"><img class="cover" src="https://s2.loli.net/2024/11/22/GXwuEP8UlBzOyAe.jpg" onerror="onerror=null;src='/img/loading.gif'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">算法排序</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/post/2635928686.html" title="计算机网络学习笔记（一）"><img class="cover" src="https://s2.loli.net/2024/11/22/mXWGr3dYoDjVHy8.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-10-18</div><div class="title">计算机网络学习笔记（一）</div></div></a></div><div><a href="/post/4227902866.html" title="计算机网络学习笔记（二）"><img class="cover" src="https://s2.loli.net/2024/11/22/HgvTujcKwQVEzUp.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-10-19</div><div class="title">计算机网络学习笔记（二）</div></div></a></div><div><a href="/post/2635928688.html" title="计算机网络学习笔记（三）"><img class="cover" src="https://s2.loli.net/2024/11/22/tskKGfpo2LTOzQ5.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-10-21</div><div class="title">计算机网络学习笔记（三）</div></div></a></div><div><a href="/post/3295482393.html" title="C语言速成"><img class="cover" src="https://s2.loli.net/2024/11/22/5URrAIsnJQOFhvV.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-08-30</div><div class="title">C语言速成</div></div></a></div><div><a href="/post/4168610783.html" title="公钥密码学算法"><img class="cover" src="https://s2.loli.net/2024/11/16/tMZWN6q91dJjygO.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-11-28</div><div class="title">公钥密码学算法</div></div></a></div><div><a href="/post/127297243.html" title="数据结构"><img class="cover" src="https://s2.loli.net/2024/11/22/B9HgYzGE6oS3UWL.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-08-22</div><div class="title">数据结构</div></div></a></div></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/favicon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Ann</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">25</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">26</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Ann-103"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Ann-103" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:ajw0822@mail.ustc.edu.cn" target="_blank" title="Em"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="iconfont icon-gonggao"></i><span>公告</span></div><div class="announcement_content">欢迎访问我的小破站 ❤</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#chapter-6-internet-protocol-ip%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.</span> <span class="toc-text">Chapter 6 Internet Protocol    IP协议</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8B%B1%E6%96%87"><span class="toc-number">1.1.</span> <span class="toc-text">英文</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ip%E5%9C%B0%E5%9D%80-%E5%BD%A2%E5%BC%8F%E5%92%8C%E9%85%8D%E7%BD%AE%E6%96%B9%E6%B3%95-%E5%92%8Cmac%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">1.2.</span> <span class="toc-text">IP地址（形式和配置方法，和mac的区别）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ip"><span class="toc-number">1.2.1.</span> <span class="toc-text">IP</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%B0%E5%9D%80%E8%A7%A3%E6%9E%90%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.3.</span> <span class="toc-text">地址解析协议</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%BB%E5%9D%80"><span class="toc-number">1.3.1.</span> <span class="toc-text">寻址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%B0%E5%9D%80%E8%A7%A3%E6%9E%90-%E5%9C%B0%E5%9D%80%E8%A7%A3%E6%9E%90%E4%BD%9C%E7%94%A8%E5%92%8C%E8%BF%87%E7%A8%8B"><span class="toc-number">1.3.2.</span> <span class="toc-text">地址解析（地址解析作用和过程）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#arp%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.3.3.</span> <span class="toc-text">ARP协议</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ip%E5%8D%8F%E8%AE%AE-%E8%AE%A1%E7%AE%97%EF%BC%9Aip%E5%88%86%E6%AE%B5%E5%8E%9F%E5%9B%A0%E5%8E%9F%E7%90%86-8%E5%AD%97%E8%8A%82-%E7%9A%84%E6%95%B4%E6%95%B0%E5%80%8D"><span class="toc-number">1.4.</span> <span class="toc-text">IP协议（计算：IP分段原因原理，8字节 的整数倍）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ip%E8%B7%AF%E7%94%B1%E5%92%8C%E8%BD%AC%E5%8F%91"><span class="toc-number">1.5.</span> <span class="toc-text">IP路由和转发</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.5.1.</span> <span class="toc-text">路由协议</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#icmp%E5%8D%8F%E8%AE%AE%EF%BC%9Ainternet-%E6%8E%A7%E5%88%B6%E6%B6%88%E6%81%AF%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.6.</span> <span class="toc-text">ICMP协议：Internet 控制消息协议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ip%E7%BB%84%E6%92%AD"><span class="toc-number">1.7.</span> <span class="toc-text">IP组播</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ipv4%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7-%E5%AD%90%E7%BD%91%E5%88%92%E5%88%86-%E6%9C%80%E9%95%BF%E5%89%8D%E7%BC%80%E6%98%AF%E4%B8%8D%E7%9F%A5%E9%81%93%E9%95%BF%E5%BA%A6-cidr%E6%9C%89%E5%89%8D%E7%BC%80%E6%B1%87%E8%81%9A%E5%92%8C%E6%9C%80%E9%95%BF%E5%8C%B9%E9%85%8D%E8%A7%84%E5%88%99-%E5%B0%BD%E9%87%8F%E5%B0%91"><span class="toc-number">1.8.</span> <span class="toc-text">IPv4可扩展性（子网划分，最长前缀是不知道长度，CIDR有前缀汇聚和最长匹配规则，尽量少）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ipv6"><span class="toc-number">1.9.</span> <span class="toc-text">IPv6</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#chapter-7-%E4%BC%A0%E8%BE%93%E5%B1%82-%E7%AB%AF%E5%88%B0%E7%AB%AF-%E4%BC%A0%E8%BE%93%E5%B1%82%E5%8E%9F%E5%9B%A0-%E4%BC%A0%E8%BE%93%E5%B1%82%E7%AB%AF%E5%8F%A3%E5%AF%BB%E5%9D%80-tcp%E6%8B%A5%E5%A1%9E-%E9%87%8D%E4%BC%A0%E5%AE%9A%E6%97%B6%E5%99%A8-socket-tcp%E5%BA%8F%E5%88%97%E5%8F%B7%E5%92%8C%E9%80%9F%E7%8E%87"><span class="toc-number">2.</span> <span class="toc-text">Chapter 7 传输层（端到端，传输层原因，传输层端口寻址，tcp拥塞，重传定时器，socket，tcp序列号和速率）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8B%B1%E6%96%87"><span class="toc-number">2.1.</span> <span class="toc-text">英文</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%A0%E8%BE%93%E5%B1%82%E6%9C%8D%E5%8A%A1"><span class="toc-number">2.2.</span> <span class="toc-text">传输层服务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5"><span class="toc-number">2.3.</span> <span class="toc-text">建立连接</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5"><span class="toc-number">2.3.1.</span> <span class="toc-text">建立连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%87%8A%E6%94%BE%E8%BF%9E%E6%8E%A5"><span class="toc-number">2.3.2.</span> <span class="toc-text">释放连接</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#internet-%E4%BC%A0%E8%BE%93%E5%B1%82%E5%8D%8F%E8%AE%AE"><span class="toc-number">2.4.</span> <span class="toc-text">Internet 传输层协议</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#interinternet%E5%AF%BB%E5%9D%80%E6%A8%A1%E5%9E%8B"><span class="toc-number">2.4.1.</span> <span class="toc-text">InterInternet寻址模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E6%95%B0%E6%8D%AE%E6%8A%A5%E5%8D%8F%E8%AE%AE-udp"><span class="toc-number">2.4.2.</span> <span class="toc-text">用户数据报协议-UDP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%A0%E8%BE%93%E6%8E%A7%E5%88%B6%E5%8D%8F%E8%AE%AE-tcp-%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6"><span class="toc-number">2.4.3.</span> <span class="toc-text">传输控制协议-TCP（拥塞控制</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#tcp-%E8%BF%9E%E6%8E%A5%E5%BB%BA%E7%AB%8B%E5%92%8C%E9%87%8A%E6%94%BE"><span class="toc-number">2.4.3.1.</span> <span class="toc-text">TCP 连接建立和释放</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#tcp%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E6%9C%BA%E5%88%B6"><span class="toc-number">2.5.</span> <span class="toc-text">TCP滑动窗口机制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6"><span class="toc-number">2.5.1.</span> <span class="toc-text">流量控制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A1%AE%E8%AE%A4%E9%87%8D%E4%BC%A0"><span class="toc-number">2.5.2.</span> <span class="toc-text">确认重传</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6"><span class="toc-number">2.5.3.</span> <span class="toc-text">拥塞控制</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#tcp%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95"><span class="toc-number">2.5.3.1.</span> <span class="toc-text">TCP拥塞控制算法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#berkeley-socket"><span class="toc-number">2.6.</span> <span class="toc-text">Berkeley Socket</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#chapter-8-%E5%BA%94%E7%94%A8%E5%B1%82-%E5%9F%9F%E5%90%8D%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%B5%84%E6%BA%90%E7%B1%BB%E5%9E%8Ba-mx-ns-mime%E5%9F%BA%E4%BA%8E%E4%BC%A0%E7%BB%9F"><span class="toc-number">3.</span> <span class="toc-text">Chapter 8 应用层（域名系统的资源类型A,MX,NS，MIME基于传统）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E5%9F%9F%E5%90%8D%E7%AE%A1%E7%90%86"><span class="toc-number">3.0.1.</span> <span class="toc-text">分布式域名管理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#www-%E4%B8%87%E7%BB%B4%E7%BD%91"><span class="toc-number">3.1.</span> <span class="toc-text">WWW 万维网</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#url%EF%BC%9A%E7%BB%9F%E4%B8%80%E8%B5%84%E6%BA%90%E5%AE%9A%E4%BD%8D%E7%AC%A6-%E5%BA%94%E7%94%A8%E5%B1%82%E5%9C%B0%E5%9D%80-%E4%B8%83%E5%B1%82%E5%9C%B0%E5%9D%80"><span class="toc-number">3.1.1.</span> <span class="toc-text">URL：统一资源定位符 （应用层地址&#x2F;七层地址）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B6%85%E6%96%87%E6%9C%AC%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AEhttp"><span class="toc-number">3.1.2.</span> <span class="toc-text">超文本传输协议HTTP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#www%E5%B7%A5%E4%BD%9C%E8%BF%87%E7%A8%8B"><span class="toc-number">3.1.3.</span> <span class="toc-text">WWW工作过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#http%E6%B6%88%E6%81%AF%E6%A0%BC%E5%BC%8F"><span class="toc-number">3.1.4.</span> <span class="toc-text">HTTP消息格式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%B5%E5%AD%90%E9%82%AE%E4%BB%B6"><span class="toc-number">3.2.</span> <span class="toc-text">电子邮件</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer" style="background: transparent"><div id="footer-wrap"><div class="copyright">&copy;2024 By Ann</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"> </i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="iconfont icon-triangleupfill"></i></button><button id="go-down" type="button" title="to_bottom" onclick="btf.scrollToDest(document.body.scrollHeight, 500)"><i class="iconfont icon-triangledownfill"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.8/dist/lazyload.iife.min.js"></script><div class="js-pjax"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/copy-tex.min.js"></script><script>(() => {
   document.querySelectorAll('#article-container span.katex-display').forEach(item => {
     btf.wrap(item, 'div', { class: 'katex-wrap'})
   })
