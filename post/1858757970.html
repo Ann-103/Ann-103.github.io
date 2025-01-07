@@ -1,0 +1,1149 @@
+<!--head 和 body 是 html 的直接子元素--><!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>fabric自定义网络搭建 | Ann-Blog</title><meta name="author" content="Ann"><meta name="copyright" content="Ann"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Fabric自定义网络搭建  主要是针对Fabric单机大规模部署过程的记录。  环境 基于之前的文章准备相应的网络环境： 点击直达链接 更换Fabric版本为2.5.9，更换到debian服务器，需要进行一些额外的环境配置。 docker 安装 1sudo apt install docker.io docker-compose 普通用户运行权限 大多数情况下在安装时，docker 用户组已经创">
+<meta property="og:type" content="article">
+<meta property="og:title" content="fabric自定义网络搭建">
+<meta property="og:url" content="https://ann-103.github.io/post/1858757970.html">
+<meta property="og:site_name" content="Ann-Blog">
+<meta property="og:description" content="Fabric自定义网络搭建  主要是针对Fabric单机大规模部署过程的记录。  环境 基于之前的文章准备相应的网络环境： 点击直达链接 更换Fabric版本为2.5.9，更换到debian服务器，需要进行一些额外的环境配置。 docker 安装 1sudo apt install docker.io docker-compose 普通用户运行权限 大多数情况下在安装时，docker 用户组已经创">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2024/12/05/SO3LhvBDmxZCou4.jpg">
+<meta property="article:published_time" content="2024-12-07T02:05:33.000Z">
+<meta property="article:modified_time" content="2025-01-07T08:53:46.867Z">
+<meta property="article:author" content="Ann">
+<meta property="article:tag" content="Blockchain">
+<meta property="article:tag" content="Fabric">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2024/12/05/SO3LhvBDmxZCou4.jpg"><link rel="shortcut icon" href="https://s2.loli.net/2022/11/06/lgYVqNypjRCe3d2.png"><link rel="canonical" href="https://ann-103.github.io/post/1858757970.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: {"appId":"TYQ16Q4ESJ","apiKey":"ea175434f2803b60c631bc11c6e24e54","indexName":"blog","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":200,"languages":{"author":"作者: Ann","link":"链接: ","source":"来源: Ann-Blog","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'fabric自定义网络搭建',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-01-07 16:53:46'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"><link rel="stylesheet" href="/css/font.css"><link rel="stylesheet" href="/css/essay_page/essay_page.css"><link rel="stylesheet" href="/css/hot.css"><meta name="generator" content="Hexo 7.3.0"><link href="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.css" rel="stylesheet" /></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="scarecrow"><div class="scarecrow__hat"><div class="scarecrow__ribbon"></div></div><div class="scarecrow__head"><div class="scarecrow__eye"></div><div class="scarecrow__eye"></div><div class="scarecrow__mouth"></div><div class="scarecrow__pipe"></div></div><div class="scarecrow__body"><div class="scarecrow__glove scarecrow__glove--l"></div><div class="scarecrow__sleeve scarecrow__sleeve--l"></div><div class="scarecrow__bow"></div><div class="scarecrow__shirt"></div><div class="scarecrow__coat"></div><div class="scarecrow__waistcoat"></div><div class="scarecrow__sleeve scarecrow__sleeve--r"></div><div class="scarecrow__glove scarecrow__glove--r"></div><div class="scarecrow__coattails"></div><div class="scarecrow__pants"></div></div><div class="scarecrow__arms"></div><div class="scarecrow__leg">  </div></div></div><script async="async">(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load',() => { preloader.endLoading() })
+  document.getElementById('loading-box').addEventListener('click',()=> {preloader.endLoading()})
+  setTimeout(function(){preloader.endLoading();}, 10000);
+
+  if (true) {
+    document.addEventListener('pjax:send', () => { preloader.initLoading() })
+    document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+  }
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/favicon.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">28</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">29</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-heart"></i><span> About</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/about/"><i class="fa-fw iconfont icon-paper-full"></i><span> 关于</span></a></li><li><a class="site-page child" href="/essay/"><i class="fa-fw iconfont icon-shuoshuo"></i><span> 动态</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Ann-Blog"><span class="site-name">Ann-Blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-heart"></i><span> About</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/about/"><i class="fa-fw iconfont icon-paper-full"></i><span> 关于</span></a></li><li><a class="site-page child" href="/essay/"><i class="fa-fw iconfont icon-shuoshuo"></i><span> 动态</span></a></li></ul></div></div></div><div id="rightBank"><div id="box"> <a href="/link" title="百宝箱"><i class="iconfont icon-24gf-box2"></i></a></div><div id="random"><a class="site-page" href="javascript:toRandomPost()" title="随机前往一个文章"><i class="iconfont icon-touzi"> </i></a></div><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">fabric自定义网络搭建</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-12-07T02:05:33.000Z" title="发表于 2024-12-07 10:05:33">2024-12-07</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-01-07T08:53:46.867Z" title="更新于 2025-01-07 16:53:46">2025-01-07</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Blockchain/">Blockchain</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">10k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>48分钟</span></span></div></div></div><div class="top-img gist" style="background-image: url(/false)"></div><article class="post-content" id="article-container"><h1 id="fabric自定义网络搭建">Fabric自定义网络搭建</h1>
+<blockquote>
+<p>主要是针对Fabric单机大规模部署过程的记录。</p>
+</blockquote>
+<h2 id="环境">环境</h2>
+<p>基于之前的文章准备相应的网络环境：</p>
+<a href="https://ann-103.github.io/post/1783592341.html，WSL下的Fabric2.4.9搭建" target="_blank" title="点击直达链接" referrerPolicy="no-referrer" class="link_card"><div class="link_icon"><svg t="1670307855063" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="19066" width="200" height="200"><path d="M504.064 516.608m-384.256 0a384.256 384.256 0 1 0 768.512 0 384.256 384.256 0 1 0-768.512 0Z" fill="#009CF5" p-id="19068"></path><path d="M746.112 270.464L472.448 485.12l63.104 63.104L750.08 274.56c2.304-2.688-1.28-6.144-3.968-4.096z" fill="#FF4C3A" p-id="19069"></path><path d="M262.016 762.752l273.664-214.528-63.104-63.104-214.656 273.536c-2.176 2.688 1.28 6.144 4.096 4.096z" fill="#FFFFFF" p-id="19070"></path><path d="M505.216 155.136c-3.2 0-5.888 2.56-5.888 5.888v53.504c0 3.2 2.56 5.888 5.888 5.888s5.888-2.56 5.888-5.888v-53.504c-0.128-3.2-2.688-5.888-5.888-5.888zM442.368 160.512c-3.2 0.512-5.376 3.584-4.736 6.784l9.344 52.736c0.512 3.2 3.584 5.376 6.784 4.736 3.2-0.512 5.376-3.584 4.736-6.784l-9.344-52.736c-0.512-3.2-3.584-5.376-6.784-4.736zM396.288 234.368c1.152 3.072 4.48 4.608 7.552 3.456 3.072-1.152 4.608-4.48 3.456-7.552l-18.304-50.304c-1.152-3.072-4.48-4.608-7.552-3.456-3.072 1.152-4.608 4.48-3.456 7.552l18.304 50.304zM348.928 257.408c1.664 2.816 5.248 3.712 7.936 2.176s3.712-5.248 2.176-7.936l-26.752-46.336c-1.664-2.816-5.248-3.712-7.936-2.176-2.816 1.664-3.712 5.248-2.176 7.936l26.752 46.336zM306.304 288.256c2.048 2.432 5.76 2.816 8.192 0.768 2.432-2.048 2.816-5.76 0.768-8.192l-34.432-40.96c-2.048-2.432-5.76-2.816-8.192-0.768-2.432 2.048-2.816 5.76-0.768 8.192l34.432 40.96zM269.696 326.144c2.432 2.048 6.144 1.792 8.192-0.768 2.048-2.432 1.792-6.144-0.768-8.192l-40.96-34.432c-2.432-2.048-6.144-1.792-8.192 0.768-2.048 2.432-1.792 6.144 0.768 8.192l40.96 34.432zM193.792 342.912l46.336 26.752c2.816 1.664 6.4 0.64 7.936-2.176 1.664-2.816 0.64-6.4-2.176-8.064L199.552 332.8c-2.816-1.664-6.4-0.64-7.936 2.176-1.664 2.688-0.64 6.272 2.176 7.936zM168.32 399.488l50.304 18.304c3.072 1.152 6.4-0.512 7.552-3.456 1.152-3.072-0.512-6.4-3.456-7.552l-50.304-18.304c-3.072-1.152-6.4 0.512-7.552 3.456-1.152 3.072 0.384 6.4 3.456 7.552zM207.872 457.344l-52.736-9.344c-3.2-0.512-6.272 1.536-6.784 4.736-0.512 3.2 1.536 6.272 4.736 6.784l52.736 9.344c3.2 0.512 6.272-1.536 6.784-4.736 0.512-3.2-1.536-6.272-4.736-6.784zM201.984 509.568H148.48c-3.2 0-5.888 2.56-5.888 5.888 0 3.2 2.56 5.888 5.888 5.888h53.504c3.2 0 5.888-2.56 5.888-5.888 0-3.2-2.56-5.888-5.888-5.888zM205.44 562.176l-52.736 9.344c-3.2 0.512-5.376 3.584-4.736 6.784 0.512 3.2 3.584 5.376 6.784 4.736l52.736-9.344c3.2-0.512 5.376-3.584 4.736-6.784s-3.584-5.248-6.784-4.736zM217.856 613.376l-50.304 18.304c-3.072 1.152-4.608 4.48-3.456 7.552 1.152 3.072 4.48 4.608 7.552 3.456l50.304-18.304c3.072-1.152 4.608-4.48 3.456-7.552-1.152-3.072-4.48-4.608-7.552-3.456zM238.976 661.504l-46.336 26.752c-2.816 1.664-3.712 5.248-2.176 8.064 1.664 2.816 5.248 3.712 8.064 2.176l46.336-26.752c2.816-1.664 3.712-5.248 2.176-8.064-1.664-2.816-5.248-3.712-8.064-2.176zM268.16 705.408l-40.96 34.432c-2.432 2.048-2.816 5.76-0.768 8.192 2.048 2.432 5.76 2.816 8.192 0.768l40.96-34.432c2.432-2.048 2.816-5.76 0.768-8.192-1.92-2.56-5.632-2.816-8.192-0.768zM304.512 743.424l-34.432 40.96c-2.048 2.432-1.792 6.144 0.768 8.192 2.432 2.048 6.144 1.792 8.192-0.768l34.432-40.96c2.048-2.432 1.792-6.144-0.768-8.192-2.304-1.92-6.016-1.664-8.192 0.768zM347.008 774.656l-26.752 46.336c-1.664 2.816-0.64 6.4 2.176 7.936 2.816 1.664 6.4 0.64 8.064-2.176l26.752-46.336c1.664-2.816 0.64-6.4-2.176-7.936-2.816-1.536-6.4-0.64-8.064 2.176zM394.24 798.08l-18.304 50.304c-1.152 3.072 0.512 6.4 3.456 7.552 3.072 1.152 6.4-0.512 7.552-3.456l18.304-50.304c1.152-3.072-0.512-6.4-3.456-7.552-3.072-1.152-6.528 0.384-7.552 3.456zM440.192 872.32c3.2 0.512 6.272-1.536 6.784-4.736l9.344-52.736c0.512-3.2-1.536-6.272-4.736-6.784-3.2-0.512-6.272 1.536-6.784 4.736l-9.344 52.736c-0.64 3.2 1.536 6.272 4.736 6.784zM502.912 878.08c3.2 0 5.888-2.56 5.888-5.888v-53.504c0-3.2-2.56-5.888-5.888-5.888-3.2 0-5.888 2.56-5.888 5.888v53.504c0 3.2 2.688 5.888 5.888 5.888zM549.632 815.232l9.344 52.736c0.512 3.2 3.584 5.376 6.784 4.736 3.2-0.512 5.376-3.584 4.736-6.784l-9.344-52.736c-0.512-3.2-3.584-5.376-6.784-4.736-3.2 0.512-5.248 3.584-4.736 6.784zM600.832 802.816l18.304 50.304c1.152 3.072 4.48 4.608 7.552 3.456 3.072-1.152 4.608-4.48 3.456-7.552L611.84 798.72c-1.152-3.072-4.48-4.608-7.552-3.456-3.072 1.152-4.608 4.48-3.456 7.552zM649.088 781.696l26.752 46.336c1.664 2.816 5.248 3.712 8.064 2.176 2.816-1.664 3.712-5.248 2.176-8.064l-26.88-46.336c-1.664-2.816-5.248-3.712-8.064-2.176-2.816 1.664-3.712 5.248-2.048 8.064zM692.864 752.384l34.432 40.96c2.048 2.432 5.76 2.816 8.192 0.768 2.432-2.048 2.816-5.76 0.768-8.192l-34.432-40.96c-2.048-2.432-5.76-2.816-8.192-0.768-2.56 2.048-2.816 5.76-0.768 8.192zM730.88 716.032l40.96 34.432c2.432 2.048 6.144 1.792 8.192-0.768 2.048-2.432 1.792-6.144-0.768-8.192l-40.96-34.432c-2.432-2.048-6.144-1.792-8.192 0.768-1.92 2.432-1.664 6.144 0.768 8.192zM762.112 673.664l46.336 26.752c2.816 1.664 6.4 0.64 8.064-2.176 1.664-2.816 0.64-6.4-2.176-7.936L768 663.552c-2.816-1.664-6.4-0.64-8.064 2.176-1.536 2.688-0.64 6.272 2.176 7.936zM785.536 626.432l50.304 18.304c3.072 1.152 6.4-0.512 7.552-3.456 1.152-3.072-0.512-6.4-3.456-7.552l-50.304-18.304c-3.072-1.152-6.4 0.512-7.552 3.456-1.152 3.072 0.384 6.4 3.456 7.552zM800.256 575.872l52.736 9.344c3.2 0.512 6.272-1.536 6.784-4.736 0.512-3.2-1.536-6.272-4.736-6.784l-52.736-9.344c-3.2-0.512-6.272 1.536-6.784 4.736-0.512 3.2 1.536 6.272 4.736 6.784zM800.256 517.76c0 3.2 2.56 5.888 5.888 5.888h53.504c3.2 0 5.888-2.56 5.888-5.888 0-3.2-2.56-5.888-5.888-5.888h-53.504c-3.328 0-5.888 2.56-5.888 5.888zM802.688 471.04l52.736-9.344c3.2-0.512 5.376-3.584 4.736-6.784-0.512-3.2-3.584-5.376-6.784-4.736l-52.736 9.344c-3.2 0.512-5.376 3.584-4.736 6.784 0.512 3.2 3.584 5.248 6.784 4.736zM790.272 419.84l50.304-18.304c3.072-1.152 4.608-4.48 3.456-7.552-1.152-3.072-4.48-4.608-7.552-3.456l-50.304 18.304c-3.072 1.152-4.608 4.48-3.456 7.552 1.152 2.944 4.48 4.608 7.552 3.456zM769.152 371.584l46.336-26.752c2.816-1.664 3.712-5.248 2.176-7.936-1.664-2.816-5.248-3.712-8.064-2.176l-46.336 26.752c-2.816 1.664-3.712 5.248-2.176 8.064 1.664 2.688 5.248 3.712 8.064 2.048zM739.84 327.808l40.96-34.432c2.432-2.048 2.816-5.76 0.768-8.192-2.048-2.432-5.76-2.816-8.192-0.768l-40.96 34.432c-2.432 2.048-2.816 5.76-0.768 8.192 2.048 2.56 5.76 2.816 8.192 0.768zM703.488 289.664l34.432-40.96c2.048-2.432 1.792-6.144-0.768-8.192-2.432-2.048-6.144-1.792-8.192 0.768l-34.432 40.96c-2.048 2.432-1.792 6.144 0.768 8.192 2.432 2.048 6.144 1.792 8.192-0.768zM661.12 258.56l26.752-46.336c1.664-2.816 0.64-6.4-2.176-7.936-2.816-1.664-6.4-0.64-8.064 2.176l-26.752 46.336c-1.664 2.816-0.64 6.4 2.176 7.936 2.816 1.536 6.4 0.64 8.064-2.176zM613.888 235.136l18.304-50.304c1.152-3.072-0.512-6.4-3.456-7.552-3.072-1.152-6.4 0.512-7.552 3.456L602.88 231.168c-1.152 3.072 0.512 6.4 3.456 7.552 3.072 1.024 6.4-0.512 7.552-3.584zM556.544 225.152c3.2 0.512 6.272-1.536 6.784-4.736l9.344-52.736c0.512-3.2-1.536-6.272-4.736-6.784-3.2-0.512-6.272 1.536-6.784 4.736l-9.344 52.736c-0.512 3.2 1.536 6.144 4.736 6.784zM273.536 290.432c2.432 2.432 6.528 2.432 8.96 0 2.432-2.432 2.432-6.528 0-8.96l-21.12-21.12c-2.432-2.432-6.528-2.432-8.96 0-2.432 2.432-2.432 6.528 0 8.96l21.12 21.12zM237.824 333.824c2.944 2.048 6.912 1.28 8.832-1.536 2.048-2.944 1.28-6.912-1.536-8.832l-24.448-17.152c-2.944-2.048-6.912-1.28-8.832 1.536s-1.28 6.912 1.536 8.832l24.448 17.152zM183.04 370.176l27.136 12.672c3.2 1.536 7.04 0.128 8.448-3.072 1.536-3.2 0.128-7.04-3.072-8.448l-27.136-12.672c-3.2-1.536-7.04-0.128-8.448 3.072-1.536 3.2-0.128 7.04 3.072 8.448zM194.688 423.68l-28.928-7.68c-3.456-0.896-6.912 1.152-7.808 4.48-0.896 3.456 1.152 6.912 4.48 7.808l28.928 7.68c3.456 0.896 6.912-1.152 7.808-4.48 0.896-3.456-1.152-6.912-4.48-7.808zM183.168 478.72l-29.824-2.56c-3.456-0.256-6.656 2.304-6.912 5.76-0.256 3.456 2.304 6.656 5.76 6.912l29.824 2.56c3.456 0.256 6.656-2.304 6.912-5.76 0.384-3.456-2.176-6.528-5.76-6.912zM181.504 535.04l-29.824 2.56c-3.456 0.256-6.144 3.456-5.76 6.912 0.256 3.456 3.456 6.144 6.912 5.76l29.824-2.56c3.456-0.256 6.144-3.456 5.76-6.912-0.256-3.456-3.328-6.016-6.912-5.76zM191.36 590.72l-28.928 7.68c-3.456 0.896-5.376 4.352-4.48 7.808 0.896 3.456 4.352 5.376 7.808 4.48l28.928-7.68c3.456-0.896 5.376-4.352 4.48-7.808-0.896-3.328-4.352-5.376-7.808-4.48zM207.232 644.224l-27.136 12.672c-3.2 1.536-4.608 5.248-3.072 8.448 1.536 3.2 5.248 4.608 8.448 3.072l27.136-12.672c3.2-1.536 4.608-5.248 3.072-8.448-1.408-3.2-5.248-4.48-8.448-3.072zM233.984 693.888l-24.448 17.152c-2.944 2.048-3.584 6.016-1.536 8.832 2.048 2.944 6.016 3.584 8.832 1.536l24.448-17.152c2.944-2.048 3.584-6.016 1.536-8.832-2.048-2.944-6.016-3.584-8.832-1.536zM310.912 775.552L293.76 800c-2.048 2.944-1.28 6.912 1.536 8.832 2.944 2.048 6.912 1.28 8.832-1.536l17.152-24.448c2.048-2.944 1.28-6.912-1.536-8.832-2.816-2.048-6.912-1.408-8.832 1.536zM349.184 840.704c3.2 1.536 7.04 0.128 8.448-3.072l12.672-27.136c1.536-3.2 0.128-7.04-3.072-8.448-3.2-1.536-7.04-0.128-8.448 3.072l-12.672 27.136c-1.408 3.2-0.128 6.912 3.072 8.448zM407.808 862.72c3.456 0.896 6.912-1.152 7.808-4.48l7.68-28.928c0.896-3.456-1.152-6.912-4.48-7.808-3.456-0.896-6.912 1.152-7.808 4.48l-7.68 28.928c-0.896 3.328 1.152 6.912 4.48 7.808zM469.376 874.112c3.456 0.256 6.656-2.304 6.912-5.76l2.56-29.824c0.256-3.456-2.304-6.656-5.76-6.912-3.456-0.256-6.656 2.304-6.912 5.76l-2.56 29.824c-0.256 3.584 2.304 6.656 5.76 6.912zM522.496 839.168l2.56 29.824c0.256 3.456 3.456 6.144 6.912 5.76 3.456-0.256 6.144-3.456 5.76-6.912l-2.56-29.824c-0.256-3.456-3.456-6.144-6.912-5.76-3.456 0.256-6.016 3.328-5.76 6.912zM578.176 830.976l7.68 28.928c0.896 3.456 4.352 5.376 7.808 4.48 3.456-0.896 5.376-4.352 4.48-7.808l-7.68-28.928c-0.896-3.456-4.352-5.376-7.808-4.48-3.328 0.896-5.376 4.48-4.48 7.808zM631.68 813.312l12.672 27.136c1.536 3.2 5.248 4.608 8.448 3.072 3.2-1.536 4.608-5.248 3.072-8.448l-12.672-27.136c-1.536-3.2-5.248-4.608-8.448-3.072-3.2 1.536-4.48 5.248-3.072 8.448zM681.344 786.688l17.152 24.448c2.048 2.944 6.016 3.584 8.832 1.536 2.944-2.048 3.584-6.016 1.536-8.832l-17.152-24.448c-2.048-2.944-6.016-3.584-8.832-1.536-2.944 1.92-3.584 5.888-1.536 8.832zM725.504 751.744l21.12 21.12c2.432 2.432 6.528 2.432 8.96 0 2.432-2.432 2.432-6.528 0-8.96l-21.12-21.12c-2.432-2.432-6.528-2.432-8.96 0-2.432 2.432-2.432 6.528 0 8.96zM763.008 709.76l24.448 17.152c2.944 2.048 6.912 1.28 8.832-1.536 2.048-2.944 1.28-6.912-1.536-8.832l-24.448-17.152c-2.944-2.048-6.912-1.28-8.832 1.536-2.048 2.816-1.408 6.784 1.536 8.832zM792.576 661.888l27.136 12.672c3.2 1.536 7.04 0.128 8.448-3.072 1.536-3.2 0.128-7.04-3.072-8.448l-27.136-12.672c-3.2-1.536-7.04-0.128-8.448 3.072-1.536 3.2-0.128 6.912 3.072 8.448zM813.44 609.536l28.928 7.68c3.456 0.896 6.912-1.152 7.808-4.48 0.896-3.456-1.152-6.912-4.48-7.808l-28.928-7.68c-3.456-0.896-6.912 1.152-7.808 4.48-0.896 3.456 1.024 6.912 4.48 7.808zM824.832 554.368l29.824 2.56c3.456 0.256 6.656-2.304 6.912-5.76 0.256-3.456-2.304-6.656-5.76-6.912l-29.824-2.56c-3.456-0.256-6.656 2.304-6.912 5.76-0.256 3.584 2.304 6.656 5.76 6.912zM826.624 498.176l29.824-2.56c3.456-0.256 6.144-3.456 5.76-6.912-0.256-3.456-3.456-6.144-6.912-5.76l-29.824 2.56c-3.456 0.256-6.144 3.456-5.76 6.912 0.256 3.456 3.328 6.016 6.912 5.76zM818.432 442.368l28.928-7.68c3.456-0.896 5.376-4.352 4.48-7.808-0.896-3.456-4.352-5.376-7.808-4.48l-28.928 7.68c-3.456 0.896-5.376 4.352-4.48 7.808 0.896 3.456 4.48 5.376 7.808 4.48zM800.768 388.992l27.136-12.672c3.2-1.536 4.608-5.248 3.072-8.448-1.536-3.2-5.248-4.608-8.448-3.072l-27.136 12.672c-3.2 1.536-4.608 5.248-3.072 8.448 1.536 3.072 5.248 4.48 8.448 3.072zM774.144 339.328l24.448-17.152c2.944-2.048 3.584-6.016 1.536-8.832-2.048-2.944-6.016-3.584-8.832-1.536L766.848 328.96c-2.944 2.048-3.584 6.016-1.536 8.832 1.92 2.816 5.888 3.584 8.832 1.536zM697.216 257.664l17.152-24.448c2.048-2.944 1.28-6.912-1.536-8.832-2.944-2.048-6.912-1.28-8.832 1.536l-17.152 24.448c-2.048 2.944-1.28 6.912 1.536 8.832 2.816 2.048 6.784 1.408 8.832-1.536zM658.944 192.512c-3.2-1.536-7.04-0.128-8.448 3.072l-12.672 27.136c-1.536 3.2-0.128 7.04 3.072 8.448 3.2 1.536 7.04 0.128 8.448-3.072l12.672-27.136c1.408-3.2 0-7.04-3.072-8.448zM600.192 170.496c-3.456-0.896-6.912 1.152-7.808 4.48l-7.68 28.928c-0.896 3.456 1.152 6.912 4.48 7.808 3.456 0.896 6.912-1.152 7.808-4.48l7.68-28.928c1.024-3.328-1.024-6.912-4.48-7.808zM534.912 201.6c3.456 0.256 6.656-2.304 6.912-5.76l2.56-29.824c0.256-3.456-2.304-6.656-5.76-6.912-3.456-0.256-6.656 2.304-6.912 5.76l-2.56 29.824c-0.256 3.456 2.304 6.528 5.76 6.912zM476.032 158.464c-3.456 0.256-6.144 3.456-5.76 6.912l2.56 29.824c0.256 3.456 3.456 6.144 6.912 5.76 3.456-0.256 6.144-3.456 5.76-6.912l-2.56-29.824c-0.256-3.456-3.328-6.016-6.912-5.76zM422.144 173.312c-0.896-3.456-4.352-5.376-7.808-4.48-3.456 0.896-5.376 4.352-4.48 7.808l7.68 28.928c0.896 3.456 4.352 5.376 7.808 4.48 3.456-0.896 5.376-4.352 4.48-7.808l-7.68-28.928zM376.448 219.776l-12.672-27.136c-1.536-3.2-5.248-4.608-8.448-3.072-3.2 1.536-4.608 5.248-3.072 8.448L364.8 225.28c1.536 3.2 5.248 4.608 8.448 3.072 3.2-1.536 4.608-5.376 3.2-8.576zM316.416 253.824c2.048 2.944 6.016 3.584 8.832 1.536 2.944-2.048 3.584-6.016 1.536-8.832l-17.152-24.448c-2.048-2.944-6.016-3.584-8.832-1.536-2.944 2.048-3.584 6.016-1.536 8.832l17.152 24.448z" fill="#FFFFFF" p-id="19071"></path></svg></div><div class="link_content"><div class="link_title">点击直达链接</div></div></a>
+<p>更换Fabric版本为2.5.9，更换到debian服务器，需要进行一些额外的环境配置。</p>
+<h3 id="docker">docker</h3>
+<h4 id="安装">安装</h4>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">sudo</span> <span class="string">apt</span> <span class="string">install</span> <span class="string">docker.io</span> <span class="string">docker-compose</span></span><br></pre></td></tr></table></figure>
+<h4 id="普通用户运行权限">普通用户运行权限</h4>
+<p>大多数情况下在安装时，docker 用户组已经创建，这一步基本不需要</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">sudo</span> <span class="string">groupadd</span> <span class="string">docker</span></span><br></pre></td></tr></table></figure>
+<p>将当前用户添加到 docker 用户组</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo usermod -aG docker $USER</span><br></pre></td></tr></table></figure>
+<p>将 docker 添加到开机启动， 并立即启动 docker</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl enable --now docker</span><br></pre></td></tr></table></figure>
+<h4 id="配置-docker-hub-镜像">配置 docker hub 镜像</h4>
+<p>编辑 /etc/docker/daemon.json,写入镜像地址</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo mkdir -p /etc/docker</span><br><span class="line">sudo vim /etc/docker/daemon.json</span><br></pre></td></tr></table></figure>
+<p>设置生效：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
+<h5 id="ustc-镜像">ustc 镜像</h5>
+<p>只对科大 ip 提供服务</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">	<span class="attr">&quot;registry-mirrors&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;https://docker.mirrors.ustc.edu.cn&quot;</span><span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<h3 id="nvm-linux">nvm（linux）</h3>
+<p>建议安装nvm，然后使用nvm管理node版本，npm是node自带的包管理器</p>
+<blockquote>
+<p>官网教程：<a target="_blank" rel="noopener" href="https://github.com/nvm-sh/nvm?tab=readme-ov-file">nvm-sh/nvm: Node Version Manager - POSIX-compliant bash script to manage multiple active node.js versions</a></p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash</span><br></pre></td></tr></table></figure>
+<p>配置环境</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim ~/.bashrc</span><br></pre></td></tr></table></figure>
+<p>添加：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export NVM_DIR=&quot;$([ -z &quot;$&#123;XDG_CONFIG_HOME-&#125;&quot; ] &amp;&amp; printf %s &quot;$&#123;HOME&#125;/.nvm&quot; || printf %s &quot;$&#123;XDG_CONFIG_HOME&#125;/nvm&quot;)&quot;</span><br><span class="line">[ -s &quot;$NVM_DIR/nvm.sh&quot; ] &amp;&amp; \. &quot;$NVM_DIR/nvm.sh&quot; # This loads nvm</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source ~/.bashrc</span><br></pre></td></tr></table></figure>
+<p>使用nvm下载node，这里是对应caliper版本，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nvm install v16.13.0</span><br><span class="line">nvm use v16.13.0</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>对应版本</p>
+<p>2.2-2.3：v12</p>
+<p>2.4：v16</p>
+<p>2.5：v18</p>
+</blockquote>
+<h3 id="caliper下载">caliper下载</h3>
+<p>还是之前的工作目录，然后这里额外下载相关环境</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir caliper-workspace</span><br><span class="line">cd caliper-workspace/</span><br><span class="line">mkdir networks benchmarks workload</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm init -y</span><br><span class="line">npm install --only=prod @hyperledger/caliper-cli@0.5.0</span><br><span class="line">npx caliper --help</span><br></pre></td></tr></table></figure>
+<p>绑定fabric-sdk</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npx caliper bind --caliper-bind-sut fabric:2.4</span><br></pre></td></tr></table></figure>
+<h3 id="jq">Jq</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#检查并更新已安装软件包</span></span><br><span class="line"><span class="built_in">sudo</span> apt update</span><br><span class="line"><span class="built_in">sudo</span> apt upgrade</span><br><span class="line"><span class="built_in">sudo</span> apt install jq -y</span><br></pre></td></tr></table></figure>
+<h2 id="在test-network网络上拓展组织和节点">在test-network网络上拓展组织和节点</h2>
+<div class="note info flat"><p>引言：通过第三个节点和组织的扩展熟悉docker文件，scripts脚本文件（对peer的调用）</p>
+</div>
+<h3 id="组织架构">组织架构</h3>
+<p>三大组织（admin+user）：包括一个peer节点。</p>
+<p>三个排序节点。</p>
+<table>
+<thead>
+<tr>
+<th>域名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a target="_blank" rel="noopener" href="http://peer0.org1.example.com">peer0.org1.example.com</a></td>
+<td>org1第一个peer节点</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="http://peer1.org1.example.com">peer1.org1.example.com</a></td>
+<td>org1第二个peer节点（暂时不部署）</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="http://council.example.com">council.example.com</a></td>
+<td>council 组织的 CA 服务， 为联盟链网络提供 TLS-CA 服务</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="http://orderer.example.com">orderer.example.com</a></td>
+<td>orderer 组织的 CA 服务， 为联盟链网络提供排序服务</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="http://orderer0.orderer.example.com">orderer0.orderer.example.com</a></td>
+<td>orderer 组织的 orderer1 成员节点</td>
+</tr>
+</tbody>
+</table>
+<h3 id="添加第三方组织">添加第三方组织</h3>
+<h4 id="修改network-sh：createorg组织注册">修改<code>network.sh</code>：createOrg组织注册</h4>
+<p>创建组织（密钥证书生成）：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Create Organization crypto material using cryptogen or CAs</span></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">createOrgs</span></span>() &#123;</span><br><span class="line">  <span class="keyword">if</span> [ -d <span class="string">&quot;organizations/peerOrganizations&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">rm</span> -Rf organizations/peerOrganizations &amp;&amp; <span class="built_in">rm</span> -Rf organizations/ordererOrganizations</span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line"><span class="comment"># Create crypto material using cryptogen</span></span><br><span class="line">  <span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$CRYPTO</span>&quot;</span> == <span class="string">&quot;cryptogen&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">which</span> cryptogen</span><br><span class="line">    <span class="keyword">if</span> [ <span class="string">&quot;$?&quot;</span> -ne 0 ]; <span class="keyword">then</span></span><br><span class="line">      fatalln <span class="string">&quot;cryptogen tool not found. exiting&quot;</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">    infoln <span class="string">&quot;Generating certificates using cryptogen tool&quot;</span></span><br><span class="line"></span><br><span class="line">    infoln <span class="string">&quot;Creating Org1 Identities&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">set</span> -x</span><br><span class="line">    cryptogen generate --config=./organizations/cryptogen/crypto-config-org1.yaml --output=<span class="string">&quot;organizations&quot;</span></span><br><span class="line">    res=$?</span><br><span class="line">    &#123; <span class="built_in">set</span> +x; &#125; 2&gt;/dev/null</span><br><span class="line">    <span class="keyword">if</span> [ <span class="variable">$res</span> -ne 0 ]; <span class="keyword">then</span></span><br><span class="line">      fatalln <span class="string">&quot;Failed to generate certificates...&quot;</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">    infoln <span class="string">&quot;Creating Org2 Identities&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">set</span> -x</span><br><span class="line">    cryptogen generate --config=./organizations/cryptogen/crypto-config-org2.yaml --output=<span class="string">&quot;organizations&quot;</span></span><br><span class="line">    res=$?</span><br><span class="line">    &#123; <span class="built_in">set</span> +x; &#125; 2&gt;/dev/null</span><br><span class="line">    <span class="keyword">if</span> [ <span class="variable">$res</span> -ne 0 ]; <span class="keyword">then</span></span><br><span class="line">      fatalln <span class="string">&quot;Failed to generate certificates...&quot;</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">     </span><br><span class="line">   <span class="comment">#org3_1207 : add crypto material using cryptogen</span></span><br><span class="line">    infoln <span class="string">&quot;Creating Org3 Identities&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">set</span> -x</span><br><span class="line">    cryptogen generate --config=./organizations/cryptogen/crypto-config-org2.yaml --output=<span class="string">&quot;organizations&quot;</span></span><br><span class="line">    res=$?</span><br><span class="line">    &#123; <span class="built_in">set</span> +x; &#125; 2&gt;/dev/null</span><br><span class="line">    <span class="keyword">if</span> [ <span class="variable">$res</span> -ne 0 ]; <span class="keyword">then</span></span><br><span class="line">      fatalln <span class="string">&quot;Failed to generate certificates...&quot;</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">    infoln <span class="string">&quot;Creating Orderer Org Identities&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">set</span> -x</span><br><span class="line">    cryptogen generate --config=./organizations/cryptogen/crypto-config-orderer.yaml --output=<span class="string">&quot;organizations&quot;</span></span><br><span class="line">    res=$?</span><br><span class="line">    &#123; <span class="built_in">set</span> +x; &#125; 2&gt;/dev/null</span><br><span class="line">    <span class="keyword">if</span> [ <span class="variable">$res</span> -ne 0 ]; <span class="keyword">then</span></span><br><span class="line">      fatalln <span class="string">&quot;Failed to generate certificates...&quot;</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># Create crypto material using cfssl</span></span><br><span class="line">  <span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$CRYPTO</span>&quot;</span> == <span class="string">&quot;cfssl&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line"></span><br><span class="line">    . organizations/cfssl/registerEnroll.sh</span><br><span class="line"></span><br><span class="line">    infoln <span class="string">&quot;Creating Org1 Identities&quot;</span></span><br><span class="line">    <span class="comment">#function_name cert-type   CN   org</span></span><br><span class="line">    peer_cert peer peer0.org1.example.com org1</span><br><span class="line">    peer_cert admin Admin@org1.example.com org1</span><br><span class="line"></span><br><span class="line">    infoln <span class="string">&quot;Creating Org2 Identities&quot;</span></span><br><span class="line">    <span class="comment">#function_name cert-type   CN   org</span></span><br><span class="line">    peer_cert peer peer0.org2.example.com org2</span><br><span class="line">    peer_cert admin Admin@org2.example.com org2</span><br><span class="line"></span><br><span class="line">    <span class="comment">#org3_1207 : add crypto material using cfssl</span></span><br><span class="line">    infoln <span class="string">&quot;Creating Org3 Identities&quot;</span></span><br><span class="line">    <span class="comment">#function_name cert-type   CN   org</span></span><br><span class="line">    peer_cert peer peer0.org3.example.com org3</span><br><span class="line">    peer_cert admin Admin@org3.example.com org3</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    infoln <span class="string">&quot;Creating Orderer Org Identities&quot;</span></span><br><span class="line">    <span class="comment">#function_name cert-type   CN   </span></span><br><span class="line">    orderer_cert orderer orderer.example.com</span><br><span class="line">    orderer_cert admin Admin@example.com</span><br><span class="line"></span><br><span class="line">  <span class="keyword">fi</span> </span><br><span class="line"></span><br><span class="line">  <span class="comment"># Create crypto material using Fabric CA</span></span><br><span class="line">  <span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$CRYPTO</span>&quot;</span> == <span class="string">&quot;Certificate Authorities&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    infoln <span class="string">&quot;Generating certificates using Fabric CA&quot;</span></span><br><span class="line">    <span class="variable">$&#123;CONTAINER_CLI_COMPOSE&#125;</span> -f compose/<span class="variable">$COMPOSE_FILE_CA</span> -f compose/<span class="variable">$CONTAINER_CLI</span>/<span class="variable">$&#123;CONTAINER_CLI&#125;</span>-<span class="variable">$COMPOSE_FILE_CA</span> up -d 2&gt;&amp;1</span><br><span class="line"></span><br><span class="line">    . organizations/fabric-ca/registerEnroll.sh</span><br><span class="line"></span><br><span class="line">  <span class="comment">#通过轮询检查 tls-cert.pem 文件是否生成，确保 CA 服务已完全启动并准备就绪,调用registerEnroll.sh的函数</span></span><br><span class="line">    <span class="keyword">while</span> :</span><br><span class="line">    <span class="keyword">do</span></span><br><span class="line">      <span class="keyword">if</span> [ ! -f <span class="string">&quot;organizations/fabric-ca/org1/tls-cert.pem&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">sleep</span> 1</span><br><span class="line">      <span class="keyword">else</span></span><br><span class="line">        <span class="built_in">break</span></span><br><span class="line">      <span class="keyword">fi</span></span><br><span class="line">    <span class="keyword">done</span></span><br><span class="line"></span><br><span class="line">    infoln <span class="string">&quot;Creating Org1 Identities&quot;</span></span><br><span class="line"></span><br><span class="line">    createOrg1</span><br><span class="line"></span><br><span class="line">    infoln <span class="string">&quot;Creating Org2 Identities&quot;</span></span><br><span class="line"></span><br><span class="line">    createOrg2</span><br><span class="line">    <span class="comment">#org3_1207 : add crypto material using Fabric CA</span></span><br><span class="line"></span><br><span class="line">    infoln <span class="string">&quot;Creating Org3 Identities&quot;</span></span><br><span class="line"></span><br><span class="line">    createOrg3</span><br><span class="line"></span><br><span class="line">    infoln <span class="string">&quot;Creating Orderer Org Identities&quot;</span></span><br><span class="line"></span><br><span class="line">    createOrderer</span><br><span class="line"></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">  infoln <span class="string">&quot;Generating CCP files for Org1 \ Org2 \ Org3&quot;</span></span><br><span class="line">  ./organizations/ccp-generate.sh</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="修改registerenroll-sh：对应上一步调用的函数">修改<code>registerEnroll.sh</code>：对应上一步调用的函数</h4>
+<p>组织成员注册CA方式（仿照前面的组织注册即可）</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">createOrg3</span></span>() &#123;</span><br><span class="line">  infoln <span class="string">&quot;Enrolling the CA admin&quot;</span></span><br><span class="line">  <span class="built_in">mkdir</span> -p organizations/peerOrganizations/org3.example.com/</span><br><span class="line"></span><br><span class="line">  <span class="built_in">export</span> FABRIC_CA_CLIENT_HOME=<span class="variable">$&#123;PWD&#125;</span>/organizations/peerOrganizations/org3.example.com/</span><br><span class="line"></span><br><span class="line">  <span class="built_in">set</span> -x</span><br><span class="line">  fabric-ca-client enroll -u https://admin:adminpw@localhost:9054 --caname ca-org3 --tls.certfiles <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/fabric-ca/org3/ca-cert.pem&quot;</span></span><br><span class="line">  &#123; <span class="built_in">set</span> +x; &#125; 2&gt;/dev/null</span><br><span class="line"></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&#x27;NodeOUs:</span></span><br><span class="line"><span class="string">  Enable: true</span></span><br><span class="line"><span class="string">  ClientOUIdentifier:</span></span><br><span class="line"><span class="string">    Certificate: cacerts/localhost-9054-ca-org3.pem</span></span><br><span class="line"><span class="string">    OrganizationalUnitIdentifier: client</span></span><br><span class="line"><span class="string">  PeerOUIdentifier:</span></span><br><span class="line"><span class="string">    Certificate: cacerts/localhost-9054-ca-org3.pem</span></span><br><span class="line"><span class="string">    OrganizationalUnitIdentifier: peer</span></span><br><span class="line"><span class="string">  AdminOUIdentifier:</span></span><br><span class="line"><span class="string">    Certificate: cacerts/localhost-9054-ca-org3.pem</span></span><br><span class="line"><span class="string">    OrganizationalUnitIdentifier: admin</span></span><br><span class="line"><span class="string">  OrdererOUIdentifier:</span></span><br><span class="line"><span class="string">    Certificate: cacerts/localhost-9054-ca-org3.pem</span></span><br><span class="line"><span class="string">    OrganizationalUnitIdentifier: orderer&#x27;</span> &gt; <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/peerOrganizations/org3.example.com/msp/config.yaml&quot;</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">mkdir</span> -p <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/peerOrganizations/org3.example.com/msp/tlscacerts&quot;</span></span><br><span class="line">  <span class="built_in">cp</span> <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/fabric-ca/org3/ca-cert.pem&quot;</span> <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/peerOrganizations/org3.example.com/msp/tlscacerts/ca.crt&quot;</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">mkdir</span> -p <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/peerOrganizations/org3.example.com/tlsca&quot;</span></span><br><span class="line">  <span class="built_in">cp</span> <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/fabric-ca/org3/ca-cert.pem&quot;</span> <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/peerOrganizations/org3.example.com/tlsca/tlsca.org3.example.com-cert.pem&quot;</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">mkdir</span> -p <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/peerOrganizations/org3.example.com/ca&quot;</span></span><br><span class="line">  <span class="built_in">cp</span> <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/fabric-ca/org3/ca-cert.pem&quot;</span> <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/peerOrganizations/org3.example.com/ca/ca.org3.example.com-cert.pem&quot;</span></span><br><span class="line"></span><br><span class="line">  infoln <span class="string">&quot;Registering peer0&quot;</span></span><br><span class="line">  <span class="built_in">set</span> -x</span><br><span class="line">  fabric-ca-client register --caname ca-org3 --id.name peer0 --id.secret peer0pw --id.type peer --tls.certfiles <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/fabric-ca/org3/ca-cert.pem&quot;</span></span><br><span class="line">  &#123; <span class="built_in">set</span> +x; &#125; 2&gt;/dev/null</span><br><span class="line"></span><br><span class="line">  infoln <span class="string">&quot;Registering user&quot;</span></span><br><span class="line">  <span class="built_in">set</span> -x</span><br><span class="line">  fabric-ca-client register --caname ca-org3 --id.name user1 --id.secret user1pw --id.type client --tls.certfiles <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/fabric-ca/org3/ca-cert.pem&quot;</span></span><br><span class="line">  &#123; <span class="built_in">set</span> +x; &#125; 2&gt;/dev/null</span><br><span class="line"></span><br><span class="line">  infoln <span class="string">&quot;Registering the org admin&quot;</span></span><br><span class="line">  <span class="built_in">set</span> -x</span><br><span class="line">  fabric-ca-client register --caname ca-org3 --id.name org3admin --id.secret org3adminpw --id.type admin --tls.certfiles <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/fabric-ca/org3/ca-cert.pem&quot;</span></span><br><span class="line">  &#123; <span class="built_in">set</span> +x; &#125; 2&gt;/dev/null</span><br><span class="line"></span><br><span class="line">  infoln <span class="string">&quot;Generating the peer0 msp&quot;</span></span><br><span class="line">  <span class="built_in">set</span> -x</span><br><span class="line">  fabric-ca-client enroll -u https://peer0:peer0pw@localhost:9054 --caname ca-org3 -M <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/msp&quot;</span> --tls.certfiles <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/fabric-ca/org3/ca-cert.pem&quot;</span></span><br><span class="line">  &#123; <span class="built_in">set</span> +x; &#125; 2&gt;/dev/null</span><br><span class="line"></span><br><span class="line">  <span class="built_in">cp</span> <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/peerOrganizations/org3.example.com/msp/config.yaml&quot;</span> <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/msp/config.yaml&quot;</span></span><br><span class="line"></span><br><span class="line">  infoln <span class="string">&quot;Generating the peer0-tls certificates, use --csr.hosts to specify Subject Alternative Names&quot;</span></span><br><span class="line">  <span class="built_in">set</span> -x</span><br><span class="line">  fabric-ca-client enroll -u https://peer0:peer0pw@localhost:9054 --caname ca-org3 -M <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/tls&quot;</span> --enrollment.profile tls --csr.hosts peer0.org3.example.com --csr.hosts localhost --tls.certfiles <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/fabric-ca/org3/ca-cert.pem&quot;</span></span><br><span class="line">  &#123; <span class="built_in">set</span> +x; &#125; 2&gt;/dev/null</span><br><span class="line"></span><br><span class="line">  <span class="built_in">cp</span> <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/tls/tlscacerts/&quot;</span>* <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/tls/ca.crt&quot;</span></span><br><span class="line">  <span class="built_in">cp</span> <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/tls/signcerts/&quot;</span>* <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/tls/server.crt&quot;</span></span><br><span class="line">  <span class="built_in">cp</span> <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/tls/keystore/&quot;</span>* <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/tls/server.key&quot;</span></span><br><span class="line"></span><br><span class="line">  infoln <span class="string">&quot;Generating the user msp&quot;</span></span><br><span class="line">  <span class="built_in">set</span> -x</span><br><span class="line">  fabric-ca-client enroll -u https://user1:user1pw@localhost:9054 --caname ca-org3 -M <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/peerOrganizations/org3.example.com/users/User1@org3.example.com/msp&quot;</span> --tls.certfiles <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/fabric-ca/org3/ca-cert.pem&quot;</span></span><br><span class="line">  &#123; <span class="built_in">set</span> +x; &#125; 2&gt;/dev/null</span><br><span class="line"></span><br><span class="line">  <span class="built_in">cp</span> <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/peerOrganizations/org3.example.com/msp/config.yaml&quot;</span> <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/peerOrganizations/org3.example.com/users/User1@org3.example.com/msp/config.yaml&quot;</span></span><br><span class="line"></span><br><span class="line">  infoln <span class="string">&quot;Generating the org admin msp&quot;</span></span><br><span class="line">  <span class="built_in">set</span> -x</span><br><span class="line">  fabric-ca-client enroll -u https://org3admin:org3adminpw@localhost:9054 --caname ca-org3 -M <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/peerOrganizations/org3.example.com/users/Admin@org3.example.com/msp&quot;</span> --tls.certfiles <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/fabric-ca/org3/ca-cert.pem&quot;</span></span><br><span class="line">  &#123; <span class="built_in">set</span> +x; &#125; 2&gt;/dev/null</span><br><span class="line"></span><br><span class="line">  <span class="built_in">cp</span> <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/peerOrganizations/org3.example.com/msp/config.yaml&quot;</span> <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/peerOrganizations/org3.example.com/users/Admin@org3.example.com/msp/config.yaml&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>设置监听端口:</p>
+<table>
+<thead>
+<tr>
+<th>组织</th>
+<th>CA监听端口（CAPORT）</th>
+<th>节点服务端口（P0PORT）</th>
+<th>CA_SERVER_OPERATIONS<br />_LISTENADDRESS</th>
+<th></th>
+<th>couchdb</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Org1</td>
+<td>7054</td>
+<td>7051</td>
+<td>0.0.0.0:17054</td>
+<td>7052/9444</td>
+<td>5984</td>
+</tr>
+<tr>
+<td>Org2</td>
+<td>8054</td>
+<td>8051</td>
+<td>0.0.0.0:18054</td>
+<td>8052/9445</td>
+<td>7984</td>
+</tr>
+<tr>
+<td>Org3</td>
+<td>9054</td>
+<td>9051</td>
+<td>0.0.0.0:19054</td>
+<td>9052/9446</td>
+<td>8984</td>
+</tr>
+<tr>
+<td>Orderer0</td>
+<td>6054</td>
+<td>7050</td>
+<td>0.0.0.0:16054</td>
+<td>7053/9441</td>
+<td></td>
+</tr>
+<tr>
+<td>Orderer1</td>
+<td>6054</td>
+<td>7150</td>
+<td>0.0.0.0:16054</td>
+<td>7055/9442</td>
+<td></td>
+</tr>
+<tr>
+<td>Orderer2</td>
+<td>6054</td>
+<td>7250</td>
+<td>0.0.0.0:16054</td>
+<td>7057/9443</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="修改-scripts-createchannel-sh">修改<code>\scripts\createChannel.sh</code></h4>
+<p>设置创建通道添加第三个节点</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># imports  </span></span><br><span class="line">. scripts/envVar.sh</span><br><span class="line"></span><br><span class="line">CHANNEL_NAME=<span class="string">&quot;<span class="variable">$1</span>&quot;</span></span><br><span class="line">DELAY=<span class="string">&quot;<span class="variable">$2</span>&quot;</span></span><br><span class="line">MAX_RETRY=<span class="string">&quot;<span class="variable">$3</span>&quot;</span></span><br><span class="line">VERBOSE=<span class="string">&quot;<span class="variable">$4</span>&quot;</span></span><br><span class="line">BFT=<span class="string">&quot;<span class="variable">$5</span>&quot;</span></span><br><span class="line">: <span class="variable">$&#123;CHANNEL_NAME:=&quot;mychannel&quot;&#125;</span></span><br><span class="line">: <span class="variable">$&#123;DELAY:=&quot;3&quot;&#125;</span></span><br><span class="line">: <span class="variable">$&#123;MAX_RETRY:=&quot;5&quot;&#125;</span></span><br><span class="line">: <span class="variable">$&#123;VERBOSE:=&quot;false&quot;&#125;</span></span><br><span class="line">: <span class="variable">$&#123;BFT:=0&#125;</span></span><br><span class="line"></span><br><span class="line">: <span class="variable">$&#123;CONTAINER_CLI:=&quot;docker&quot;&#125;</span></span><br><span class="line"><span class="keyword">if</span> <span class="built_in">command</span> -v <span class="variable">$&#123;CONTAINER_CLI&#125;</span>-compose &gt; /dev/null 2&gt;&amp;1; <span class="keyword">then</span></span><br><span class="line">    : <span class="variable">$&#123;CONTAINER_CLI_COMPOSE:=&quot;<span class="variable">$&#123;CONTAINER_CLI&#125;</span>-compose&quot;&#125;</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    : <span class="variable">$&#123;CONTAINER_CLI_COMPOSE:=&quot;<span class="variable">$&#123;CONTAINER_CLI&#125;</span> compose&quot;&#125;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line">infoln <span class="string">&quot;Using <span class="variable">$&#123;CONTAINER_CLI&#125;</span> and <span class="variable">$&#123;CONTAINER_CLI_COMPOSE&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ ! -d <span class="string">&quot;channel-artifacts&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">	<span class="built_in">mkdir</span> channel-artifacts</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">createChannelGenesisBlock</span></span>() &#123;</span><br><span class="line">  setGlobals 1</span><br><span class="line">	<span class="built_in">which</span> configtxgen</span><br><span class="line">	<span class="keyword">if</span> [ <span class="string">&quot;$?&quot;</span> -ne 0 ]; <span class="keyword">then</span></span><br><span class="line">		fatalln <span class="string">&quot;configtxgen tool not found.&quot;</span></span><br><span class="line">	<span class="keyword">fi</span></span><br><span class="line">	<span class="built_in">local</span> bft_true=<span class="variable">$1</span></span><br><span class="line">	<span class="built_in">set</span> -x</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> [ <span class="variable">$bft_true</span> -eq 1 ]; <span class="keyword">then</span></span><br><span class="line">		configtxgen -profile ChannelUsingBFT -outputBlock ./channel-artifacts/<span class="variable">$&#123;CHANNEL_NAME&#125;</span>.block -channelID <span class="variable">$CHANNEL_NAME</span></span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		configtxgen -profile ChannelUsingRaft -outputBlock ./channel-artifacts/<span class="variable">$&#123;CHANNEL_NAME&#125;</span>.block -channelID <span class="variable">$CHANNEL_NAME</span></span><br><span class="line">	<span class="keyword">fi</span></span><br><span class="line">	res=$?</span><br><span class="line">	&#123; <span class="built_in">set</span> +x; &#125; 2&gt;/dev/null</span><br><span class="line">  verifyResult <span class="variable">$res</span> <span class="string">&quot;Failed to generate channel configuration transaction...&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">createChannel</span></span>() &#123;</span><br><span class="line">	<span class="comment"># Poll in case the raft leader is not set yet</span></span><br><span class="line">	<span class="built_in">local</span> rc=1</span><br><span class="line">	<span class="built_in">local</span> COUNTER=1</span><br><span class="line">	<span class="built_in">local</span> bft_true=<span class="variable">$1</span></span><br><span class="line">	infoln <span class="string">&quot;Adding orderers&quot;</span></span><br><span class="line">	<span class="keyword">while</span> [ <span class="variable">$rc</span> -ne 0 -a <span class="variable">$COUNTER</span> -lt <span class="variable">$MAX_RETRY</span> ] ; <span class="keyword">do</span></span><br><span class="line">		<span class="built_in">sleep</span> <span class="variable">$DELAY</span></span><br><span class="line">		<span class="built_in">set</span> -x</span><br><span class="line">    . scripts/orderer.sh <span class="variable">$&#123;CHANNEL_NAME&#125;</span>&gt; /dev/null 2&gt;&amp;1</span><br><span class="line">    <span class="keyword">if</span> [ <span class="variable">$bft_true</span> -eq 1 ]; <span class="keyword">then</span></span><br><span class="line">      . scripts/orderer2.sh <span class="variable">$&#123;CHANNEL_NAME&#125;</span>&gt; /dev/null 2&gt;&amp;1</span><br><span class="line">      . scripts/orderer3.sh <span class="variable">$&#123;CHANNEL_NAME&#125;</span>&gt; /dev/null 2&gt;&amp;1</span><br><span class="line">      . scripts/orderer4.sh <span class="variable">$&#123;CHANNEL_NAME&#125;</span>&gt; /dev/null 2&gt;&amp;1</span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">		res=$?</span><br><span class="line">		&#123; <span class="built_in">set</span> +x; &#125; 2&gt;/dev/null</span><br><span class="line">		<span class="built_in">let</span> rc=<span class="variable">$res</span></span><br><span class="line">		COUNTER=$(<span class="built_in">expr</span> <span class="variable">$COUNTER</span> + 1)</span><br><span class="line">	<span class="keyword">done</span></span><br><span class="line">	<span class="built_in">cat</span> log.txt</span><br><span class="line">	verifyResult <span class="variable">$res</span> <span class="string">&quot;Channel creation failed&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># joinChannel ORG</span></span><br><span class="line"><span class="function"><span class="title">joinChannel</span></span>() &#123;</span><br><span class="line">  ORG=<span class="variable">$1</span></span><br><span class="line">  FABRIC_CFG_PATH=<span class="variable">$PWD</span>/../config/</span><br><span class="line">  setGlobals <span class="variable">$ORG</span></span><br><span class="line">	<span class="built_in">local</span> rc=1</span><br><span class="line">	<span class="built_in">local</span> COUNTER=1</span><br><span class="line">	<span class="comment">## Sometimes Join takes time, hence retry</span></span><br><span class="line">	<span class="keyword">while</span> [ <span class="variable">$rc</span> -ne 0 -a <span class="variable">$COUNTER</span> -lt <span class="variable">$MAX_RETRY</span> ] ; <span class="keyword">do</span></span><br><span class="line">    <span class="built_in">sleep</span> <span class="variable">$DELAY</span></span><br><span class="line">    <span class="built_in">set</span> -x</span><br><span class="line">    peer channel <span class="built_in">join</span> -b <span class="variable">$BLOCKFILE</span> &gt;&amp;log.txt</span><br><span class="line">    res=$?</span><br><span class="line">    &#123; <span class="built_in">set</span> +x; &#125; 2&gt;/dev/null</span><br><span class="line">		<span class="built_in">let</span> rc=<span class="variable">$res</span></span><br><span class="line">		COUNTER=$(<span class="built_in">expr</span> <span class="variable">$COUNTER</span> + 1)</span><br><span class="line">	<span class="keyword">done</span></span><br><span class="line">	<span class="built_in">cat</span> log.txt</span><br><span class="line">	verifyResult <span class="variable">$res</span> <span class="string">&quot;After <span class="variable">$MAX_RETRY</span> attempts, peer0.org<span class="variable">$&#123;ORG&#125;</span> has failed to join channel &#x27;<span class="variable">$CHANNEL_NAME</span>&#x27; &quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">setAnchorPeer</span></span>() &#123;</span><br><span class="line">  ORG=<span class="variable">$1</span></span><br><span class="line">  . scripts/setAnchorPeer.sh <span class="variable">$ORG</span> <span class="variable">$CHANNEL_NAME</span> </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">## User attempts to use BFT orderer in Fabric network with CA</span></span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$BFT</span> -eq 1 ] &amp;&amp; [ -d <span class="string">&quot;organizations/fabric-ca/ordererOrg/msp&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">  fatalln <span class="string">&quot;Fabric network seems to be using CA. This sample does not yet support the use of consensus type BFT and CA together.&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## Create channel genesis block</span></span><br><span class="line">FABRIC_CFG_PATH=<span class="variable">$PWD</span>/../config/</span><br><span class="line">BLOCKFILE=<span class="string">&quot;./channel-artifacts/<span class="variable">$&#123;CHANNEL_NAME&#125;</span>.block&quot;</span></span><br><span class="line"></span><br><span class="line">infoln <span class="string">&quot;Generating channel genesis block &#x27;<span class="variable">$&#123;CHANNEL_NAME&#125;</span>.block&#x27;&quot;</span></span><br><span class="line">FABRIC_CFG_PATH=<span class="variable">$&#123;PWD&#125;</span>/configtx</span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$BFT</span> -eq 1 ]; <span class="keyword">then</span></span><br><span class="line">  FABRIC_CFG_PATH=<span class="variable">$&#123;PWD&#125;</span>/bft-config</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line">createChannelGenesisBlock <span class="variable">$BFT</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">## Create channel</span></span><br><span class="line">infoln <span class="string">&quot;Creating channel <span class="variable">$&#123;CHANNEL_NAME&#125;</span>&quot;</span></span><br><span class="line">createChannel <span class="variable">$BFT</span></span><br><span class="line">successln <span class="string">&quot;Channel &#x27;<span class="variable">$CHANNEL_NAME</span>&#x27; created&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## Join all the peers to the channel</span></span><br><span class="line">infoln <span class="string">&quot;Joining org1 peer to the channel...&quot;</span></span><br><span class="line">joinChannel 1</span><br><span class="line">infoln <span class="string">&quot;Joining org2 peer to the channel...&quot;</span></span><br><span class="line">joinChannel 2</span><br><span class="line">infoln <span class="string">&quot;Joining org3 peer to the channel...&quot;</span></span><br><span class="line">joinChannel 3</span><br><span class="line"></span><br><span class="line"><span class="comment">## Set the anchor peers for each org in the channel</span></span><br><span class="line">infoln <span class="string">&quot;Setting anchor peer for org1...&quot;</span></span><br><span class="line">setAnchorPeer 1</span><br><span class="line">infoln <span class="string">&quot;Setting anchor peer for org2...&quot;</span></span><br><span class="line">setAnchorPeer 2</span><br><span class="line">infoln <span class="string">&quot;Setting anchor peer for org3...&quot;</span></span><br><span class="line">setAnchorPeer 3</span><br><span class="line"></span><br><span class="line">successln <span class="string">&quot;Channel &#x27;<span class="variable">$CHANNEL_NAME</span>&#x27; joined&quot;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="修改setanchorpeer-sh-envvar-sh">修改<code>setAnchorPeer.sh</code>,<code>envVar.sh</code></h4>
+<p>环境设置，锚节点设置示例：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> [ <span class="variable">$ORG</span> -eq 1 ]; <span class="keyword">then</span></span><br><span class="line">  HOST=<span class="string">&quot;peer0.org1.example.com&quot;</span></span><br><span class="line">  PORT=7051</span><br><span class="line"><span class="keyword">elif</span> [ <span class="variable">$ORG</span> -eq 2 ]; <span class="keyword">then</span></span><br><span class="line">  HOST=<span class="string">&quot;peer0.org2.example.com&quot;</span></span><br><span class="line">  PORT=8051</span><br><span class="line"><span class="keyword">elif</span> [ <span class="variable">$ORG</span> -eq 3 ]; <span class="keyword">then</span></span><br><span class="line">  HOST=<span class="string">&quot;peer0.org3.example.com&quot;</span></span><br><span class="line">  PORT=9051</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">  errorln <span class="string">&quot;Org<span class="variable">$&#123;ORG&#125;</span> unknown&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">infoln <span class="string">&quot;Using organization <span class="variable">$&#123;USING_ORG&#125;</span>&quot;</span></span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$USING_ORG</span> -eq 1 ]; <span class="keyword">then</span></span><br><span class="line">  <span class="built_in">export</span> CORE_PEER_LOCALMSPID=Org1MSP</span><br><span class="line">  <span class="built_in">export</span> CORE_PEER_TLS_ROOTCERT_FILE=<span class="variable">$PEER0_ORG1_CA</span></span><br><span class="line">  <span class="built_in">export</span> CORE_PEER_MSPCONFIGPATH=<span class="variable">$&#123;TEST_NETWORK_HOME&#125;</span>/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp</span><br><span class="line">  <span class="built_in">export</span> CORE_PEER_ADDRESS=localhost:7051</span><br><span class="line"><span class="keyword">elif</span> [ <span class="variable">$USING_ORG</span> -eq 2 ]; <span class="keyword">then</span></span><br><span class="line">  <span class="built_in">export</span> CORE_PEER_LOCALMSPID=Org2MSP</span><br><span class="line">  <span class="built_in">export</span> CORE_PEER_TLS_ROOTCERT_FILE=<span class="variable">$PEER0_ORG2_CA</span></span><br><span class="line">  <span class="built_in">export</span> CORE_PEER_MSPCONFIGPATH=<span class="variable">$&#123;TEST_NETWORK_HOME&#125;</span>/organizations/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp</span><br><span class="line">  <span class="built_in">export</span> CORE_PEER_ADDRESS=localhost:8051</span><br><span class="line"><span class="keyword">elif</span> [ <span class="variable">$USING_ORG</span> -eq 3 ]; <span class="keyword">then</span></span><br><span class="line">  <span class="built_in">export</span> CORE_PEER_LOCALMSPID=Org3MSP</span><br><span class="line">  <span class="built_in">export</span> CORE_PEER_TLS_ROOTCERT_FILE=<span class="variable">$PEER0_ORG3_CA</span></span><br><span class="line">  <span class="built_in">export</span> CORE_PEER_MSPCONFIGPATH=<span class="variable">$&#123;TEST_NETWORK_HOME&#125;</span>/organizations/peerOrganizations/org3.example.com/users/Admin@org3.example.com/msp</span><br><span class="line">  <span class="built_in">export</span> CORE_PEER_ADDRESS=localhost:9051</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">  errorln <span class="string">&quot;ORG Unknown&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+<p>其他的按照之前组织修改即可。</p>
+<h4 id="修改deploycc-sh">修改<code>deployCC.sh</code></h4>
+<div class="note info flat"><p>只有在链码定义被提交并且链码已在通道上进行部署后，通道中的所有参与组织的节点才能调用该链码。</p>
+<p>新加的组织也需要安装链码、批准并提交</p>
+</div>
+<p>目前的代码：</p>
+<ol>
+<li>
+<p>查询链码是否已安装：queryInstalled 1</p>
+</li>
+<li>
+<p>审批链码定义（为组织 1）：approveForMyOrg 1 通过此命令，组织 1 表示它同意链码的版本、序列号等配置，并准备将其提交到通道中。</p>
+</li>
+<li>
+<p>检查链码定义是否准备好提交：如果所有组织都已批准，则可以提交链码定义。（排bug用的，非必要）</p>
+<p><code>checkCommitReadiness 1 &quot;\&quot;Org1MSP\&quot;: true&quot; &quot;\&quot;Org2MSP\&quot;: false&quot;</code>：检查组织 1 是否批准了链码定义。期望结果是 <code>Org1MSP</code> 为 <code>true</code>（已批准），<code>Org2MSP</code> 为 <code>false</code>（未批准）。</p>
+<p><code>checkCommitReadiness 2 &quot;\&quot;Org1MSP\&quot;: true&quot; &quot;\&quot;Org2MSP\&quot;: false&quot;</code>：检查组织 2 是否批准了链码定义。期望 <code>Org1MSP</code> 为 <code>true</code>，<code>Org2MSP</code> 为 <code>false</code>，表明组织 1 已批准，组织 2 未批准。</p>
+</li>
+<li>
+<p>为组织 2 批准链码定义</p>
+<p><code>approveForMyOrg 2</code>：在这个步骤中，组织 2 对链码定义进行批准。通过执行 <code>approveformyorg</code> 命令，组织 2 表示它同意链码定义，可以准备提交链码定义到通道中。</p>
+</li>
+<li>
+<p>再次检查链码定义是否准备好提交</p>
+<p><code>checkCommitReadiness 1 &quot;\&quot;Org1MSP\&quot;: true&quot; &quot;\&quot;Org2MSP\&quot;: true&quot;</code>：检查组织 1 和组织 2 是否都批准了链码定义，期望 <code>Org1MSP</code> 和 <code>Org2MSP</code> 都为 <code>true</code>（表示两个组织都批准了链码定义）。</p>
+<p><code>checkCommitReadiness 2 &quot;\&quot;Org1MSP\&quot;: true&quot; &quot;\&quot;Org2MSP\&quot;: true&quot;</code>：再次检查组织 2 和组织 1 是否都批准了链码定义，期望两个组织的批准状态都为 <code>true</code>。</p>
+</li>
+<li>
+<p>.提交链码定义</p>
+<p><code>commitChaincodeDefinition 1 2</code>：在这一步，链码定义已被组织 1 和组织 2 批准，可以正式提交到通道中。<code>commitChaincodeDefinition</code> 命令会通过 <code>peer lifecycle chaincode commit</code> 命令提交链码定义，确保链码在通道中生效。</p>
+</li>
+<li>
+<p>查询两个组织的链码提交状态</p>
+<p><code>queryCommitted 1</code>：查询组织 1 上的链码提交状态，确保链码定义已成功提交到通道。</p>
+<p><code>queryCommitted 2</code>：查询组织 2 上的链码提交状态，确保链码定义已成功提交到通道。</p>
+</li>
+</ol>
+<p>添加第三个组织的逻辑类似。</p>
+<h4 id="修改ccp-generate-sh：生成组织的连接文件">修改<code>ccp-generate.sh</code>：生成组织的连接文件</h4>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">ORG=3</span><br><span class="line">P0PORT=9051</span><br><span class="line">CAPORT=9054</span><br><span class="line">PEERPEM=organizations/peerOrganizations/org3.example.com/tlsca/tlsca.org3.example.com-cert.pem</span><br><span class="line">CAPEM=organizations/peerOrganizations/org3.example.com/ca/ca.org3.example.com-cert.pem</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;<span class="subst">$(json_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM)</span>&quot;</span> &gt; organizations/peerOrganizations/org3.example.com/connection-org3.json</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;<span class="subst">$(yaml_ccp $ORG $P0PORT $CAPORT $PEERPEM $CAPEM)</span>&quot;</span> &gt; organizations/peerOrganizations/org3.example.com/connection-org3.yaml</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="修改-compose-compose-test-net-yaml以及-docker-docker-compose-test-net-yaml：启动docker">修改<code>\compose\compose-test-net.yaml</code>以及<code>\docker\docker-compose-test-net.yaml</code>：启动Docker</h4>
+<p>docker容器启动peer服务</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">peer0.org3.example.com:</span></span><br><span class="line">   <span class="attr">container_name:</span> <span class="string">peer0.org3.example.com</span></span><br><span class="line">   <span class="attr">image:</span> <span class="string">hyperledger/fabric-peer:latest</span></span><br><span class="line">   <span class="attr">labels:</span></span><br><span class="line">     <span class="attr">service:</span> <span class="string">hyperledger-fabric</span></span><br><span class="line">   <span class="attr">environment:</span></span><br><span class="line">     <span class="bullet">-</span> <span class="string">FABRIC_CFG_PATH=/etc/hyperledger/peercfg</span></span><br><span class="line">     <span class="bullet">-</span> <span class="string">FABRIC_LOGGING_SPEC=INFO</span></span><br><span class="line">     <span class="comment">#- FABRIC_LOGGING_SPEC=DEBUG</span></span><br><span class="line">     <span class="bullet">-</span> <span class="string">CORE_PEER_TLS_ENABLED=true</span></span><br><span class="line">     <span class="bullet">-</span> <span class="string">CORE_PEER_PROFILE_ENABLED=false</span></span><br><span class="line">     <span class="bullet">-</span> <span class="string">CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt</span></span><br><span class="line">     <span class="bullet">-</span> <span class="string">CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key</span></span><br><span class="line">     <span class="bullet">-</span> <span class="string">CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt</span></span><br><span class="line">     <span class="comment"># Peer specific variables</span></span><br><span class="line">     <span class="bullet">-</span> <span class="string">CORE_PEER_ID=peer0.org3.example.com</span></span><br><span class="line">     <span class="bullet">-</span> <span class="string">CORE_PEER_ADDRESS=peer0.org3.example.com:9051</span></span><br><span class="line">     <span class="bullet">-</span> <span class="string">CORE_PEER_LISTENADDRESS=0.0.0.0:9051</span></span><br><span class="line">     <span class="bullet">-</span> <span class="string">CORE_PEER_CHAINCODEADDRESS=peer0.org3.example.com:9052</span></span><br><span class="line">     <span class="bullet">-</span> <span class="string">CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:9052</span></span><br><span class="line">     <span class="bullet">-</span> <span class="string">CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org3.example.com:9051</span></span><br><span class="line">     <span class="bullet">-</span> <span class="string">CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org3.example.com:9051</span></span><br><span class="line">     <span class="bullet">-</span> <span class="string">CORE_PEER_LOCALMSPID=org3MSP</span></span><br><span class="line">     <span class="bullet">-</span> <span class="string">CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp</span></span><br><span class="line">     <span class="bullet">-</span> <span class="string">CORE_OPERATIONS_LISTENADDRESS=peer0.org3.example.com:9446</span></span><br><span class="line">     <span class="bullet">-</span> <span class="string">CORE_METRICS_PROVIDER=prometheus</span></span><br><span class="line">     <span class="bullet">-</span> <span class="string">CHAINCODE_AS_A_SERVICE_BUILDER_CONFIG=&#123;&quot;peername&quot;:&quot;peer0org3&quot;&#125;</span></span><br><span class="line">     <span class="bullet">-</span> <span class="string">CORE_CHAINCODE_EXECUTETIMEOUT=300s</span></span><br><span class="line">     <span class="bullet">-</span> <span class="string">GODEBUG=netdns=go</span>  <span class="comment"># 添加环境变量</span></span><br><span class="line">   <span class="attr">volumes:</span></span><br><span class="line">     <span class="bullet">-</span> <span class="string">../organizations/peerOrganizations/org3.example.com/peers/peer0.org3.example.com:/etc/hyperledger/fabric</span></span><br><span class="line">     <span class="bullet">-</span> <span class="string">peer0.org3.example.com:/var/hyperledger/production</span></span><br><span class="line">   <span class="attr">working_dir:</span> <span class="string">/root</span></span><br><span class="line">   <span class="attr">command:</span> <span class="string">peer</span> <span class="string">node</span> <span class="string">start</span></span><br><span class="line">   <span class="attr">ports:</span></span><br><span class="line">     <span class="bullet">-</span> <span class="number">9051</span><span class="string">:9051</span></span><br><span class="line">     <span class="bullet">-</span> <span class="number">9446</span><span class="string">:9446</span></span><br><span class="line">   <span class="attr">networks:</span></span><br><span class="line">     <span class="bullet">-</span> <span class="string">test</span></span><br></pre></td></tr></table></figure>
+<h4 id="修改-compose-compose-ca-yaml">修改<code>\compose\compose-ca.yaml</code></h4>
+<p>docker容器启动ca服务</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">ca_org3:</span></span><br><span class="line">  <span class="attr">image:</span> <span class="string">hyperledger/fabric-ca:latest</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">service:</span> <span class="string">hyperledger-fabric</span></span><br><span class="line">  <span class="attr">environment:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">FABRIC_CA_SERVER_CA_NAME=ca-org3</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">FABRIC_CA_SERVER_TLS_ENABLED=true</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">FABRIC_CA_SERVER_PORT=9054</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">FABRIC_CA_SERVER_OPERATIONS_LISTENADDRESS=0.0.0.0:19054</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&quot;9054:9054&quot;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&quot;19054:19054&quot;</span></span><br><span class="line">  <span class="attr">command:</span> <span class="string">sh</span> <span class="string">-c</span> <span class="string">&#x27;fabric-ca-server start -b admin:adminpw -d&#x27;</span></span><br><span class="line">  <span class="attr">volumes:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">../organizations/fabric-ca/org3:/etc/hyperledger/fabric-ca-server</span></span><br><span class="line">  <span class="attr">container_name:</span> <span class="string">ca_org3</span></span><br><span class="line">  <span class="attr">networks:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">test</span></span><br></pre></td></tr></table></figure>
+<h4 id="修改-compose-compose-couch-yaml-不必要">修改<code>\compose\compose-couch.yaml</code>（不必要）</h4>
+<p>couchdb服务</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">couchdb2:</span></span><br><span class="line">  <span class="attr">container_name:</span> <span class="string">couchdb2</span></span><br><span class="line">  <span class="attr">image:</span> <span class="string">couchdb:3.3.3</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">service:</span> <span class="string">hyperledger-fabric</span></span><br><span class="line">  <span class="comment"># Populate the COUCHDB_USER and COUCHDB_PASSWORD to set an admin user and password</span></span><br><span class="line">  <span class="comment"># for CouchDB.  This will prevent CouchDB from operating in an &quot;Admin Party&quot; mode.</span></span><br><span class="line">  <span class="attr">environment:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">COUCHDB_USER=admin</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">COUCHDB_PASSWORD=adminpw</span></span><br><span class="line">  <span class="comment"># Comment/Uncomment the port mapping if you want to hide/expose the CouchDB service,</span></span><br><span class="line">  <span class="comment"># for example map it to utilize Fauxton User Interface in dev environments.</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&quot;8984:5984&quot;</span></span><br><span class="line">  <span class="attr">networks:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">test</span></span><br><span class="line"></span><br><span class="line"><span class="attr">peer0.org3.example.com:</span></span><br><span class="line">  <span class="attr">environment:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">CORE_LEDGER_STATE_STATEDATABASE=CouchDB</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb1:5984</span></span><br><span class="line">    <span class="comment"># The CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME and CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD</span></span><br><span class="line">    <span class="comment"># provide the credentials for ledger to connect to CouchDB.  The username and password must</span></span><br><span class="line">    <span class="comment"># match the username and password set for the associated CouchDB.</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=admin</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=adminpw</span></span><br><span class="line">  <span class="attr">depends_on:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">couchdb2</span></span><br></pre></td></tr></table></figure>
+<h4 id="新建-organizations-cryptogen-cypto-config-org3-yaml-不必要">新建<code>/organizations/cryptogen/cypto-config-org3.yaml</code>（不必要）</h4>
+<p>新建cyptogen设置，这里其实没有用到</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Copyright IBM Corp. All Rights Reserved.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># SPDX-License-Identifier: Apache-2.0</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ---------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment"># &quot;PeerOrgs&quot; - Definition of organizations managing peer nodes</span></span><br><span class="line"><span class="comment"># ---------------------------------------------------------------------------</span></span><br><span class="line"><span class="attr">PeerOrgs:</span></span><br><span class="line">  <span class="comment"># ---------------------------------------------------------------------------</span></span><br><span class="line">  <span class="comment"># Org3</span></span><br><span class="line">  <span class="comment"># ---------------------------------------------------------------------------</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">Name:</span> <span class="string">Org3</span></span><br><span class="line">    <span class="attr">Domain:</span> <span class="string">org3.example.com</span></span><br><span class="line">    <span class="attr">EnableNodeOUs:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">Template:</span></span><br><span class="line">      <span class="attr">Count:</span> <span class="number">1</span></span><br><span class="line">      <span class="attr">SANS:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">localhost</span></span><br><span class="line">      <span class="comment"># Start: 5</span></span><br><span class="line">      <span class="comment"># Hostname: &#123;&#123;.Prefix&#125;&#125;&#123;&#123;.Index&#125;&#125; # default</span></span><br><span class="line">    <span class="comment"># ---------------------------------------------------------------------------</span></span><br><span class="line">    <span class="comment"># &quot;Users&quot;</span></span><br><span class="line">    <span class="comment"># ---------------------------------------------------------------------------</span></span><br><span class="line">    <span class="comment"># Count: The number of user accounts _in addition_ to Admin</span></span><br><span class="line">    <span class="comment"># ---------------------------------------------------------------------------</span></span><br><span class="line">    <span class="attr">Users:</span></span><br><span class="line">      <span class="attr">Count:</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<h4 id="修改configtx-yaml">修改<code>configtx.yaml</code></h4>
+<p>定义网络中的通道、组织和策略等详细信息。这个文件是创建通道配置区块（<strong>Genesis Block</strong>）和更新通道配置的重要组成部分，更改应用通道。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">Organizations:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="meta">&amp;Org3</span></span><br><span class="line">    <span class="comment"># DefaultOrg defines the organization which is used in the sampleconfig</span></span><br><span class="line">    <span class="comment"># of the fabric.git development environment</span></span><br><span class="line">    <span class="attr">Name:</span> <span class="string">Org3MSP</span></span><br><span class="line">    <span class="comment"># ID to load the MSP definition as</span></span><br><span class="line">    <span class="attr">ID:</span> <span class="string">Org3MSP</span></span><br><span class="line">    <span class="attr">MSPDir:</span> <span class="string">../organizations/peerOrganizations/org3.example.com/msp</span></span><br><span class="line">    <span class="comment"># Policies defines the set of policies at this level of the config tree</span></span><br><span class="line">    <span class="comment"># For organization policies, their canonical path is usually</span></span><br><span class="line">    <span class="comment">#   /Channel/&lt;Application|Orderer&gt;/&lt;OrgName&gt;/&lt;PolicyName&gt;</span></span><br><span class="line">    <span class="attr">Policies:</span></span><br><span class="line">      <span class="attr">Readers:</span></span><br><span class="line">        <span class="attr">Type:</span> <span class="string">Signature</span></span><br><span class="line">        <span class="attr">Rule:</span> <span class="string">&quot;OR(&#x27;Org3MSP.admin&#x27;, &#x27;Org3MSP.peer&#x27;, &#x27;Org3MSP.client&#x27;)&quot;</span></span><br><span class="line">      <span class="attr">Writers:</span></span><br><span class="line">        <span class="attr">Type:</span> <span class="string">Signature</span></span><br><span class="line">        <span class="attr">Rule:</span> <span class="string">&quot;OR(&#x27;Org3MSP.admin&#x27;, &#x27;Org3MSP.client&#x27;)&quot;</span></span><br><span class="line">      <span class="attr">Admins:</span></span><br><span class="line">        <span class="attr">Type:</span> <span class="string">Signature</span></span><br><span class="line">        <span class="attr">Rule:</span> <span class="string">&quot;OR(&#x27;Org3MSP.admin&#x27;)&quot;</span></span><br><span class="line">      <span class="attr">Endorsement:</span></span><br><span class="line">        <span class="attr">Type:</span> <span class="string">Signature</span></span><br><span class="line">        <span class="attr">Rule:</span> <span class="string">&quot;OR(&#x27;Org3MSP.peer&#x27;)&quot;</span></span><br><span class="line"><span class="comment">################################################################################</span></span><br><span class="line"><span class="attr">Profiles:</span></span><br><span class="line">  <span class="attr">ChannelUsingRaft:</span></span><br><span class="line">    <span class="string">&lt;&lt;:</span> <span class="meta">*ChannelDefaults</span></span><br><span class="line">    <span class="attr">Orderer:</span></span><br><span class="line">      <span class="string">&lt;&lt;:</span> <span class="meta">*OrdererDefaults</span></span><br><span class="line">      <span class="attr">OrdererType:</span> <span class="string">etcdraft</span></span><br><span class="line">      <span class="attr">EtcdRaft:</span></span><br><span class="line">        <span class="attr">Consenters:</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">Host:</span> <span class="string">orderer.example.com</span></span><br><span class="line">            <span class="attr">Port:</span> <span class="number">7050</span></span><br><span class="line">            <span class="attr">ClientTLSCert:</span> <span class="string">../organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt</span></span><br><span class="line">            <span class="attr">ServerTLSCert:</span> <span class="string">../organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt</span></span><br><span class="line">      <span class="attr">Organizations:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="meta">*OrdererOrg</span></span><br><span class="line">      <span class="attr">Capabilities:</span> <span class="meta">*OrdererCapabilities</span></span><br><span class="line">    <span class="attr">Application:</span></span><br><span class="line">      <span class="string">&lt;&lt;:</span> <span class="meta">*ApplicationDefaults</span></span><br><span class="line">      <span class="attr">Organizations:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="meta">*Org1</span></span><br><span class="line">        <span class="bullet">-</span> <span class="meta">*Org2</span></span><br><span class="line">        <span class="bullet">-</span> <span class="meta">*Org3</span></span><br><span class="line">      <span class="attr">Capabilities:</span> <span class="meta">*ApplicationCapabilities</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="添加排序节点">添加排序节点</h3>
+<h4 id="修改-organizations-cryptogen-cypto-config-order-yaml-非必要">修改<code>/organizations/cryptogen/cypto-config-order.yaml</code>（非必要）</h4>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">OrdererOrgs:</span></span><br><span class="line">  <span class="comment"># ---------------------------------------------------------------------------</span></span><br><span class="line">  <span class="comment"># Orderer</span></span><br><span class="line">  <span class="comment"># ---------------------------------------------------------------------------</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">Name:</span> <span class="string">Orderer</span></span><br><span class="line">    <span class="attr">Domain:</span> <span class="string">example.com</span></span><br><span class="line">    <span class="attr">EnableNodeOUs:</span> <span class="literal">true</span></span><br><span class="line">    <span class="comment"># ---------------------------------------------------------------------------</span></span><br><span class="line">    <span class="comment"># &quot;Specs&quot; - See PeerOrgs for complete description</span></span><br><span class="line">    <span class="comment"># ---------------------------------------------------------------------------</span></span><br><span class="line">    <span class="attr">Specs:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">Hostname:</span> <span class="string">orderer0</span></span><br><span class="line">        <span class="attr">SANS:</span></span><br><span class="line">          <span class="bullet">-</span> <span class="string">localhost</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">Hostname:</span> <span class="string">orderer1</span></span><br><span class="line">        <span class="attr">SANS:</span></span><br><span class="line">          <span class="bullet">-</span> <span class="string">localhost</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">Hostname:</span> <span class="string">orderer2</span></span><br><span class="line">        <span class="attr">SANS:</span></span><br><span class="line">          <span class="bullet">-</span> <span class="string">localhost</span></span><br></pre></td></tr></table></figure>
+<p>这个是使用cyptogen生成证书所需要的配置，我们用的是ca方法</p>
+<h4 id="修改-scripts-ccutils-sh-registerenroll-sh">修改<code>/scripts/ccutils.sh</code>,<code>registerEnroll.sh</code></h4>
+<p>目的：对order节点和用户注册，生成对应证书文件，这里详细解释一下之前忽略的证书生成过程。</p>
+<ol>
+<li>
+<p>CA admin enrollment：使用管理员身份在 Fabric CA 中注册，并生成相关的证书。<code>admin:adminpw</code> 是管理员的用户名和密码，<code>localhost:6054</code> 是 CA 服务的地址。证书文件 (<code>ca-cert.pem</code>) 用于加密和保护通信。</p>
+<blockquote>
+<p>这一步的ca证书是在启动<code>compose-ca.yaml</code>时对组织注册的</p>
+</blockquote>
+</li>
+<li>
+<p>生成 MSP</p>
+<p>创建一个 <code>config.yaml</code> 文件，定义了各个 <strong>组织单位</strong>（OU）。这些 OU 用于区分不同的成员类型：<code>client</code>, <code>peer</code>, <code>admin</code>, <code>orderer</code>，每个 OU 对应不同的身份验证要求</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;NodeOUs:</span></span><br><span class="line"><span class="string">Enable: true</span></span><br><span class="line"><span class="string">...</span></span><br><span class="line"><span class="string">&#x27;</span> &gt; <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/ordererOrganizations/example.com/msp/config.yaml&quot;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>组织证书规范化</p>
+<p>复制组织的 CA 证书到 <code>msp/tlscacerts</code> 目录（生成的组织CA证书）</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/ordererOrganizations/example.com/msp/tlscacerts&quot;</span></span><br><span class="line"><span class="built_in">cp</span> <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/fabric-ca/ordererOrg/ca-cert.pem&quot;</span> <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/ordererOrganizations/example.com/msp/tlscacerts/tlsca.example.com-cert.pem&quot;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>Register orderer 和 ordererAdmin：后续改为注册三个节点+一个用户</p>
+<p><strong>注册 Orderer 节点</strong>：使用 <code>orderer</code> 用户身份，在 CA 中注册一个名为 <code>orderer</code> 的排序节点，并生成对应的证书和密钥</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fabric-ca-client register --caname ca-orderer --id.name orderer --id.secret ordererpw --id.type orderer --tls.certfiles <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/fabric-ca/ordererOrg/ca-cert.pem&quot;</span></span><br></pre></td></tr></table></figure>
+<p><strong>注册 Orderer Admin</strong>：注册一个 <code>ordererAdmin</code> 用户，拥有管理权限，用于管理 orderer 节点的配置。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fabric-ca-client register --caname ca-orderer --id.name ordererAdmin --id.secret ordererAdminpw --id.type admin --tls.certfiles <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/fabric-ca/ordererOrg/ca-cert.pem&quot;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>生成 Orderer 节点的 MSP</p>
+<p>连接排序组织为节点生成msp</p>
+<ul>
+<li>enroll：申请生成证书</li>
+<li>-u ：申请者id（4中注册的节点ordererpw就是密码）</li>
+<li>–caname ca-orderer：要连接的 <strong>CA 机构的名字</strong>，即初始生成的排序组织的CA</li>
+<li>-M：指定存储目录</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fabric-ca-client enroll -u https://orderer:ordererpw@localhost:6054 --caname ca-orderer -M <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp&quot;</span> --tls.certfiles <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/fabric-ca/ordererOrg/ca-cert.pem&quot;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>生成 Orderer 节点的 TLS证书</p>
+<ul>
+<li><code>--csr.hosts</code> 参数用于指定在证书签发请求（CSR, Certificate Signing Request）中要包含的主机名</li>
+<li>不同节点除了要更改orderer和ordererpw以外，还要更改下面的生成位置和主机名字</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fabric-ca-client enroll -u https://orderer:ordererpw@localhost:6054 --caname ca-orderer -M <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls&quot;</span> --enrollment.profile tls --csr.hosts orderer.example.com --csr.hosts localhost --tls.certfiles <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/fabric-ca/ordererOrg/ca-cert.pem&quot;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>复制并重命名生成的文件，这步骤其实比较冗余</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cp</span> <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/tlscacerts/&quot;</span>* <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/ca.crt&quot;</span></span><br><span class="line"><span class="built_in">cp</span> <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/signcerts/&quot;</span>* <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.crt&quot;</span></span><br><span class="line"><span class="built_in">cp</span> <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/keystore/&quot;</span>* <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/server.key&quot;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>复制TLS证书到 Orderer 的 MSP 目录（规范化）</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts&quot;</span></span><br><span class="line"><span class="built_in">cp</span> <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/tls/tlscacerts/&quot;</span>* <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem&quot;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>为 Admin 生成 MSP</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fabric-ca-client enroll -u https://orderer0Admin:orderer0Adminpw@localhost:6054 --caname ca-orderer -M <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/ordererOrganizations/example.com/users/Admin@example.com/msp&quot;</span> --tls.certfiles <span class="string">&quot;<span class="variable">$&#123;PWD&#125;</span>/organizations/fabric-ca/ordererOrg/ca-cert.pem&quot;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="修改-compose-compose-test-net-yaml">修改<code>\compose\compose-test-net.yaml</code></h4>
+<ul>
+<li>7050/7150/7250：ORDERER_GENERAL_LISTENPORT，用来接收 <strong>客户端</strong> 和 <strong>Peer 节点</strong> 请求的端口，即普通事务提交端口</li>
+<li>7053/7055/7057：官方设置，<strong>Orderer Admin 服务</strong> 监听的端口，管理操作</li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">order0.orderer.example.com:</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">order0.orderer.example.com</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">hyperledger/fabric-orderer:latest</span></span><br><span class="line">    <span class="attr">labels:</span></span><br><span class="line">      <span class="attr">service:</span> <span class="string">hyperledger-fabric</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">FABRIC_LOGGING_SPEC=INFO</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">ORDERER_GENERAL_LISTENADDRESS=0.0.0.0</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">ORDERER_GENERAL_LISTENPORT=7050</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">ORDERER_GENERAL_LOCALMSPID=OrdererMSP</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp</span></span><br><span class="line">      <span class="comment"># enabled TLS</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">ORDERER_GENERAL_TLS_ENABLED=true</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">ORDERER_GENERAL_CLUSTER_CLIENTCERTIFICATE=/var/hyperledger/orderer/tls/server.crt</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">ORDERER_GENERAL_CLUSTER_CLIENTPRIVATEKEY=/var/hyperledger/orderer/tls/server.key</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">ORDERER_GENERAL_CLUSTER_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">ORDERER_GENERAL_BOOTSTRAPMETHOD=none</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">ORDERER_CHANNELPARTICIPATION_ENABLED=true</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">ORDERER_ADMIN_TLS_ENABLED=true</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">ORDERER_ADMIN_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">ORDERER_ADMIN_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">ORDERER_ADMIN_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">ORDERER_ADMIN_TLS_CLIENTROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">ORDERER_ADMIN_LISTENADDRESS=0.0.0.0:7053</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">ORDERER_OPERATIONS_LISTENADDRESS=orderer.example.com:9441</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">ORDERER_METRICS_PROVIDER=prometheus</span></span><br><span class="line">    <span class="attr">working_dir:</span> <span class="string">/root</span></span><br><span class="line">    <span class="attr">command:</span> <span class="string">orderer</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">../organizations/ordererOrganizations/example.com/orderers/orderer0.orderer.example.com/msp:/var/hyperledger/orderer/msp</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">../organizations/ordererOrganizations/example.com/orderers/orderer0.orderer.example.com/tls/:/var/hyperledger/orderer/tls</span></span><br><span class="line">         <span class="comment"># - orderer.example.com:/var/hyperledger/production/orderer</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">../organizations/ordererOrganizations/example.com/orderers/orderer1.orderer.example.com:/var/hyperledger/production/orderer</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">7050</span><span class="string">:7050</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">7053</span><span class="string">:7053</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">9441</span><span class="string">:9441</span></span><br><span class="line">    <span class="attr">networks:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">test</span></span><br></pre></td></tr></table></figure>
+<h4 id="修改-scripts-createchannel-sh">修改<code>\scripts\createChannel.sh</code></h4>
+<p>这里是修改对应脚本的命名规则，<a target="_blank" rel="noopener" href="http://xn--orderer-ff6kt45e.sh">例如orderer.sh</a>：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">channel_name=<span class="variable">$1</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$&#123;ROOTDIR&#125;</span>/../bin:<span class="variable">$&#123;PWD&#125;</span>/../bin:<span class="variable">$PATH</span></span><br><span class="line"><span class="built_in">export</span> ORDERER_ADMIN_TLS_SIGN_CERT=<span class="variable">$&#123;PWD&#125;</span>/organizations/ordererOrganizations/example.com/orderers/orderer0.orderer.example.com/tls/server.crt /dev/null 2&gt;&amp;1</span><br><span class="line"><span class="built_in">export</span> ORDERER_ADMIN_TLS_PRIVATE_KEY=<span class="variable">$&#123;PWD&#125;</span>/organizations/ordererOrganizations/example.com/orderers/orderer0.orderer.example.com/tls/server.key /dev/null 2&gt;&amp;1</span><br><span class="line"></span><br><span class="line">osnadmin channel <span class="built_in">join</span> --channelID <span class="variable">$&#123;channel_name&#125;</span> --config-block ./channel-artifacts/<span class="variable">$&#123;channel_name&#125;</span>.block -o localhost:7053 --ca-file <span class="string">&quot;<span class="variable">$ORDERER_CA</span>&quot;</span> --client-cert <span class="string">&quot;<span class="variable">$ORDERER_ADMIN_TLS_SIGN_CERT</span>&quot;</span> --client-key <span class="string">&quot;<span class="variable">$ORDERER_ADMIN_TLS_PRIVATE_KEY</span>&quot;</span> &gt;&gt; log.txt 2&gt;&amp;1</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>Orderer Admin 服务</strong> 监听的端口</p>
+</blockquote>
+<h4 id="修改configtx-yaml">修改<code>configtx.yaml</code></h4>
+<p>对应修改即可</p>
+<h4 id="修改scripts-setanchorpeer-sh">修改<code>scripts/setanchorpeer.sh</code></h4>
+<p>修改排序节点</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">updateAnchorPeer</span></span>() &#123;</span><br><span class="line">  peer channel update -o localhost:7050 --ordererTLSHostnameOverride orderer0.orderer.example.com -c <span class="variable">$CHANNEL_NAME</span> -f <span class="variable">$&#123;TEST_NETWORK_HOME&#125;</span>/channel-artifacts/<span class="variable">$&#123;CORE_PEER_LOCALMSPID&#125;</span>anchors.tx --tls --cafile <span class="string">&quot;<span class="variable">$ORDERER_CA</span>&quot;</span> &gt;&amp;log.txt</span><br><span class="line">  res=$?</span><br><span class="line">  <span class="built_in">cat</span> log.txt</span><br><span class="line">  verifyResult <span class="variable">$res</span> <span class="string">&quot;Anchor peer update failed&quot;</span></span><br><span class="line">  successln <span class="string">&quot;Anchor peer set for org &#x27;<span class="variable">$CORE_PEER_LOCALMSPID</span>&#x27; on channel &#x27;<span class="variable">$CHANNEL_NAME</span>&#x27;&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="修改createchannel-sh-configupdate-sh-ccutil-sh">修改<code>createChannel.sh</code>,<code>configUpdate.sh</code>,<code>ccutil.sh</code></h4>
+<p>修改order服务，这里仅列举示例:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">infoln <span class="string">&quot;Fetching the most recent configuration block for the channel&quot;</span></span><br><span class="line">  <span class="built_in">set</span> -x</span><br><span class="line">  peer channel fetch config <span class="variable">$&#123;TEST_NETWORK_HOME&#125;</span>/channel-artifacts/config_block.pb -o localhost:7050 --ordererTLSHostnameOverride orderer0.orderer.example.com -c <span class="variable">$CHANNEL</span> --tls --cafile <span class="string">&quot;<span class="variable">$ORDERER_CA</span>&quot;</span></span><br><span class="line">  &#123; <span class="built_in">set</span> +x; &#125; 2&gt;/dev/null</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;Fetching channel config block from orderer...&quot;</span></span><br><span class="line"><span class="built_in">set</span> -x</span><br><span class="line">peer channel fetch 0 <span class="variable">$BLOCKFILE</span> -o localhost:7050 --ordererTLSHostnameOverride orderer0.orderer.example.com -c <span class="variable">$CHANNEL_NAME</span> --tls --cafile <span class="string">&quot;<span class="variable">$ORDERER_CA</span>&quot;</span> &gt;&amp;log.txt</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">peer lifecycle chaincode commit -o localhost:7050 --ordererTLSHostnameOverride orderer0.orderer.example.com --tls --cafile <span class="string">&quot;<span class="variable">$ORDERER_CA</span>&quot;</span> --channelID <span class="variable">$CHANNEL_NAME</span> --name <span class="variable">$&#123;CC_NAME&#125;</span> <span class="string">&quot;<span class="variable">$&#123;PEER_CONN_PARMS[@]&#125;</span>&quot;</span> --version <span class="variable">$&#123;CC_VERSION&#125;</span> --sequence <span class="variable">$&#123;CC_SEQUENCE&#125;</span> <span class="variable">$&#123;INIT_REQUIRED&#125;</span> <span class="variable">$&#123;CC_END_POLICY&#125;</span> <span class="variable">$&#123;CC_COLL_CONFIG&#125;</span> &gt;&amp;log.txt</span><br><span class="line">  res=$?</span><br></pre></td></tr></table></figure>
+<h4 id="修改bft设置-不必要">修改bft设置（不必要）</h4>
+<p><code>/test-network/compose/compose-bft-test-net.yaml</code></p>
+<p><code>/test-network/bft-config/configtx.yaml</code></p>
+<h2 id="自定义网络搭建">自定义网络搭建</h2>
+<blockquote>
+<p>自定义20组织，组织内多节点，按照之前修改的思路进行网络扩展。</p>
+</blockquote>
+<h3 id="架构">架构</h3>
+<table>
+<thead>
+<tr>
+<th>组织名称</th>
+<th><code>FABRIC_CA_SERVER_PORT</code></th>
+<th><code>FABRIC_CA_SERVER_OPERATIONS_LISTENADDRESS</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ca_org1</td>
+<td>7054</td>
+<td>37054</td>
+</tr>
+<tr>
+<td>ca_org2</td>
+<td>8054</td>
+<td>38054</td>
+</tr>
+<tr>
+<td>ca_org3</td>
+<td>9054</td>
+<td>39054</td>
+</tr>
+<tr>
+<td>ca_org4</td>
+<td>10054</td>
+<td>40054</td>
+</tr>
+<tr>
+<td>ca_org5</td>
+<td>11054</td>
+<td>41054</td>
+</tr>
+<tr>
+<td>ca_org6</td>
+<td>12054</td>
+<td>42054</td>
+</tr>
+<tr>
+<td>ca_org7</td>
+<td>13054</td>
+<td>43054</td>
+</tr>
+<tr>
+<td>ca_org8</td>
+<td>14054</td>
+<td>44054</td>
+</tr>
+<tr>
+<td>ca_org9</td>
+<td>15054</td>
+<td>45054</td>
+</tr>
+<tr>
+<td>ca_org10</td>
+<td>16054</td>
+<td>46054</td>
+</tr>
+<tr>
+<td>ca_org11</td>
+<td>17054</td>
+<td>47054</td>
+</tr>
+<tr>
+<td>ca_org12</td>
+<td>18054</td>
+<td>48054</td>
+</tr>
+<tr>
+<td>ca_org13</td>
+<td>19054</td>
+<td>49054</td>
+</tr>
+<tr>
+<td>ca_org14</td>
+<td>20054</td>
+<td>50054</td>
+</tr>
+<tr>
+<td>ca_org15</td>
+<td>21054</td>
+<td>51054</td>
+</tr>
+<tr>
+<td>ca_org16</td>
+<td>22054</td>
+<td>52054</td>
+</tr>
+<tr>
+<td>ca_org17</td>
+<td>23054</td>
+<td>53054</td>
+</tr>
+<tr>
+<td>ca_org18</td>
+<td>24054</td>
+<td>54054</td>
+</tr>
+<tr>
+<td>ca_org19</td>
+<td>25054</td>
+<td>55054</td>
+</tr>
+<tr>
+<td>ca_org20</td>
+<td>26054</td>
+<td>56054</td>
+</tr>
+<tr>
+<td>order</td>
+<td>6054</td>
+<td>57054</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong><code>FABRIC_CA_SERVER_PORT</code></strong> (CA服务的主端口)
+<ul>
+<li>必要，唯一，开放外部访问，TLS加密</li>
+</ul>
+</li>
+<li><strong><code>FABRIC_CA_SERVER_OPERATIONS_LISTENADDRESS</code></strong> (CA操作接口端口)
+<ul>
+<li>不是必须的，与 <code>FABRIC_CA_SERVER_PORT</code> 不应相同，必须选择不同的端口。</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Organization</th>
+<th>Peer Port</th>
+<th>Chaincode Port</th>
+<th>Operations Port</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>org1</td>
+<td>7051</td>
+<td>7052</td>
+<td>7446</td>
+</tr>
+<tr>
+<td>org2</td>
+<td>8051</td>
+<td>8052</td>
+<td>8446</td>
+</tr>
+<tr>
+<td>org3</td>
+<td>9051</td>
+<td>9052</td>
+<td>9446</td>
+</tr>
+<tr>
+<td>org4</td>
+<td>10051</td>
+<td>10052</td>
+<td>10446</td>
+</tr>
+<tr>
+<td>org5</td>
+<td>11051</td>
+<td>11052</td>
+<td>11446</td>
+</tr>
+<tr>
+<td>org6</td>
+<td>12051</td>
+<td>12052</td>
+<td>12446</td>
+</tr>
+<tr>
+<td>org7</td>
+<td>13051</td>
+<td>13052</td>
+<td>13446</td>
+</tr>
+<tr>
+<td>org8</td>
+<td>14051</td>
+<td>14052</td>
+<td>14446</td>
+</tr>
+<tr>
+<td>org9</td>
+<td>15051</td>
+<td>15052</td>
+<td>15446</td>
+</tr>
+<tr>
+<td>org10</td>
+<td>16051</td>
+<td>16052</td>
+<td>16446</td>
+</tr>
+<tr>
+<td>org11</td>
+<td>17051</td>
+<td>17052</td>
+<td>17446</td>
+</tr>
+<tr>
+<td>org12</td>
+<td>18051</td>
+<td>18052</td>
+<td>18446</td>
+</tr>
+<tr>
+<td>org13</td>
+<td>19051</td>
+<td>19052</td>
+<td>19446</td>
+</tr>
+<tr>
+<td>org14</td>
+<td>20051</td>
+<td>20052</td>
+<td>20446</td>
+</tr>
+<tr>
+<td>org15</td>
+<td>21051</td>
+<td>21052</td>
+<td>21446</td>
+</tr>
+<tr>
+<td>org16</td>
+<td>22051</td>
+<td>22052</td>
+<td>22446</td>
+</tr>
+<tr>
+<td>org17</td>
+<td>23051</td>
+<td>23052</td>
+<td>23446</td>
+</tr>
+<tr>
+<td>org18</td>
+<td>24051</td>
+<td>24052</td>
+<td>24446</td>
+</tr>
+<tr>
+<td>org19</td>
+<td>25051</td>
+<td>25052</td>
+<td>25446</td>
+</tr>
+<tr>
+<td>org20</td>
+<td>26051</td>
+<td>26052</td>
+<td>26446</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><code>CORE_PEER_ADDRESS</code>：用于 Peer 节点之间的通信（7051）
+<ul>
+<li>必要，唯一，开放以供连接</li>
+</ul>
+</li>
+<li><code>CORE_PEER_CHAINCODEADDRESS</code>：链码通信端口（7052）
+<ul>
+<li>必要，唯一，对 其他Peer 节点可用</li>
+</ul>
+</li>
+<li><code>CORE_OPERATIONS_LISTENADDRESS</code>：该端口用于监控和操作，例如 Prometheus 的监控接口，链码或日志的操作接口。(7446)
+<ul>
+<li>非必要，推荐使用</li>
+</ul>
+</li>
+</ul>
+<h3 id="脚本文件：">脚本文件：</h3>
+<table>
+<thead>
+<tr>
+<th>脚本</th>
+<th>主要函数</th>
+<th>修改</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a target="_blank" rel="noopener" href="http://ccutils.sh">ccutils.sh</a></td>
+<td>installChaincode、queryInstalled、approveForMyOrg、queryCommitted、chaincodeQuery</td>
+<td>具体到节点</td>
+<td>其他函数通过设置环境变量确定节点，不需要修改</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="http://createchannel.sh">createchannel.sh</a></td>
+<td>createChannel、joinChannel</td>
+<td>具体到节点</td>
+<td>anchor设置没有修改</td>
+</tr>
+<tr>
+<td>deploy <a target="_blank" rel="noopener" href="http://CC.sh">CC.sh</a></td>
+<td>每个节点安装链码，选组织代表节点提交定义</td>
+<td></td>
+<td>commitChaincodeDefinition在通道级别提交一次</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="http://envVar.sh">envVar.sh</a></td>
+<td>setGlobals</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="http://registerEnroll.sh">registerEnroll.sh</a></td>
+<td>createOrg</td>
+<td>注册</td>
+<td></td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="http://ccp-generate.sh">ccp-generate.sh</a></td>
+<td>网络链接文件</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>configtx.yaml</td>
+<td>设置文件（重要）</td>
+<td>添加组织结构</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>按照之前的思路进行对应进行修改即可。</p>
+<h1 id="explorer">explorer</h1>
+<p>网上教程都有，配置挺简单的，注意私钥名称和文件路径，这里记录一下命令。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker volume rm explorer_pgdata                                             docker volume rm explorer_walletstore</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&quot;id&quot;: &quot;exploreradmin&quot;,</span><br><span class="line">&quot;password&quot;: &quot;exploreradminpw&quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker-compose -f docker-compose.yaml up -d</span><br><span class="line">docker-compose down -v</span><br></pre></td></tr></table></figure>
+<h1 id="caliper测试修改">Caliper测试修改</h1>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">export CORE_PEER_TLS_ENABLED=true</span><br><span class="line">export CORE_PEER_LOCALMSPID=&quot;Org1MSP&quot;</span><br><span class="line">export CORE_PEER_ADDRESS=peer0.org1.example.com:7051</span><br><span class="line">export CORE_PEER_TLS_ROOTCERT_FILE=$&#123;PWD&#125;/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt</span><br><span class="line">export CORE_PEER_MSPCONFIGPATH=$&#123;PWD&#125;/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npx caliper launch manager --caliper-workspace ./ --caliper-networkconfig networks/networkConfig.yaml --caliper-benchconfig benchmarks/myAssetBenchmark.yaml --caliper-flow-only-test --caliper-fabric-gateway-enabled --caliper-fabric-gateway-discovery --verbose</span><br></pre></td></tr></table></figure>
+<h1 id="附录">附录</h1>
+<h2 id="fabric架构">fabric架构</h2>
+<h3 id="1-组织-organization">1. 组织（Organization）</h3>
+<p>在 Hyperledger Fabric 中，组织是网络中最重要的组成部分。一个组织通常代表一个独立的实体，可能是一个公司、公司内的一个部门，或一个具有独立管理权限的网络成员。</p>
+<ul>
+<li><strong>组织定义</strong>：组织是由一个或多个节点组成的。每个组织可以拥有多个 <strong>peer 节点</strong>（用于执行智能合约、存储账本数据）和 <strong>orderer 节点</strong>（用于管理交易的排序和共识）。</li>
+<li><strong>MSP（Membership Service Provider）</strong>：每个组织都有自己的 <strong>MSP</strong>，它负责验证该组织成员身份的合法性。MSP 包含证书、密钥以及与身份相关的信息。</li>
+<li><strong>TLS CA</strong>：组织还会有 TLS 证书颁发机构（CA），用于为节点生成和管理 TLS 证书（以确保节点间通信的安全性）。</li>
+</ul>
+<h3 id="2-节点-node">2. 节点（Node）</h3>
+<p>在 Hyperledger Fabric 中，节点是网络中参与的计算单元。节点的类型主要有 <strong>Peer 节点</strong> 和 <strong>Orderer 节点</strong>。</p>
+<h4 id="2-1-peer-节点">2.1 Peer 节点</h4>
+<ul>
+<li><strong>功能</strong>：Peer 节点存储账本数据、执行智能合约（链码），并通过共识算法参与交易验证。</li>
+<li><strong>组织与 Peer 节点的关系</strong>：每个 Peer 节点隶属于某个组织。每个组织可以有一个或多个 Peer 节点。不同组织的 Peer 节点可以互相通信，以便同步账本数据。</li>
+<li><strong>身份与权限</strong>：Peer 节点的身份由组织的 MSP 管理，节点需要有合法的证书才能加入网络并参与事务处理。</li>
+</ul>
+<h4 id="2-2-orderer-节点">2.2 Orderer 节点</h4>
+<ul>
+<li><strong>功能</strong>：Orderer 节点负责对事务进行排序，并将它们发送到相应的 Peer 节点。Orderer 节点不执行智能合约，它们的作用是确保交易的顺序和一致性。</li>
+<li><strong>组织与 Orderer 节点的关系</strong>：Orderer 节点通常属于一个单独的组织，或者由多个组织共同拥有。每个组织可以有多个 Orderer 节点，形成一个 <strong>Orderer 集群</strong>，确保高可用性。</li>
+<li><strong>身份与权限</strong>：Orderer 节点的身份同样由组织的 MSP 和 TLS 配置文件管理。</li>
+</ul>
+<h3 id="3-用户-user">3. 用户（User）</h3>
+<p>用户是与 Hyperledger Fabric 网络交互的实体，通常是指某个组织的成员或客户端应用程序。每个用户都由组织的 CA（证书颁发机构）注册并生成证书。</p>
+<ul>
+<li>
+<p><strong>身份管理</strong>：用户身份由组织的 <strong>MSP</strong> 管理。组织中的每个用户都拥有一个唯一的证书（由 CA 颁发），这个证书用于证明用户的身份。</p>
+</li>
+<li>
+<p><strong>与节点的关系</strong>：用户可以与任意组织的 Peer 节点或 Orderer 节点进行交互，具体取决于用户的角色和权限。通过将证书与节点进行绑定，用户可以对节点进行访问控制。</p>
+</li>
+<li>
+<p>不同角色的用户</p>
+<p>：</p>
+<ul>
+<li><strong>客户端用户</strong>：通常指使用 SDK 与区块链网络交互的应用程序或客户端用户（如发起交易请求、查询账本等）。</li>
+<li><strong>管理员用户</strong>：每个组织可以有管理员用户，负责管理组织内的节点、更新配置、注册新用户等。</li>
+<li><strong>普通用户</strong>：普通用户通常具有权限在指定的 Peer 节点上执行查询或提交交易。</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-用户-节点和组织之间的关系">4. 用户、节点和组织之间的关系</h3>
+<ul>
+<li><strong>组织包含节点</strong>：组织包含 Peer 节点和 Orderer 节点，组织通过它们与其他组织的节点进行通信。</li>
+<li><strong>用户隶属于组织</strong>：用户是组织的成员，用户通过组织的 MSP 进行身份验证。每个用户的证书由组织的 CA 颁发，确保用户与组织的联系。</li>
+<li><strong>用户与节点交互</strong>：用户可以通过客户端应用与组织的 Peer 节点进行交互，发起交易、查询账本等。对于涉及排序的事务，用户的交易将被传送到 Orderer 节点进行排序，然后再由相应的 Peer 节点处理。</li>
+<li><strong>访问控制</strong>：每个组织可以定义不同用户的访问权限，限制他们在区块链网络中的操作范围。例如，管理员可能有权限更新配置，而普通用户只能查询账本或提交某些类型的交易。</li>
+</ul>
+<h3 id="关系总结图示：">关系总结图示：</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">┌───────────────────┐</span><br><span class="line">│   Organization    │  &lt;───&gt;  User (Registered by Org CA)</span><br><span class="line">└───────────────────┘</span><br><span class="line">        ↑</span><br><span class="line">        │</span><br><span class="line">   ┌──────────┐        ┌──────────┐</span><br><span class="line">   │   Peer   │        │  Orderer │</span><br><span class="line">   │   Node   │        │   Node   │</span><br><span class="line">   └──────────┘        └──────────┘</span><br></pre></td></tr></table></figure>
+<h3 id="具体示例：">具体示例：</h3>
+<ol>
+<li><strong>组织 A</strong> 拥有 <strong>Peer A1</strong> 和 <strong>Peer A2</strong> 两个节点，并有 <strong>Orderer A1</strong> 作为排序节点。</li>
+<li><strong>组织 B</strong> 拥有 <strong>Peer B1</strong> 节点，并有 <strong>Orderer B1</strong>。</li>
+<li><strong>用户 U1</strong> 和 <strong>用户 U2</strong> 都是 <strong>组织 A</strong> 的成员，分别可以在 <strong>Peer A1</strong> 或 <strong>Peer A2</strong> 上提交交易。</li>
+</ol>
+<h2 id="docker-配置">docker 配置</h2>
+<h3 id="配置解析：">配置解析：</h3>
+<ol>
+<li><strong><code>CORE_PEER_ID=peer0.org1.example.com</code></strong>
+<ul>
+<li><strong>说明：</strong> 设置 Peer 节点的唯一标识符，通常以 <code>peer0</code>（第一个 peer）和组织的名称来命名。该 ID 用于区分不同的 Peer 节点。</li>
+<li><strong>用途：</strong> 这是该节点在网络中的 ID。</li>
+</ul>
+</li>
+<li><strong><code>CORE_PEER_ADDRESS=peer0.org1.example.com:7051</code></strong>
+<ul>
+<li><strong>说明：</strong> 设置 Peer 节点的地址和端口，用于与其他节点通信。此地址通常是同一网络中的节点地址。</li>
+<li><strong>用途：</strong> 该地址允许其他节点与该 Peer 节点进行通信，例如用来提交事务或进行查询。</li>
+</ul>
+</li>
+<li><strong><code>CORE_PEER_LISTENADDRESS=0.0.0.0:7051</code></strong>
+<ul>
+<li><strong>说明：</strong> 设置该 Peer 节点监听的 IP 地址和端口。<code>0.0.0.0</code> 表示监听所有网络接口上的请求，<code>7051</code> 是默认的监听端口。</li>
+<li><strong>用途：</strong> 用于指定节点监听的网络地址，允许外部或其他 Peer 节点通过该端口与该节点通信。</li>
+</ul>
+</li>
+<li><strong><code>CORE_PEER_CHAINCODEADDRESS=peer0.org1.example.com:7052</code></strong>
+<ul>
+<li><strong>说明：</strong> 设置该 Peer 节点的链码通信地址。通常，链码通过与 Peer 节点上的某个端口进行通信来执行。</li>
+<li><strong>用途：</strong> 该地址用于其他节点与该 Peer 节点进行链码交互（如调用链码）。</li>
+</ul>
+</li>
+<li><strong><code>CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052</code></strong>
+<ul>
+<li><strong>说明：</strong> 设置该 Peer 节点监听链码请求的 IP 地址和端口。<code>0.0.0.0</code> 表示监听所有网络接口上的请求，<code>7052</code> 是默认的链码监听端口。</li>
+<li><strong>用途：</strong> 用于指定链码服务监听的网络地址，允许其他节点发送链码请求。</li>
+</ul>
+</li>
+<li><strong><code>CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org2.example.com:7051</code></strong>
+<ul>
+<li><strong>说明：</strong> 设置该 Peer 节点启动时的引导节点地址。<code>peer0.org2.example.com:7051</code> 是引导 Peer 节点的地址。</li>
+<li><strong>用途：</strong> 在节点启动时，Peer 节点使用该地址连接到其他节点，以便加入到网络中。这通常用于网络的初始化阶段，以便节点可以与其他节点建立联系。</li>
+</ul>
+</li>
+<li><strong><code>CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org1.example.com:7051</code></strong>
+<ul>
+<li><strong>说明：</strong> 设置该 Peer 节点的外部端点地址，其他节点在进行通信时会使用此地址。</li>
+<li><strong>用途：</strong> 这个地址告诉其他 Peer 节点该 Peer 节点的外部可访问地址，用于建立 gossipping 和数据传输。</li>
+</ul>
+</li>
+<li><strong><code>CORE_PEER_LOCALMSPID=Org1MSP</code></strong>
+<ul>
+<li><strong>说明：</strong> 设置 Peer 节点所属的组织的 MSP（Membership Service Provider）标识符。<code>Org1MSP</code> 是该节点所在组织的标识符。</li>
+<li><strong>用途：</strong> 用于标识节点所属的组织，该值在身份验证和授权过程中非常重要。每个组织在 Hyperledger Fabric 网络中都有一个唯一的 MSP。</li>
+</ul>
+</li>
+</ol>
+<h3 id="挂载">挂载</h3>
+<h4 id="1-var-run-host-var-run">1. <code>/var/run/:/host/var/run/</code></h4>
+<ul>
+<li><strong>主机目录：</strong> <code>/var/run/</code></li>
+<li><strong>容器目录：</strong> <code>/host/var/run/</code></li>
+</ul>
+<p><strong>作用：</strong></p>
+<ul>
+<li>这个挂载通常用于共享容器和主机之间的 <strong>UNIX 域套接字</strong>（如 Docker 的 socket）。在 Hyperledger Fabric 中，<code>/var/run/</code> 目录常常包含 Docker 服务的运行时数据（例如 Docker 的 socket 文件），使得容器能够与 Docker 引擎进行通信。通过挂载该目录，容器可以访问主机上的运行时文件。</li>
+</ul>
+<p><strong>用途：</strong></p>
+<ul>
+<li>这可能用于让容器和主机之间能够直接互相通信，尤其是当容器需要访问 Docker socket 文件时。</li>
+</ul>
+<h4 id="2-crypto-config-peerorganizations-org3-example-com-peers-peer0-org3-example-com-msp-etc-hyperledger-fabric-msp">2. <code>../crypto-config/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/msp:/etc/hyperledger/fabric/msp</code></h4>
+<ul>
+<li><strong>主机目录：</strong> <code>../crypto-config/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/msp</code></li>
+<li><strong>容器目录：</strong> <code>/etc/hyperledger/fabric/msp</code></li>
+</ul>
+<p><strong>作用：</strong></p>
+<ul>
+<li>这个挂载将 <strong>MSP（Membership Service Provider）</strong> 的数据从主机挂载到容器。MSP 包含了 Hyperledger Fabric 网络中节点的身份信息（如证书和密钥对）。</li>
+<li>该目录包含了节点的证书、私钥等信息，这对于节点验证和身份认证是必需的。容器通过挂载该目录，能够在启动时加载和使用这些身份文件。</li>
+</ul>
+<p><strong>用途：</strong></p>
+<ul>
+<li>容器中的链码或 peer 节点可以访问此目录来执行认证操作或与其他节点通信。</li>
+</ul>
+<h4 id="3-crypto-config-peerorganizations-org3-example-com-peers-peer0-org3-example-com-tls-etc-hyperledger-fabric-tls">3. <code>../crypto-config/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/tls:/etc/hyperledger/fabric/tls</code></h4>
+<ul>
+<li><strong>主机目录：</strong> <code>../crypto-config/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/tls</code></li>
+<li><strong>容器目录：</strong> <code>/etc/hyperledger/fabric/tls</code></li>
+</ul>
+<p><strong>作用：</strong></p>
+<ul>
+<li>该挂载提供了 <strong>TLS（Transport Layer Security）</strong> 证书和密钥的访问。这些证书用于加密和安全通信。</li>
+<li>容器从主机的 TLS 证书目录挂载文件，容器中的服务（例如 peer 节点或 orderer）在与其他节点建立安全的 TLS 连接时会使用这些文件。</li>
+</ul>
+<p><strong>用途：</strong></p>
+<ul>
+<li>容器中的 peer 节点或其他服务使用该目录中的 TLS 证书进行加密通信，确保网络通信的安全性。</li>
+</ul>
+<h4 id="4-peer0-org3-example-com-var-hyperledger-production">4. <code>peer0.org3.example.com:/var/hyperledger/production</code></h4>
+<ul>
+<li><strong>主机目录：</strong> <code>peer0.org3.example.com</code></li>
+<li><strong>容器目录：</strong> <code>/var/hyperledger/production</code></li>
+</ul>
+<p><strong>作用：</strong></p>
+<ul>
+<li>这个挂载将容器中的数据持久化到主机的指定目录。<code>/var/hyperledger/production</code> 目录通常用于存储 Hyperledger Fabric 节点的状态和数据（如区块链数据、交易日志、数据库文件等）。</li>
+<li>这样做的目的是保证即使容器停止或重启，节点的数据依然能保留下来。</li>
+</ul>
+<p><strong>用途：</strong></p>
+<ul>
+<li>保证数据持久性，容器中的状态数据会被保存在主机的指定路径下，确保 Fabric 节点的数据不会丢失。</li>
+</ul>
+<h2 id="遇到的问题">遇到的问题</h2>
+<p><strong>fabric-ca 版本问题</strong>：使用的是v1.5.12，但和配置不符，导致ca注册时卡住</p>
+<p>修改<code>/organizations/fabric-ca-server-config.yaml</code></p>
+<p><strong>orderer问题</strong>：残留数据导致orderer启动失败</p>
+<p>启动orderer的时候报错，orderer直接panic：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">2018-06-21 11:01:47.892 CST [orderer/commmon/multichannel] newLedgerResources -&gt; CRIT 052 Error creating channelconfig bundle: initializing channelconfig failed: could not create channel Orderer sub-group config: setting up the MSP manager failed: the supplied identity is not valid: x509: certificate signed by unknown authority (possibly because of &quot;x509: ECDSA verification failure&quot; while trying to verify candidate authority certificate &quot;ca.example.com&quot;)</span><br><span class="line">panic: Error creating channelconfig bundle: initializing channelconfig failed: could not create channel Orderer sub-group config: setting up the MSP manager failed: the supplied identity is not valid: x509: certificate signed by unknown authority (possibly because of &quot;x509: ECDSA verification failure&quot; while trying to verify candidate authority certificate &quot;ca.example.com&quot;)</span><br></pre></td></tr></table></figure>
+<p>排查发现，部署orderer的机器上以前部署过orderer，并且orderer.yaml中配置的数据路径<code>/opt/app/fabric/orderer/data</code>中残留了以前的数据。</p>
+<h1 id="备注">备注</h1>
+<blockquote>
+<p>一些自己的命令备注</p>
+</blockquote>
+<h2 id="命令">命令</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo chmod 777 start-network.sh</span><br><span class="line">sudo chmod 777 stop-network.sh</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd test-network</span><br><span class="line">./network.sh up createChannel -ca</span><br><span class="line">./network.sh deployCC -ccn basic -ccp ../asset-transfer-basic/chaincode-go -ccl go</span><br></pre></td></tr></table></figure>
+<p>使用 <strong>Certificate Authority（CA）</strong> 来生成证书和密钥</p>
+<blockquote>
+<p><strong>静态方法</strong>：使用 <code>cryptogen</code> 工具，简单但不灵活，直接生成所有需要的证书和密钥。</p>
+<p><strong>动态方法</strong>：CA 是一个中心化服务，动态生成和管理证书，可以通过 API 实现用户注册和证书颁发。</p>
+</blockquote>
+<p>测试命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">export PATH=$&#123;PWD&#125;/../bin:$PATH</span><br><span class="line">export FABRIC_CFG_PATH=$PWD/../config/</span><br><span class="line">export CORE_PEER_TLS_ENABLED=true</span><br><span class="line">export CORE_PEER_LOCALMSPID=&quot;Org1MSP&quot;</span><br><span class="line">export CORE_PEER_ADDRESS=peer0.org1.example.com:7051</span><br><span class="line">export CORE_PEER_TLS_ROOTCERT_FILE=$&#123;PWD&#125;/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt</span><br><span class="line">export CORE_PEER_MSPCONFIGPATH=$&#123;PWD&#125;/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer0.orderer.example.com --tls --cafile &quot;$&#123;PWD&#125;/organizations/ordererOrganizations/example.com/orderers/orderer0.orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem&quot; -C mychannel -n datatrading --peerAddresses localhost:7051 --tlsRootCertFiles &quot;$&#123;PWD&#125;/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt&quot; --peerAddresses localhost:8051 --tlsRootCertFiles &quot;$&#123;PWD&#125;/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt&quot;  -c &#x27;&#123;&quot;function&quot;:&quot;InitLedger&quot;,&quot;Args&quot;:[]&#125;&#x27;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer0.orderer.example.com --tls --cafile $&#123;PWD&#125;/organizations/ordererOrganizations/example.com/orderers/orderer0.orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n datatrading --peerAddresses localhost:7051 --tlsRootCertFiles $&#123;PWD&#125;/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt --peerAddresses localhost:8051 --tlsRootCertFiles $&#123;PWD&#125;/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt -c &#x27;&#123;&quot;function&quot;:&quot;createUser&quot;,&quot;Args&quot;:[&quot;ID&quot;,&quot;0&quot;]&#125;&#x27;</span><br></pre></td></tr></table></figure>
+<p>浏览器下载：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install ./google-chrome-stable_current_amd64.deb</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ssh -X</span><br><span class="line">export DISPLAY=:0</span><br><span class="line">sudo apt install firefox</span><br><span class="line">sudo apt install xdg-utils</span><br><span class="line">firefox &amp;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ssh -N -D 127.0.0.1:8080 remote_server_name@remote_server_ip_address</span><br><span class="line">ssh -N -L 127.0.0.1:6060:127.0.0.1:6060 root@192.168.8.22 -i  ~/.ssh/test_key</span><br></pre></td></tr></table></figure>
+<h2 id="链码相关">链码相关</h2>
+<p>每个组织的peer0代表组织批准链码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">source ./scripts/envVar.sh</span><br><span class="line">setGlobals 1 0</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">peer lifecycle chaincode approveformyorg -o localhost:7050 --ordererTLSHostnameOverride orderer0.orderer.example.com --tls --cafile /root/fabric/deTrade/deTrade-chain/deTrade-network/organizations/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem --channelID mychannel --name datatrading --version 1.0.1 --package-id datatrading_1.0.1:039625b9b7656ae2d3d472c02910b0de3102495c3f61a6106bed6b77d3d1f401 --sequence 1</span><br></pre></td></tr></table></figure>
+<p>链码定义是否被当前组织批准：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">peer lifecycle chaincode queryapproved --channelID mychannel --name datatrading_1.0.1:039625b9b7656ae2d3d472c02910b0de3102495c3f61a6106bed6b77d3d1f401 --sequence 1 --output json</span><br></pre></td></tr></table></figure>
+<p>提交定义：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">peer lifecycle chaincode commit -o localhost:7050 --ordererTLSHostnameOverride orderer0.orderer.example.com --tls --cafile /root/fabric/deTrade/deTrade-chain/deTrade-network/organizations/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem --channelID mychannel --name datatrading &#x27; --peerAddresses localhost:7051 --tlsRootCertFiles /root/fabric/deTrade/deTrade-chain/deTrade-network/organizations/peerOrganizations/org1.example.com/tlsca/tlsca.org1.example.com-cert.pem --peerAddresses localhost:8051 --tlsRootCertFiles /root/fabric/deTrade/deTrade-chain/deTrade-network/organizations/peerOrganizations/org2.example.com/tlsca/tlsca.org2.example.com-cert.pem&#x27; --version 1.0.1 --sequence 1</span><br></pre></td></tr></table></figure>
+<h2 id="其他">其他</h2>
+<p>需要注意的两个文件：</p>
+<ol>
+<li>ccpgenerate</li>
+<li>configtx.yaml</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export PATH=$&#123;PWD&#125;/../bin:$PATH</span><br><span class="line">export FABRIC_CFG_PATH=$PWD/../config/</span><br></pre></td></tr></table></figure>
+<p>除了脚本顶部定义的，还需要手动修改configtx文件</p>
+<p>地址检测：</p>
+<p>docker/peercfg/core.yaml</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">addressAutoDetect: true</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scripts/deployCC.sh &quot;mychannel&quot; &quot;datatrading&quot; &quot;../datatrading-chaincode/chaincode-go/&quot; &quot;go&quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose -f compose/compose-net-org1.yaml -f compose/docker/docker-compose-net-org1.yaml --volumes --remove-orphans</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s *SmartContract)</span></span> CreateDataset(ctx, title <span class="type">string</span>, description <span class="type">string</span>, hash <span class="type">string</span>, ipfsAddress <span class="type">string</span>, n_subset <span class="type">int</span>, owner <span class="type">string</span>, price <span class="type">int</span>, tags []<span class="type">string</span>)</span><br><span class="line"><span class="comment">//datasetID递增</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s *SmartContract)</span></span> CreateOrder(ctx, buyer <span class="type">string</span>, datasetID <span class="type">string</span>, payHash <span class="type">string</span>) </span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s *SmartContract)</span></span> CreateUser(ctx, uID <span class="type">string</span>, value <span class="type">int</span>) </span><br><span class="line"><span class="comment">//这里value没用上</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s *SmartContract)</span></span> HandleOrder(ctx, orderID <span class="type">string</span>, n <span class="type">int</span>, payword <span class="type">string</span>) </span><br><span class="line"><span class="comment">//这里n没用上</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker stop $(docker ps -a -q)  ; docker rm -f $(docker ps -aq) ; docker system prune -a ; docker volume prune ; docker ps -a ; docker images -a ; docker volume ls</span><br><span class="line"></span><br><span class="line">docker volume prune</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -rf ./channel-artifacts/*</span><br></pre></td></tr></table></figure>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://Ann-103.github.io">Ann</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://ann-103.github.io/post/1858757970.html">https://ann-103.github.io/post/1858757970.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://Ann-103.github.io" target="_blank">Ann-Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Blockchain/">Blockchain</a><a class="post-meta__tags" href="/tags/Fabric/">Fabric</a></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2024/12/05/SO3LhvBDmxZCou4.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/post/3364712731.html" title="zkSNARK 基础"><img class="cover" src="https://s2.loli.net/2024/12/05/SO3LhvBDmxZCou4.jpg" onerror="onerror=null;src='/img/loading.gif'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">zkSNARK 基础</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/post/1783592341.html" title="Fabric"><img class="cover" src="https://s2.loli.net/2024/11/14/ezn2mqK7YOEsMca.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-11-06</div><div class="title">Fabric</div></div></a></div><div><a href="/post/3638070731.html" title="DID架构"><img class="cover" src="https://s2.loli.net/2024/11/22/HgvTujcKwQVEzUp.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-12-02</div><div class="title">DID架构</div></div></a></div><div><a href="/post/3364712731.html" title="zkSNARK 基础"><img class="cover" src="https://s2.loli.net/2024/12/05/SO3LhvBDmxZCou4.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-12-06</div><div class="title">zkSNARK 基础</div></div></a></div><div><a href="/post/3643155828.html" title="区块链技术基础"><img class="cover" src="https://s2.loli.net/2024/11/14/OsgaF7GIC1NRlhe.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-10-25</div><div class="title">区块链技术基础</div></div></a></div></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/favicon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Ann</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">28</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">29</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Ann-103"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Ann-103" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:ajw0822@mail.ustc.edu.cn" target="_blank" title="Em"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="iconfont icon-gonggao"></i><span>公告</span></div><div class="announcement_content">欢迎访问我的小破站 ❤</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#fabric%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BD%91%E7%BB%9C%E6%90%AD%E5%BB%BA"><span class="toc-number">1.</span> <span class="toc-text">Fabric自定义网络搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83"><span class="toc-number">1.1.</span> <span class="toc-text">环境</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#docker"><span class="toc-number">1.1.1.</span> <span class="toc-text">docker</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-number">1.1.1.1.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%99%AE%E9%80%9A%E7%94%A8%E6%88%B7%E8%BF%90%E8%A1%8C%E6%9D%83%E9%99%90"><span class="toc-number">1.1.1.2.</span> <span class="toc-text">普通用户运行权限</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE-docker-hub-%E9%95%9C%E5%83%8F"><span class="toc-number">1.1.1.3.</span> <span class="toc-text">配置 docker hub 镜像</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#ustc-%E9%95%9C%E5%83%8F"><span class="toc-number">1.1.1.3.1.</span> <span class="toc-text">ustc 镜像</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nvm-linux"><span class="toc-number">1.1.2.</span> <span class="toc-text">nvm（linux）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#caliper%E4%B8%8B%E8%BD%BD"><span class="toc-number">1.1.3.</span> <span class="toc-text">caliper下载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jq"><span class="toc-number">1.1.4.</span> <span class="toc-text">Jq</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%A8test-network%E7%BD%91%E7%BB%9C%E4%B8%8A%E6%8B%93%E5%B1%95%E7%BB%84%E7%BB%87%E5%92%8C%E8%8A%82%E7%82%B9"><span class="toc-number">1.2.</span> <span class="toc-text">在test-network网络上拓展组织和节点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%84%E7%BB%87%E6%9E%B6%E6%9E%84"><span class="toc-number">1.2.1.</span> <span class="toc-text">组织架构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E7%AC%AC%E4%B8%89%E6%96%B9%E7%BB%84%E7%BB%87"><span class="toc-number">1.2.2.</span> <span class="toc-text">添加第三方组织</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9network-sh%EF%BC%9Acreateorg%E7%BB%84%E7%BB%87%E6%B3%A8%E5%86%8C"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">修改network.sh：createOrg组织注册</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9registerenroll-sh%EF%BC%9A%E5%AF%B9%E5%BA%94%E4%B8%8A%E4%B8%80%E6%AD%A5%E8%B0%83%E7%94%A8%E7%9A%84%E5%87%BD%E6%95%B0"><span class="toc-number">1.2.2.2.</span> <span class="toc-text">修改registerEnroll.sh：对应上一步调用的函数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9-scripts-createchannel-sh"><span class="toc-number">1.2.2.3.</span> <span class="toc-text">修改\scripts\createChannel.sh</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9setanchorpeer-sh-envvar-sh"><span class="toc-number">1.2.2.4.</span> <span class="toc-text">修改setAnchorPeer.sh,envVar.sh</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9deploycc-sh"><span class="toc-number">1.2.2.5.</span> <span class="toc-text">修改deployCC.sh</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9ccp-generate-sh%EF%BC%9A%E7%94%9F%E6%88%90%E7%BB%84%E7%BB%87%E7%9A%84%E8%BF%9E%E6%8E%A5%E6%96%87%E4%BB%B6"><span class="toc-number">1.2.2.6.</span> <span class="toc-text">修改ccp-generate.sh：生成组织的连接文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9-compose-compose-test-net-yaml%E4%BB%A5%E5%8F%8A-docker-docker-compose-test-net-yaml%EF%BC%9A%E5%90%AF%E5%8A%A8docker"><span class="toc-number">1.2.2.7.</span> <span class="toc-text">修改\compose\compose-test-net.yaml以及\docker\docker-compose-test-net.yaml：启动Docker</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9-compose-compose-ca-yaml"><span class="toc-number">1.2.2.8.</span> <span class="toc-text">修改\compose\compose-ca.yaml</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9-compose-compose-couch-yaml-%E4%B8%8D%E5%BF%85%E8%A6%81"><span class="toc-number">1.2.2.9.</span> <span class="toc-text">修改\compose\compose-couch.yaml（不必要）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%B0%E5%BB%BA-organizations-cryptogen-cypto-config-org3-yaml-%E4%B8%8D%E5%BF%85%E8%A6%81"><span class="toc-number">1.2.2.10.</span> <span class="toc-text">新建&#x2F;organizations&#x2F;cryptogen&#x2F;cypto-config-org3.yaml（不必要）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9configtx-yaml"><span class="toc-number">1.2.2.11.</span> <span class="toc-text">修改configtx.yaml</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E6%8E%92%E5%BA%8F%E8%8A%82%E7%82%B9"><span class="toc-number">1.2.3.</span> <span class="toc-text">添加排序节点</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9-organizations-cryptogen-cypto-config-order-yaml-%E9%9D%9E%E5%BF%85%E8%A6%81"><span class="toc-number">1.2.3.1.</span> <span class="toc-text">修改&#x2F;organizations&#x2F;cryptogen&#x2F;cypto-config-order.yaml（非必要）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9-scripts-ccutils-sh-registerenroll-sh"><span class="toc-number">1.2.3.2.</span> <span class="toc-text">修改&#x2F;scripts&#x2F;ccutils.sh,registerEnroll.sh</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9-compose-compose-test-net-yaml"><span class="toc-number">1.2.3.3.</span> <span class="toc-text">修改\compose\compose-test-net.yaml</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9-scripts-createchannel-sh"><span class="toc-number">1.2.3.4.</span> <span class="toc-text">修改\scripts\createChannel.sh</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9configtx-yaml"><span class="toc-number">1.2.3.5.</span> <span class="toc-text">修改configtx.yaml</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9scripts-setanchorpeer-sh"><span class="toc-number">1.2.3.6.</span> <span class="toc-text">修改scripts&#x2F;setanchorpeer.sh</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9createchannel-sh-configupdate-sh-ccutil-sh"><span class="toc-number">1.2.3.7.</span> <span class="toc-text">修改createChannel.sh,configUpdate.sh,ccutil.sh</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9bft%E8%AE%BE%E7%BD%AE-%E4%B8%8D%E5%BF%85%E8%A6%81"><span class="toc-number">1.2.3.8.</span> <span class="toc-text">修改bft设置（不必要）</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BD%91%E7%BB%9C%E6%90%AD%E5%BB%BA"><span class="toc-number">1.3.</span> <span class="toc-text">自定义网络搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%B6%E6%9E%84"><span class="toc-number">1.3.1.</span> <span class="toc-text">架构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%EF%BC%9A"><span class="toc-number">1.3.2.</span> <span class="toc-text">脚本文件：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#explorer"><span class="toc-number">2.</span> <span class="toc-text">explorer</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#caliper%E6%B5%8B%E8%AF%95%E4%BF%AE%E6%94%B9"><span class="toc-number">3.</span> <span class="toc-text">Caliper测试修改</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%99%84%E5%BD%95"><span class="toc-number">4.</span> <span class="toc-text">附录</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#fabric%E6%9E%B6%E6%9E%84"><span class="toc-number">4.1.</span> <span class="toc-text">fabric架构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%BB%84%E7%BB%87-organization"><span class="toc-number">4.1.1.</span> <span class="toc-text">1. 组织（Organization）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%8A%82%E7%82%B9-node"><span class="toc-number">4.1.2.</span> <span class="toc-text">2. 节点（Node）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-peer-%E8%8A%82%E7%82%B9"><span class="toc-number">4.1.2.1.</span> <span class="toc-text">2.1 Peer 节点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-orderer-%E8%8A%82%E7%82%B9"><span class="toc-number">4.1.2.2.</span> <span class="toc-text">2.2 Orderer 节点</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E7%94%A8%E6%88%B7-user"><span class="toc-number">4.1.3.</span> <span class="toc-text">3. 用户（User）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E7%94%A8%E6%88%B7-%E8%8A%82%E7%82%B9%E5%92%8C%E7%BB%84%E7%BB%87%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-number">4.1.4.</span> <span class="toc-text">4. 用户、节点和组织之间的关系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E7%B3%BB%E6%80%BB%E7%BB%93%E5%9B%BE%E7%A4%BA%EF%BC%9A"><span class="toc-number">4.1.5.</span> <span class="toc-text">关系总结图示：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B7%E4%BD%93%E7%A4%BA%E4%BE%8B%EF%BC%9A"><span class="toc-number">4.1.6.</span> <span class="toc-text">具体示例：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#docker-%E9%85%8D%E7%BD%AE"><span class="toc-number">4.2.</span> <span class="toc-text">docker 配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E8%A7%A3%E6%9E%90%EF%BC%9A"><span class="toc-number">4.2.1.</span> <span class="toc-text">配置解析：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%82%E8%BD%BD"><span class="toc-number">4.2.2.</span> <span class="toc-text">挂载</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-var-run-host-var-run"><span class="toc-number">4.2.2.1.</span> <span class="toc-text">1. &#x2F;var&#x2F;run&#x2F;:&#x2F;host&#x2F;var&#x2F;run&#x2F;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-crypto-config-peerorganizations-org3-example-com-peers-peer0-org3-example-com-msp-etc-hyperledger-fabric-msp"><span class="toc-number">4.2.2.2.</span> <span class="toc-text">2. ..&#x2F;crypto-config&#x2F;peerOrganizations&#x2F;org3.example.com&#x2F;peers&#x2F;peer0.org3.example.com&#x2F;msp:&#x2F;etc&#x2F;hyperledger&#x2F;fabric&#x2F;msp</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-crypto-config-peerorganizations-org3-example-com-peers-peer0-org3-example-com-tls-etc-hyperledger-fabric-tls"><span class="toc-number">4.2.2.3.</span> <span class="toc-text">3. ..&#x2F;crypto-config&#x2F;peerOrganizations&#x2F;org3.example.com&#x2F;peers&#x2F;peer0.org3.example.com&#x2F;tls:&#x2F;etc&#x2F;hyperledger&#x2F;fabric&#x2F;tls</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-peer0-org3-example-com-var-hyperledger-production"><span class="toc-number">4.2.2.4.</span> <span class="toc-text">4. peer0.org3.example.com:&#x2F;var&#x2F;hyperledger&#x2F;production</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">4.3.</span> <span class="toc-text">遇到的问题</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A4%87%E6%B3%A8"><span class="toc-number">5.</span> <span class="toc-text">备注</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4"><span class="toc-number">5.1.</span> <span class="toc-text">命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%93%BE%E7%A0%81%E7%9B%B8%E5%85%B3"><span class="toc-number">5.2.</span> <span class="toc-text">链码相关</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96"><span class="toc-number">5.3.</span> <span class="toc-text">其他</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer" style="background: transparent"><div id="footer-wrap"><div class="copyright">&copy;2024 - 2025 By Ann</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"> </i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="iconfont icon-triangleupfill"></i></button><button id="go-down" type="button" title="to_bottom" onclick="btf.scrollToDest(document.body.scrollHeight, 500)"><i class="iconfont icon-triangledownfill"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.8/dist/lazyload.iife.min.js"></script><div class="js-pjax"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/copy-tex.min.js"></script><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script><script>(() => {
+  const initValine = () => {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'jlgkfToE73FxTz8kyHsmvdzb-gzGzoHsz',
+      appKey: 'NN6nCIT47fGwz5Q1UyvFcGKP',
+      avatar: 'retro',
+      serverURLs: '',
+      emojiMaps: "",
+      path: window.location.pathname,
+      visitor: false
+    }, null))
+  }
+
+  const loadValine = async () => {
+    if (typeof Valine === 'function') initValine()
+    else {
+      await getScript('https://cdn.jsdelivr.net/npm/valine@1.5.1/dist/Valine.min.js')
+      initValine()
+    }
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})()</script></div><script async data-pjax src="/js/custom.js"></script><script async data-pjax src="/js/waterfall/waterfall.js"></script><script src="/Ann/random.js"></script><script src="/js/snowflake.js"></script><script src="/js/hot.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener
+  btf.removeGlobalFnEvent('pjax')
+  btf.removeGlobalFnEvent('themeChange')
+
+  document.getElementById('rightside').classList.remove('rightside-show')
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><div id="algolia-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="search-wrap"><div id="algolia-search-input"></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-info"><div class="algolia-stats"></div><div class="algolia-poweredBy"></div></div></div></div></div><div id="search-mask"></div><script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.22.1/dist/algoliasearch-lite.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.65.0/dist/instantsearch.production.min.js"></script><script src="/js/search/algolia.js?v=4.13.0"></script></div></div></body></html>
