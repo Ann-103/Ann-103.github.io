@@ -1,0 +1,385 @@
+<!--head 和 body 是 html 的直接子元素--><!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>PaperNotebook-Gosharing | Ann-Blog</title><meta name="author" content="Ann"><meta name="copyright" content="Ann"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Go-Sharing  Zhang M, Sun Z, Li H, et al. Go-sharing: a blockchain-based privacy-preserving framework for cross-social network photo sharing[J]. IEEE Transactions on Dependable and Secure Computing, 20">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PaperNotebook-Gosharing">
+<meta property="og:url" content="https://ann-103.github.io/post/948195453.html">
+<meta property="og:site_name" content="Ann-Blog">
+<meta property="og:description" content="Go-Sharing  Zhang M, Sun Z, Li H, et al. Go-sharing: a blockchain-based privacy-preserving framework for cross-social network photo sharing[J]. IEEE Transactions on Dependable and Secure Computing, 20">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2024/11/22/GXwuEP8UlBzOyAe.jpg">
+<meta property="article:published_time" content="2025-01-15T02:55:45.000Z">
+<meta property="article:modified_time" content="2025-01-21T07:50:16.836Z">
+<meta property="article:author" content="Ann">
+<meta property="article:tag" content="论文阅读">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2024/11/22/GXwuEP8UlBzOyAe.jpg"><link rel="shortcut icon" href="https://s2.loli.net/2022/11/06/lgYVqNypjRCe3d2.png"><link rel="canonical" href="https://ann-103.github.io/post/948195453.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: {"appId":"TYQ16Q4ESJ","apiKey":"ea175434f2803b60c631bc11c6e24e54","indexName":"blog","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":200,"languages":{"author":"作者: Ann","link":"链接: ","source":"来源: Ann-Blog","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'PaperNotebook-Gosharing',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-01-21 15:50:16'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"><link rel="stylesheet" href="/css/font.css"><link rel="stylesheet" href="/css/essay_page/essay_page.css"><link rel="stylesheet" href="/css/hot.css"><meta name="generator" content="Hexo 7.3.0"><link href="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.css" rel="stylesheet" /></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="scarecrow"><div class="scarecrow__hat"><div class="scarecrow__ribbon"></div></div><div class="scarecrow__head"><div class="scarecrow__eye"></div><div class="scarecrow__eye"></div><div class="scarecrow__mouth"></div><div class="scarecrow__pipe"></div></div><div class="scarecrow__body"><div class="scarecrow__glove scarecrow__glove--l"></div><div class="scarecrow__sleeve scarecrow__sleeve--l"></div><div class="scarecrow__bow"></div><div class="scarecrow__shirt"></div><div class="scarecrow__coat"></div><div class="scarecrow__waistcoat"></div><div class="scarecrow__sleeve scarecrow__sleeve--r"></div><div class="scarecrow__glove scarecrow__glove--r"></div><div class="scarecrow__coattails"></div><div class="scarecrow__pants"></div></div><div class="scarecrow__arms"></div><div class="scarecrow__leg">  </div></div></div><script async="async">(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load',() => { preloader.endLoading() })
+  document.getElementById('loading-box').addEventListener('click',()=> {preloader.endLoading()})
+  setTimeout(function(){preloader.endLoading();}, 10000);
+
+  if (true) {
+    document.addEventListener('pjax:send', () => { preloader.initLoading() })
+    document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+  }
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/favicon.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">29</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">30</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-heart"></i><span> About</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/about/"><i class="fa-fw iconfont icon-paper-full"></i><span> 关于</span></a></li><li><a class="site-page child" href="/essay/"><i class="fa-fw iconfont icon-shuoshuo"></i><span> 动态</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Ann-Blog"><span class="site-name">Ann-Blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-heart"></i><span> About</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/about/"><i class="fa-fw iconfont icon-paper-full"></i><span> 关于</span></a></li><li><a class="site-page child" href="/essay/"><i class="fa-fw iconfont icon-shuoshuo"></i><span> 动态</span></a></li></ul></div></div></div><div id="rightBank"><div id="box"> <a href="/link" title="百宝箱"><i class="iconfont icon-24gf-box2"></i></a></div><div id="random"><a class="site-page" href="javascript:toRandomPost()" title="随机前往一个文章"><i class="iconfont icon-touzi"> </i></a></div><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">PaperNotebook-Gosharing</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-01-15T02:55:45.000Z" title="发表于 2025-01-15 10:55:45">2025-01-15</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-01-21T07:50:16.836Z" title="更新于 2025-01-21 15:50:16">2025-01-21</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Paper/">Paper</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>6分钟</span></span></div></div></div><div class="top-img gist" style="background-image: url(/false)"></div><article class="post-content" id="article-container"><h1 id="go-sharing">Go-Sharing</h1>
+<blockquote>
+<p>Zhang M, Sun Z, Li H, et al. Go-sharing: a blockchain-based privacy-preserving framework for cross-social network photo sharing[J]. IEEE Transactions on Dependable and Secure Computing, 2022.</p>
+</blockquote>
+<p>概览：提出基于区块链的隐私保护框架，进行跨社交平台的网络照片共享，为每张图片创建传播树，为用户提供完整的共享控制和隐私保护，访问控制权限由图片拥有者指定。</p>
+<ul>
+<li>动态隐私策略生成算法，使发布者的灵活性最大化，同时不侵犯发布者的隐私</li>
+<li>基于强化学习算法优化数据共享定价策略</li>
+</ul>
+<p>值得注意的点：</p>
+<ul>
+<li>以传播数据（照片）为主体定制动态访问策略</li>
+</ul>
+<h1 id="背景">背景</h1>
+<p>在社交媒体的照片共享和存储中，部分用户在未经许可的情况下转发或上传其他用户的照片，这种非法转载和照片抓取泄露了个人隐私。</p>
+<p><strong>现有技术和方法</strong></p>
+<p>上传前弹知情协议（隐私政策）；限制照片访问；隐私保护的基于内容的图像检索（CBIR）方案；</p>
+<blockquote>
+<p>这些方法保证首次下载或者访问时数据安全，但是后续的转发复制到其他平台等不受约束。</p>
+</blockquote>
+<p>加密，深度学习识别敏感图像，通过属性基加密或者密钥分发等限制；照片模糊化保护多所有者照片共享；使用对抗扰动对抗人脸识别。</p>
+<blockquote>
+<p>同样不适用于跨平台的照片上传。</p>
+</blockquote>
+<p><strong>总结跨平台照片隐私保护共享的挑战</strong></p>
+<ul>
+<li>用户数据隔离，无法得知照片是否已经上传到其他平台，而且所有者不清晰。</li>
+<li>跨SNP照片传播中，隐私保护机制相互独立且不关联。例如在某个平台上的照片删除无法限制在其他平台上的转发。</li>
+</ul>
+<p><strong>基于区块链的跨SNP共享隐私保护框架</strong>：</p>
+<ul>
+<li>本文基于智能合约的协议设计实现跨平台分享控制，并非构建统一同步的数据库</li>
+<li>平台不需要公开所有数据，而是为每个照片构建传播树，以原始所有者为根节点，发布时附加新的子节点，并且在共享时通过动态策略生成算法解决隐私冲突。</li>
+<li>为了识别照片的原始所有者，设计了一种所有权识别方案，在每张共享照片上加上其传播树根地址的水印。同时添加随机噪声的黑匣子到两阶段可分离深度学习（TSDL）过程中，以进一步增强鲁棒性</li>
+</ul>
+<p><strong>主要创新点总结</strong></p>
+<ul>
+<li>设计了一系列基于智能合约的协议，提出了一种名为Go共享的跨SNP照片共享框架，以确保对跨SNP共享的安全有效控制。</li>
+<li>设计了一个细粒度的多所有者传播树，以保持照片所有者在跨SNP共享过程中的有效管理，通过动态隐私策略生成算法，解决多个共享者之间的隐私冲突问题（MPCs）。</li>
+<li>鲁棒的照片所有权识别方案，通过在TSDL中引入随机噪声黑匣子来增强其抵抗交叉SNP共享中不可预测修改的能力。</li>
+</ul>
+<h1 id="相关工作">相关工作</h1>
+<p><strong>隐私保护照片共享</strong></p>
+<ul>
+<li>贪婪算法调整阈值，解决用户共享时的隐私损失问题（部分打码）。</li>
+<li>照片中的人的隐私：识别照片中的其他人</li>
+<li>对于照片的滥用：对于某个平台的照片进行加密，包括压缩条件下的加解密等。</li>
+<li>基于区块链的社交网络平台，或者在线资源共享管理，作为数据存储模块处理，但是还是并没有考虑跨SNP。</li>
+<li>多方隐私冲突（MPCs）：一些研究试图通过预防机制来解决MPC问题，如聚合投票和博弈论，依赖于人脸识别的准确性；劝阻机制；人工智能决策模型。这里只关注了照片中的人作为所有者，通过决策模型解决隐私冲突。文章还额外考虑了转发者对于照片的新的隐私需求。</li>
+</ul>
+<p><strong>照片所有权识别</strong>：包括照片修改后的所有权</p>
+<ul>
+<li>感知哈希：对照片内容的理解的感知摘要来识别照片所有权和身份验证，受到视觉特征差异的影响</li>
+<li>数据隐藏：减少质量损失以提高对攻击者的隐蔽性，不足以处理跨SNP共享中不可预测的噪声</li>
+<li>水印：
+<ul>
+<li>非盲水印的恢复需要原始图像，而原始图像不是在交叉SNP共享场景中获取的。</li>
+<li><strong>盲水印</strong>主要关注两个属性：水印图像的质量和水印的鲁棒性。将信息编码在图像像素的最低有效位或者频域；基于卷积神经网络的水印方法，该方法使用卷积图像的特征信息与消息进行共编码；通过提出TSDL框架进一步提高了准确性，该框架在第一阶段使用端到端训练方法训练编码器，同时将编码器固定不变，并在第二阶段充分利用解码器的潜力。这些模型仅对特定的噪声表现良好，无法应对未知的修改攻击。</li>
+</ul>
+</li>
+</ul>
+<p>文章在抗修改部分就是设计了一个随机噪声黑匣子，在每个训练批中生成多个随机噪声组合，以增强所有权保护模型对未知噪声的抵抗能力。</p>
+<h1 id="系统模型">系统模型</h1>
+<p>照片所有者、照片访问者、社交网络平台和去中心化服务器</p>
+<p><img src="assets/image-20250115174809530.png" alt="image-20250115174809530"></p>
+<p>区块链提供核心的传播控制功能，接受SNP的请求，每个请求视作事务并被打包记录在区块链上。</p>
+<p>照片所有权归属过程应该是<strong>匿名</strong>的，但是这里上传到区块链上的信息并没有加密，而是以某种指针的方式指向地址，且智能合约部署在docker中（类似黑箱），所以归属信息不会泄露。</p>
+<ul>
+<li>SNP视作各组织。Besides, all SNPs in Go-Sharing involved are seen as an organization and connected with each other through a channel with a shared super ledger。</li>
+<li>恶意访问者不再可能通过转发来摆脱照片所有者政策的控制。 Smart contracts are deployed on the peers of each organization to process sharing operation requests. Thus, in Go-sharing, it is no longer possible for malicious visitors to get rid of the control of photo owner’s policies by reposting</li>
+</ul>
+<h2 id="威胁模型">威胁模型</h2>
+<p>Malicious Owner</p>
+<ul>
+<li>能力：访问、发布照片</li>
+<li>目标：下载原始所有者的在线照片，并在未经原始所有者许可的情况下将其传播到其他平台，同时声称自己是照片的创作者。通过对照片的裁剪、对比度修改等方法试图修改照片所有者信息。</li>
+</ul>
+<p>Malicious Visitor</p>
+<ul>
+<li>能力：登录不同的SNP并访问其他用户的社交帐户</li>
+<li>目标：未经授权访问他人的照片，这些照片可能包含所有者的重要敏感信息，如私人聚会地点、日常户外活动和个人关系。即在未经授权的情况下获取他人的隐私敏感照片，并试图删除自己的访问和操作记录，以避免审计和可追溯性。</li>
+</ul>
+<p>Malicious Social Networking Platforms</p>
+<ul>
+<li>能力：恶意社交网络平台伪装成正常的SNP，可以与其他SNP正常通信</li>
+<li>目标：通过访问其他SNP数据库中的在线照片数据，他们试图滥用这些数据。肆无忌惮地对用户的在线照片进行数据挖掘和分析，可能会获得大量用户意想不到的敏感私人信息。</li>
+</ul>
+<h2 id="安全假设">安全假设</h2>
+<ul>
+<li>攻击者（包括恶意所有者、恶意访问者和恶意社交网络平台）不能危害区块链</li>
+<li>用户账户安全，不会被盗用等</li>
+<li>安全加密算法，隐私政策以密文形式存储在SNP中</li>
+</ul>
+<blockquote>
+<p>论文笔记只是介绍了个人感兴趣注重的一部分，更多内容请阅读原文。</p>
+</blockquote>
+<h1 id="方案">方案</h1>
+<blockquote>
+<p>隐私政策加密保存在SNP中，所以每次访问都要与SNP进行Query Policy</p>
+</blockquote>
+<p><img src="assets/image-20250116105159639.png" alt="image-20250116105159639"></p>
+<h2 id="动态隐私策略生成">动态隐私策略生成</h2>
+<p><img src="assets/image-20250116110610298.png" alt="image-20250116110610298"></p>
+<ul>
+<li>就是不断从传播树到根节点的路径去获取策略然后加入新的策略，O是owner策略，F是fowarder策略，只选取O策略中同样符合F的策略进入新的策略集合。</li>
+</ul>
+<h1 id="总结">总结</h1>
+<p>照片的第一个上传者被视为照片的所有者，后续的转发者则被视为<strong>共同所有者</strong>。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://Ann-103.github.io">Ann</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://ann-103.github.io/post/948195453.html">https://ann-103.github.io/post/948195453.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://Ann-103.github.io" target="_blank">Ann-Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/">论文阅读</a></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2024/11/22/GXwuEP8UlBzOyAe.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/post/3364712731.html" title="zkSNARK 基础"><img class="cover" src="https://s2.loli.net/2025/01/07/byGj6UexQNDV4tk.jpg" onerror="onerror=null;src='/img/loading.gif'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">zkSNARK 基础</div></div></a></div></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/favicon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Ann</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">29</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">30</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Ann-103"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Ann-103" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:ajw0822@mail.ustc.edu.cn" target="_blank" title="Em"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="iconfont icon-gonggao"></i><span>公告</span></div><div class="announcement_content">欢迎访问我的小破站 ❤</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#go-sharing"><span class="toc-number">1.</span> <span class="toc-text">Go-Sharing</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%83%8C%E6%99%AF"><span class="toc-number">2.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E5%B7%A5%E4%BD%9C"><span class="toc-number">3.</span> <span class="toc-text">相关工作</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E6%A8%A1%E5%9E%8B"><span class="toc-number">4.</span> <span class="toc-text">系统模型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A8%81%E8%83%81%E6%A8%A1%E5%9E%8B"><span class="toc-number">4.1.</span> <span class="toc-text">威胁模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E5%85%A8%E5%81%87%E8%AE%BE"><span class="toc-number">4.2.</span> <span class="toc-text">安全假设</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%B9%E6%A1%88"><span class="toc-number">5.</span> <span class="toc-text">方案</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E9%9A%90%E7%A7%81%E7%AD%96%E7%95%A5%E7%94%9F%E6%88%90"><span class="toc-number">5.1.</span> <span class="toc-text">动态隐私策略生成</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">6.</span> <span class="toc-text">总结</span></a></li></ol></div></div></div></div></main><footer id="footer" style="background: transparent"><div id="footer-wrap"><div class="copyright">&copy;2024 - 2025 By Ann</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"> </i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="iconfont icon-triangleupfill"></i></button><button id="go-down" type="button" title="to_bottom" onclick="btf.scrollToDest(document.body.scrollHeight, 500)"><i class="iconfont icon-triangledownfill"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.8/dist/lazyload.iife.min.js"></script><div class="js-pjax"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/copy-tex.min.js"></script><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script><script>(() => {
+  const initValine = () => {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'jlgkfToE73FxTz8kyHsmvdzb-gzGzoHsz',
+      appKey: 'NN6nCIT47fGwz5Q1UyvFcGKP',
+      avatar: 'retro',
+      serverURLs: '',
+      emojiMaps: "",
+      path: window.location.pathname,
+      visitor: false
+    }, null))
+  }
+
+  const loadValine = async () => {
+    if (typeof Valine === 'function') initValine()
+    else {
+      await getScript('https://cdn.jsdelivr.net/npm/valine@1.5.1/dist/Valine.min.js')
+      initValine()
+    }
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})()</script></div><script async data-pjax src="/js/custom.js"></script><script async data-pjax src="/js/waterfall/waterfall.js"></script><script src="/Ann/random.js"></script><script src="/js/snowflake.js"></script><script src="/js/hot.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener
+  btf.removeGlobalFnEvent('pjax')
+  btf.removeGlobalFnEvent('themeChange')
+
+  document.getElementById('rightside').classList.remove('rightside-show')
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><div id="algolia-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="search-wrap"><div id="algolia-search-input"></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-info"><div class="algolia-stats"></div><div class="algolia-poweredBy"></div></div></div></div></div><div id="search-mask"></div><script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.22.1/dist/algoliasearch-lite.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.65.0/dist/instantsearch.production.min.js"></script><script src="/js/search/algolia.js?v=4.13.0"></script></div></div></body></html>
