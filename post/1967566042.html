@@ -1,0 +1,1064 @@
+<!--head 和 body 是 html 的直接子元素--><!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>PaperNotebook-zk-creds | Ann-Blog</title><meta name="author" content="Ann"><meta name="copyright" content="Ann"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="zk-creds（2023 NDSS）  zk-creds:Flexible Anonymous Credentials from zkSNARKs and Existing Identity Infrastructure  主要工作：提出 zk-creds，一个灵活的、与颁发者无关的匿名凭证工具包，旨在支持复杂的身份声明。   去中心化：消除了凭证颁发者持有签名密钥的需求，凭证可以发放到透明日志">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PaperNotebook-zk-creds">
+<meta property="og:url" content="https://ann-103.github.io/post/1967566042.html">
+<meta property="og:site_name" content="Ann-Blog">
+<meta property="og:description" content="zk-creds（2023 NDSS）  zk-creds:Flexible Anonymous Credentials from zkSNARKs and Existing Identity Infrastructure  主要工作：提出 zk-creds，一个灵活的、与颁发者无关的匿名凭证工具包，旨在支持复杂的身份声明。   去中心化：消除了凭证颁发者持有签名密钥的需求，凭证可以发放到透明日志">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2024/11/22/GXwuEP8UlBzOyAe.jpg">
+<meta property="article:published_time" content="2025-02-26T03:30:14.000Z">
+<meta property="article:modified_time" content="2025-07-03T02:38:24.880Z">
+<meta property="article:author" content="Ann">
+<meta property="article:tag" content="论文阅读">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2024/11/22/GXwuEP8UlBzOyAe.jpg"><link rel="shortcut icon" href="https://s2.loli.net/2022/11/06/lgYVqNypjRCe3d2.png"><link rel="canonical" href="https://ann-103.github.io/post/1967566042.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: {"appId":"TYQ16Q4ESJ","apiKey":"ea175434f2803b60c631bc11c6e24e54","indexName":"blog","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":200,"languages":{"author":"作者: Ann","link":"链接: ","source":"来源: Ann-Blog","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'PaperNotebook-zk-creds',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-07-03 10:38:24'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"><link rel="stylesheet" href="/css/font.css"><link rel="stylesheet" href="/css/essay_page/essay_page.css"><link rel="stylesheet" href="/css/hot.css"><meta name="generator" content="Hexo 7.3.0"><link href="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.css" rel="stylesheet" /></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="scarecrow"><div class="scarecrow__hat"><div class="scarecrow__ribbon"></div></div><div class="scarecrow__head"><div class="scarecrow__eye"></div><div class="scarecrow__eye"></div><div class="scarecrow__mouth"></div><div class="scarecrow__pipe"></div></div><div class="scarecrow__body"><div class="scarecrow__glove scarecrow__glove--l"></div><div class="scarecrow__sleeve scarecrow__sleeve--l"></div><div class="scarecrow__bow"></div><div class="scarecrow__shirt"></div><div class="scarecrow__coat"></div><div class="scarecrow__waistcoat"></div><div class="scarecrow__sleeve scarecrow__sleeve--r"></div><div class="scarecrow__glove scarecrow__glove--r"></div><div class="scarecrow__coattails"></div><div class="scarecrow__pants"></div></div><div class="scarecrow__arms"></div><div class="scarecrow__leg">  </div></div></div><script async="async">(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load',() => { preloader.endLoading() })
+  document.getElementById('loading-box').addEventListener('click',()=> {preloader.endLoading()})
+  setTimeout(function(){preloader.endLoading();}, 10000);
+
+  if (true) {
+    document.addEventListener('pjax:send', () => { preloader.initLoading() })
+    document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+  }
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/favicon.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">33</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">32</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-heart"></i><span> About</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/about/"><i class="fa-fw iconfont icon-paper-full"></i><span> 关于</span></a></li><li><a class="site-page child" href="/essay/"><i class="fa-fw iconfont icon-shuoshuo"></i><span> 动态</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Ann-Blog"><span class="site-name">Ann-Blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-heart"></i><span> About</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/about/"><i class="fa-fw iconfont icon-paper-full"></i><span> 关于</span></a></li><li><a class="site-page child" href="/essay/"><i class="fa-fw iconfont icon-shuoshuo"></i><span> 动态</span></a></li></ul></div></div></div><div id="rightBank"><div id="box"> <a href="/link" title="百宝箱"><i class="iconfont icon-24gf-box2"></i></a></div><div id="random"><a class="site-page" href="javascript:toRandomPost()" title="随机前往一个文章"><i class="iconfont icon-touzi"> </i></a></div><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">PaperNotebook-zk-creds</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-02-26T03:30:14.000Z" title="发表于 2025-02-26 11:30:14">2025-02-26</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-07-03T02:38:24.880Z" title="更新于 2025-07-03 10:38:24">2025-07-03</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Paper/">Paper</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">12.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>40分钟</span></span></div></div></div><div class="top-img gist" style="background-image: url(/false)"></div><article class="post-content" id="article-container"><h1 id="zk-creds-2023-ndss">zk-creds（2023 NDSS）</h1>
+<blockquote>
+<p>zk-creds:Flexible Anonymous Credentials from zkSNARKs and Existing Identity Infrastructure</p>
+</blockquote>
+<p>主要工作：提出 zk-creds，一个灵活的、<strong>与颁发者无关</strong>的匿名凭证工具包，旨在支持<strong>复杂的身份声明</strong>。</p>
+<ol>
+<li>
+<p>去中心化：消除了凭证颁发者持有签名密钥的需求，凭证可以发放到透明日志、拜占庭系统或区块链等公告板上。</p>
+</li>
+<li>
+<p>兼容性：无需修改现有身份文件或与颁发机构协调，即可将现有身份文件转换为匿名凭证。</p>
+</li>
+<li>
+<p>灵活性：允许在多个凭证上进行灵活、可组合和复杂的身份声明。（凭证和访问标准的临时组合支持）</p>
+</li>
+</ol>
+<p>性能：在使用护照匿名访问受限视频的实际场景中，使用 zk-creds 的身份声明耗时不到 150 毫秒。</p>
+<h2 id="背景">背景</h2>
+<p><strong>现状与挑战</strong>：尽管匿名凭证是广泛的学术研究主题，但迄今为止，实际部署仍然很少。这在很大程度上是因为现有系统在设计时对身份做出了一些假设，这些假设虽然适合推动密码学知识的发展，但在实际身份系统中却难以部署。现有的匿名凭证方案通常做出以下简化假设：</p>
+<ul>
+<li>针对某一身份属性（例如出生日期）只有一个颁发者。</li>
+<li>当存在多个颁发者时，属性格式是兼容的。</li>
+<li>存在声誉良好的机构能够并愿意负责持有签名密钥、验证身份属性并运行复杂的密码学协议来颁发匿名凭证。</li>
+<li>所有凭证所需的属性格式在系统实例化时已知。</li>
+<li>针对某一身份属性或凭证的机构可以在系统实例化时列举出来。</li>
+</ul>
+<p>相关工作主要介绍的DAC【无需密钥的分布式签发】和Coconut【阈值签发】都有自己一定的局限性。例如DAC直接 基于区块链进行，在性能和操作数有缺陷，需要客户端有CL，而且不支持复杂特征。Coconut进行阈值颁发，但是可信任的颁发者稀缺，且未能提供协调不同身份文件格式或多个颁发者使用案例的手段</p>
+<p><strong>现实复杂性</strong>：在实际过程中，匿名凭据会遇到以下<strong>问题</strong>（以年龄限制访问视频为例）：</p>
+<ul>
+<li>颁发机构：身份文件并非单一来源（多个驾校）、且愿意颁发的可信机构很少</li>
+<li>需求变化：可能后续不仅需要&gt;18的凭证，还要有&lt;12，&gt;65等，需要更加复杂的凭证、可能的撤销和重新颁发</li>
+<li>匿名集合：每个 ID 颁发者可能会使用不同的数据字段和格式来颁发身份凭证。例如，外籍外交官的身份凭证可能包含其国籍信息，而本地居民没有。</li>
+<li>新身份文件的整合：随着新身份文件的出现，需要将其整合以避免访问公平性问题，而这些文件可能具有不同的格式。</li>
+<li>身份声明的复杂性：即使是“成年”这一概念，身份声明也并非简单：在不同司法管辖区的年龄限制不同的情况下，视频平台需要检查观众的位置，而 IP 地理定位可能不足以满足要求（例如，在使用 Tor 或 VPN 的情况下）。</li>
+</ul>
+<p><strong>最小化颁发凭证时的信任</strong>：当前（甚至非）匿名凭证协议假设同一方验证声明的身份属性并签署加密凭证。这要求找到一个被信任的单一方来执行两个不同（且不一定相关）的任务：既能够<strong>验证身份属性</strong>，又能够<strong>管理签名密钥</strong>。</p>
+<ol>
+<li>许多匿名凭证的使用不需要由<strong>可信方验证身份属性</strong>，论文描述了一种无颁发者的类似 Privacy Pass 的构造，其中通过区块链支付发放抗 Sybil 攻击的匿名令牌。这没有可信方——既没有验证用户不是 Sybil 的方，也没有签署凭证的方。</li>
+<li>即使必须信任某个实体来验证身份属性（例如，护照颁发者验证用户的出生日期），也不必信任另一方来持有新密码学方案的密钥材料。论文通过用<strong>分布式公告板替代签名</strong>，提供了许多此类情况下的最小信任假设。</li>
+<li>即使存在一个可信方同时验证身份属性和颁发凭证，信任一方维护列表比信任他们保护签名密钥更安全。在现有的匿名凭证方案中，颁发密钥的泄露通常是不可检测的，回滚需要重新密钥和重新颁发。通过列表颁发，泄露是可检测的且易于逆转。</li>
+</ol>
+<blockquote>
+<p>Privacy Pass 允许用户在访问受限资源时，使用匿名令牌（tokens）来证明其资格，而无需透露其身份或其他个人信息。即在一次身份验证后获得token从而不需要再次验证。</p>
+</blockquote>
+<div class="note info flat"><p>为了解决以上问题，文章设计了一个灵活的方案，能够在<strong>部署后动态适应</strong>新的用例，<strong>最小化可信方</strong> 需求，并支持<strong>与颁发者或凭证格式无关</strong>的复杂访问标准。</p>
+</div>
+<h2 id="贡献">贡献</h2>
+<ol>
+<li>
+<p>使用通用零知识证明【不再是基于盲签名的定制系统】</p>
+<p>范式转变：与其设想一组特定的用例并为每个用例设计定制协议，zk-creds 允许在协议设计和部署后，仍然保持完全的隐私和表达能力。使用 zk-creds 构建的单一方案能够适应不断变化的需求，而无需开发新的定制密码学协议。此外，应用特定的逻辑可以通过多种公开可用的工具使用简单的编程语言定义和修改，方案的实例化由编译器处理。</p>
+</li>
+<li>
+<p>灵活和可组合的访问标准</p>
+<p>通用零知识证明使 zk-creds 支持灵活和可组合的访问标准。zk-creds 不仅允许用户私下展示其凭证满足某些任意访问标准检查，还允许这些标准在任何时间（甚至在系统设置或凭证颁发后）由任何方定义，并动态组合。这种灵活性使 zk-creds 能够满足现实世界认证机制的需求：要求可以随时动态变化，使用案例和身份颁发者也可以变化。</p>
+</li>
+<li>
+<p>支持现有政府身份基础设施</p>
+<p>通过使用通用零知识证明，我们可以将越来越多包含在国家身份证和护照中的数字（非匿名）身份信息转换为匿名凭证。</p>
+</li>
+<li>
+<p>公共可验证凭证</p>
+<p>由于颁发的凭证列表可以由公共系统（如透明日志或区块链）维护，并且每个凭证可以包含证明其颁发的支持文档，因此所有颁发凭证的集合是公开可审计的。这在凭证可以通过签名密钥秘密颁发时是不可行的。因此，我们只需信任颁发者将凭证（及其支持文档）添加到列表中，任何泄露或不当行为都是可检测和可逆的。</p>
+</li>
+</ol>
+<p>总结而言zk-creds，其特点包括：</p>
+<ul>
+<li>相较于现有的去中心化方案，性能显著提升，ShowCred 的处理时间少于 150 毫秒；</li>
+<li>支持现有的物理身份文件（如护照），无需修改；</li>
+<li>提供灵活和可组合的组件，可以在系统设置后组合以表达复杂的访问标准检查；</li>
+<li>允许颁发凭证的公共审计，而不损害匿名性；</li>
+<li>提供（of independent interes）盲 Groth16，一种新机制，用于私下链接多个零知识证明，从而实现证明的重新随机化和重用；</li>
+<li>包含一个完整的应用程序，用于访问年龄限制视频，具有克隆抵抗性，使用现有护照进行颁发。</li>
+</ul>
+<blockquote>
+<p>链上凭证验证工作一般是考虑到智能合约执行成本极高情况下最小化验证成本，主要使用批量验证实现。</p>
+</blockquote>
+<h2 id="overview">Overview</h2>
+<p><strong>示例应用与凭证生命周期</strong></p>
+<p>凭证定义：凭证是对一组属性（例如姓名、出生日期等）的承诺。</p>
+<p>凭证颁发：当凭证成为 Merkle 树中的一个叶子节点时，即表示其被颁发。我们称这组叶子为颁发列表。协议设计者可以选择要求零知识支持文档，以证明属性与某个（现有）文档匹配，而不透露任何额外信息。在我们实现的示例中，这包括一个零知识证明，证明凭证中的属性与美国护照匹配。</p>
+<p>信任模型：虽然我们的示例信任现有的身份文件颁发者（护照机构），但它不需要额外的可信方，也不需要现有方承担额外的可信角色，甚至不需要修改颁发者。与标准的匿名凭证不同，我们还需要<strong>信任凭证签名密钥的安全性</strong>，这通常由额外的方持有。在我们的示例中，我们只需要某种方式来维护已颁发凭证的列表。</p>
+<p>凭证展示：一旦颁发凭证，客户端可以展示凭证以获取某些资源。客户端呈现一个非交互式的零知识证明，证明：</p>
+<ol>
+<li>他们在已颁发凭证的 Merkle 树中拥有一个凭证（承诺）。</li>
+<li>属性满足某些访问标准。</li>
+</ol>
+<p><strong>设计特性</strong></p>
+<ol>
+<li>
+<p>灵活的访问标准</p>
+<p>任意标准定义：应用开发者可以在系统生命周期的任何时刻定义任意的访问标准。</p>
+<p>常见特性支持：支持匿名凭证文献中的常见特性，如<strong>隐藏属性凭证</strong>、不等式或<strong>过期检查</strong>、<strong>速率限制和克隆抵抗</strong>。违反速率限制（例如，通过与他人共享凭证）将导致凭证的识别和撤销。</p>
+<p>复杂标准支持：由于我们支持将访问标准高效编码为 NP 关系，因此可以轻松支持比现有方案更复杂的标准，例如，证明在特定市镇的居住权以访问当地公共图书馆的电子书。</p>
+</li>
+<li>
+<p>可审计的颁发</p>
+<p>公开审计：凭证的颁发可以公开审计。例如，在我们的护照示例中，任何人都可以下载凭证列表，并通过 zk 支持文档验证凭证的颁发及其原因。</p>
+<p>可见性：即使没有这样的文档，所有已颁发的凭证都是可见的，颁发过程也可以被调查。相比之下，使用给定密钥签署的每个凭证都无法枚举，更不用说审计。</p>
+</li>
+<li>
+<p>灵活的凭证管理</p>
+<p>列表管理：凭证的颁发仅仅是列表管理，因此颁发过程灵活。在许多情况下，我们无需找到可信方：简单的公告板或区块链就足够了。</p>
+<p>中央方管理：在其他情况下，中央方可以维护列表，而无需信任其保护签名密钥。</p>
+</li>
+<li>
+<p>签名颁发的凭证</p>
+<p>支持签名颁发：在有可信方能够颁发正确凭证的情况下，zk-creds 也支持通过签名颁发凭证。在这种情况下，没有颁发列表。这通常会导致更快的凭证展示，并消除管理列表成员资格的开销。</p>
+</li>
+<li>
+<p>见证(witness)管理</p>
+<p>Merkle 树使用：使用 Merkle 树进行凭证颁发要求用户维护凭证在颁发者列表中的最新见证。用户可以定期向颁发者请求更新的见证。</p>
+<p>更新机制：用户可以通过从树的前沿下载对数大小的更新和常数数量的 Merkle 根来更新其见证。</p>
+</li>
+<li>
+<p>撤销机制</p>
+<p>高效撤销：许多现有方法在每次撤销时需要昂贵的非对称加密操作。例如，某些方案（如 EPID）要求每个凭证展示的工作量与被撤销的私钥数量成线性关系。</p>
+<p>低成本撤销：在 zk-creds 中，每次撤销只需从 Merkle 树中移除凭证，成本仅与已颁发凭证的数量成对数关系。这适用于已知持有者公共身份的凭证撤销，以及所谓的私钥撤销（即被盗或泄露的凭证被禁止）。</p>
+</li>
+</ol>
+<h2 id="preliminary">preliminary</h2>
+<p><strong>一般符号</strong></p>
+<ul>
+<li>
+<p>变量赋值：我们用 x:=z 表示变量赋值。</p>
+</li>
+<li>
+<p>从集合中采样：用 y←S表示从集合 S中均匀采样。</p>
+</li>
+<li>
+<p>算法执行：y:=A(x;r) 表示在输入 x和随机性 r 下执行概率算法 A**。</p>
+</li>
+<li>
+<p>变量长度列表：用 x:=x1,x2,…表示一个变量长度的列表，粗体字表示向量。</p>
+</li>
+<li>
+<p>知识证明：对于任意有效可计算的谓词 P，我们说关于实例 x 的关系 R={(x;w):P(x,w)}的知识证明是关于见证 w的知识证明，使得 P(x,w) 得到满足。</p>
+</li>
+<li>
+<p>承诺：用 Com(v;r)表示对值 v的承诺，使用随机性 r。</p>
+</li>
+<li>
+<p>安全参数：系统的安全参数用 λ表示。</p>
+</li>
+</ul>
+<p><strong>Merkle 树</strong></p>
+<p>在 zk-creds 中，我们使用 Merkle 树 T来表示集合成员资格。树的根用 Troot表示。Merkle 树具有以下功能：</p>
+<ul>
+<li>插入：T.Insert(v)→T′ 将值 v插入到 T 中的下一个空叶子，并返回修改后的树。</li>
+<li>移除：T.Remove(v)→T′ 从树中移除 v（如果存在），并返回修改后的树。</li>
+<li><em>认证路径：T.AuthPath(v)→θ 创建一个认证路径 θ</em>，证明 v∈T。路径的大小与树的高度成正比。</li>
+</ul>
+<p><strong>密码学构建块</strong></p>
+<p>我们描述用于构建 zk-creds 的两个非交互式零知识（NIZK）证明系统。这两个系统在我们称之为 bg的类型 3 非退化双线性群（type-3 non-degenerate ）中操作：</p>
+<p>Groth16：Groth16 是一个受信任设置的 zkSNARK 方案。描述 zk-creds 时，指定 Groth16 的功能就足够支持任何通用的 NIZK 证明方案：</p>
+<ul>
+<li>
+<p>设置：G16.Setup(bg,desc)→crs为给定的算术电路描述和双线性群生成一个公共参考字符串（crs）。</p>
+</li>
+<li>
+<p>证明：G16.Prove(crs,x,w)→π证明由 crs 描述的电路被满足，其中 x是公共输入，w是见证。</p>
+</li>
+<li>
+<p>验证：G16.Verify(crs,π,x)→{0,1} 验证证明 π<em>π</em> 是否与给定的公共输入相符。</p>
+</li>
+</ul>
+<p>Groth16 连接：我们描述一个高层接口，允许我们在 Groth16 证明上构造（盲化的）连接证明。这允许证明一组隐藏的 Groth16 证明 π1,…,πk 共享某些隐藏的公共输入 x，这些输入对验证者未知。具体而言，该证明系统证明：</p>
+<p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mo>⋀</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>k</mi></msubsup><mi>G</mi><mn>16.</mn><mtext>Verify</mtext><mo stretchy="false">(</mo><msub><mtext>crs</mtext><mi>i</mi></msub><mo separator="true">,</mo><msub><mi>π</mi><mi>i</mi></msub><mo separator="true">,</mo><mo stretchy="false">(</mo><msup><mi>x</mi><mo>∗</mo></msup><mo separator="true">,</mo><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\bigwedge_{i=1}^{k} G16.\text{Verify}(\text{crs}_i, \pi_i, (x^*, x_i))</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.2887179999999998em;vertical-align:-0.29971000000000003em;"></span><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">⋀</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9890079999999999em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.2029em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.29971000000000003em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">G</span><span class="mord">1</span><span class="mord">6</span><span class="mord">.</span><span class="mord text"><span class="mord">Verify</span></span><span class="mopen">(</span><span class="mord"><span class="mord text"><span class="mord">crs</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">π</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.688696em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mbin mtight">∗</span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mclose">)</span></span></span></span></p>
+<p>其中 xi 是非隐藏的公共输入（即验证者已知的公共输入）。并满足：</p>
+<p>连接：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>LinkG16.Link</mtext><mo stretchy="false">(</mo><msup><mi>x</mi><mo>∗</mo></msup><mo separator="true">,</mo><mo stretchy="false">{</mo><msub><mtext>crs</mtext><mi>i</mi></msub><mo separator="true">,</mo><msub><mi>π</mi><mi>i</mi></msub><mo stretchy="false">}</mo><msubsup><mo>∗</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>k</mi></msubsup><mo stretchy="false">)</mo><mo>→</mo><msub><mi>π</mi><mo>∗</mo></msub><mtext>link</mtext></mrow><annotation encoding="application/x-tex">\text{LinkG16.Link}(x^*, \{\text{crs}_i, \pi_i\}*_{i=1}^{k}) \rightarrow \pi_*{\text{link}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.107772em;vertical-align:-0.258664em;"></span><span class="mord text"><span class="mord">LinkG16.Link</span></span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.688696em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mbin mtight">∗</span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mopen">{</span><span class="mord"><span class="mord text"><span class="mord">crs</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">π</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">}</span><span class="mord"><span class="mbin">∗</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.849108em;"><span style="top:-2.441336em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.258664em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.84444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">π</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.175696em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mbin mtight">∗</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord text"><span class="mord">link</span></span></span></span></span></span>，构造关于隐藏公共输入 x∗<em>x</em>∗ 的零知识证明</p>
+<p>连接验证：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>LinkG16.LinkVerify</mtext><mo stretchy="false">(</mo><msub><mi>π</mi><mtext>link</mtext></msub><mo separator="true">,</mo><mo stretchy="false">{</mo><msub><mtext>crs</mtext><mi>i</mi></msub><mo separator="true">,</mo><msub><mi>x</mi><mi>i</mi></msub><msubsup><mo stretchy="false">}</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>k</mi></msubsup><mo stretchy="false">)</mo><mo>→</mo><mo stretchy="false">{</mo><mn>0</mn><mo separator="true">,</mo><mn>1</mn><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">\text{LinkG16.LinkVerify}(\pi_{\text{link}}, \{\text{crs}_i, x_i\}_{i=1}^{k}) \rightarrow \{0, 1\}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.107772em;vertical-align:-0.258664em;"></span><span class="mord text"><span class="mord">LinkG16.LinkVerify</span></span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">π</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">link</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mopen">{</span><span class="mord"><span class="mord text"><span class="mord">crs</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose"><span class="mclose">}</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.849108em;"><span style="top:-2.441336em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.258664em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">1</span><span class="mclose">}</span></span></span></span>验证上述语句是否与给定的公共输入和 Groth16 CRS 相符。</p>
+<p><strong>密码学假设</strong></p>
+<p>我们陈述上述方案的安全属性及实现这些属性所需的密码学假设。为简洁起见，我们将具体假设的定义推迟到引用的文献中。</p>
+<ul>
+<li>Groth16 是完美零知识的，并且在代数对手下是弱白盒模拟可提取的，基于 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>q</mi><mrow><mtext>−</mtext><mi>d</mi><mi>l</mi><mi>o</mi><mi>g</mi></mrow></msup></mrow><annotation encoding="application/x-tex">q^{−dlog}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.043548em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">q</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8491079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mathdefault mtight">d</span><span class="mord mathdefault mtight" style="margin-right:0.01968em;">l</span><span class="mord mathdefault mtight">o</span><span class="mord mathdefault mtight" style="margin-right:0.03588em;">g</span></span></span></span></span></span></span></span></span></span></span></span> 和线性独立性假设。我们还假设该结果在常见的 Groth16 替代γ=1 下成立。</li>
+<li>我们使用 Poseidon 来实例化 Merkle 树和承诺的哈希函数。最后，我们假设用于实例化第 5.3 节中小工具的带密钥前缀的 Poseidon 哈希函数是伪随机函数（PRF）。由于 Poseidon 是海绵构造，前缀是安全的。另见附录 F，了解使用 Pedersen 哈希和完美隐藏承诺的替代实例化。</li>
+</ul>
+<h2 id="definitions">Definitions</h2>
+<p>目标</p>
+<ul>
+<li>不可伪造性、正确性和不可链接性。</li>
+<li>会话绑定：凭证的显示固有地绑定到它们所在的通道或会话，从而防止重放攻击。</li>
+</ul>
+<p>威胁模型</p>
+<ul>
+<li>假设所有发行人、验证者和（几乎所有）用户都是恶意的，可以勾结。</li>
+<li>为了匿名，必须至少有两个诚实的用户拥有有效的证书。</li>
+<li>假设存在一个可靠的机制，供各方就已颁发的全权证书清单达成一致。(agree on the list of issued credentials.)</li>
+</ul>
+<p><strong>匿名凭证（anonymous credentials）</strong></p>
+<p>1）凭证生成和发布：用户证明自己满足凭证的属性</p>
+<p>cred :=Com(nk,rk, attrs; r)</p>
+<blockquote>
+<p>nk：假名密钥，一个用于生成持久假名的private random value</p>
+<p>rk：rate key，用于生成速率限制token的private random value</p>
+<p>attrs ∈ A：一组公共和隐藏属性</p>
+<p>r：承诺随机性（commitment randomness）</p>
+</blockquote>
+<p>当凭证出现在issuer I的凭证列表CL上时，称I颁发了证书，这里的凭证列表可以用多种方式实例化，累加器、MT等，这里采用的方式是默克尔森岭，以及一组对应的默克尔树列表。</p>
+<p>CL := (F, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mi>T</mi><mo>ˉ</mo></mover></mrow><annotation encoding="application/x-tex">\bar{T}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8201099999999999em;vertical-align:0em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8201099999999999em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.13889em;">T</span></span></span><span style="top:-3.25233em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.16666em;"><span class="mord">ˉ</span></span></span></span></span></span></span></span></span></span>)，其中身份验证路径θ提供成员身份证明。</p>
+<p>每个发行人都有对应的发行标准，例如cred中的出生日期与签名的数字护照相匹配。然后通过issuer认证通道，请求者（运行<strong>IssueReq</strong>）向发行者发送带有zk支持文档sd的cred。例如，Groth16证明或数字签名，发行人运行<strong>IssueGrant</strong>，成功后将cred添加到他们的列表中，并返回一个身份验证路径θ，证明其发行。</p>
+<p>2）用户证明自己拥有已发布的某个匿名属性</p>
+<p>访问标准（possible access criteria ）Φ := {ϕ | ϕ : A → {0, 1}}</p>
+<blockquote>
+<p>这里Φ是指所有从A元素映射到01的函数集合，</p>
+</blockquote>
+<p>在<strong>匿名通道</strong>上，用户通过提供零知识证明来显示凭证（运行<strong>ShowCred</strong>），证明他们拥有有效的已颁发凭证（θ作为私人见证witness），其见证中的属性w满足验证器的访问标准。该证明还必须绑定到某个会话上下文aux。verifier运行<strong>VerifyShow</strong>，成功后授予用户访问权限</p>
+<p>3）简单协议流程（U是用户，I是凭证颁发者，V是验证者）</p>
+<p>Setup(<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>1</mn><mi>λ</mi></msup></mrow><annotation encoding="application/x-tex">1^λ</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.849108em;vertical-align:0em;"></span><span class="mord"><span class="mord">1</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.849108em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">λ</span></span></span></span></span></span></span></span></span></span></span>) → pp</p>
+<ul>
+<li><strong>生成系统参数</strong>。此步骤生成所需的公共系统参数（<code>pp</code>），这些参数会用于后续的凭证和访问控制操作。<code>λ</code> 表示安全参数，通常与系统的安全级别（例如比特强度）相关。</li>
+</ul>
+<p>IssueSetup(pp) → ι</p>
+<ul>
+<li><strong>建立公共属性字段和凭证发行准则</strong>。使用之前生成的系统参数 <code>pp</code>，此步骤会设立一个公共属性集合（<code>attrs</code>），以及凭证发行的标准或准则（<code>ι</code>），这些准则将控制凭证如何被颁发。</li>
+</ul>
+<p>ShowSetup(pp) → ϕ</p>
+<ul>
+<li><strong>设定访问准则</strong>。此步骤设定一个新的“访问准则”（<code>ϕ</code>）。<code>ϕ</code> 是访问凭证的条件，定义了哪些情况下可以展示凭证。<code>Φ</code> 是所有可能访问准则的集合。</li>
+</ul>
+<p>IssueReq_U(pp, ι, attrs, wsd, iauxsd) → (cred, sd)</p>
+<ul>
+<li><strong>凭证申请</strong>。用户可以基于设定的发行准则（<code>ι</code>）和属性（<code>attrs</code>）请求一个凭证（<code>cred</code>），并生成相应的支持文档（<code>sd</code>）。这里 <code>wsd</code> 和 <code>iauxsd</code> 表示可能涉及的其他附加信息或支持文档。</li>
+</ul>
+<p>IssueGrant_I(pp, ι, CL, cred, sd) → (CL′, θ)</p>
+<ul>
+<li><strong>颁发凭证</strong>。此步骤决定是否根据申请（<code>cred</code>）及其支持文档（<code>sd</code>）授予用户请求的凭证。如果授予成功，凭证将被添加到凭证列表（<code>CL</code>）中，并返回凭证的证明（<code>θ</code>）。</li>
+</ul>
+<p>ShowCred_U(pp, ϕ, CL, cred, θ, w, aux) → (πlink, aux)</p>
+<ul>
+<li><strong>展示凭证</strong>。当用户需要展示其凭证时，通过检查其凭证是否满足设定的访问准则（<code>ϕ</code>）。此步骤会生成一个“展示链接”（<code>πlink</code>），证明用户持有符合准则的凭证，并附带额外的上下文信息（<code>aux</code>）。</li>
+</ul>
+<p>VerifyShow_V(pp, ϕ, CL, πlink, aux) → b</p>
+<ul>
+<li><strong>验证凭证展示</strong>。验证用户所展示的凭证是否符合设定的访问准则（<code>ϕ</code>），并检查相关上下文信息（<code>aux</code>）。返回一个布尔值 <code>b</code>，表示验证是否通过。</li>
+</ul>
+<p>RevokeCred_I(pp, CL, cred) → CL′</p>
+<ul>
+<li><strong>撤销凭证</strong>。如果某个凭证需要被撤销，此步骤会从凭证列表（<code>CL</code>）中删除该凭证，并返回更新后的凭证列表（<code>CL′</code>）。</li>
+</ul>
+<h2 id="construction">Construction</h2>
+<p>zk-creds 假设存在一个由可信方、某种拜占庭系统或区块链维护的已颁发凭证列表。我们的方案提供三组功能：颁发、展示和撤销。</p>
+<ol>
+<li>颁发过程</li>
+</ol>
+<p>​	用户：用户（例如，Alice）需要说服颁发机制她应该获得一个凭证。</p>
+<p>​	颁发列表：一旦她的凭证被放入颁发列表，Alice 就可以使用该凭证来证明她满足某些访问标准。</p>
+<ol start="2">
+<li>使用凭证的步骤</li>
+</ol>
+<p>​	使用凭证的概念涉及两个步骤：</p>
+<p>​	成员资格证明：证明凭证在颁发列表中。</p>
+<p>​	属性证明：证明承诺的属性满足某些访问标准。</p>
+<ol start="3">
+<li>撤销凭证</li>
+</ol>
+<p>​	撤销机制：颁发者可以通过简单地将凭证从列表中移除来撤销凭证。</p>
+<p>可以通过不同的方式实现这一范式，并使用不同的集合成员资格技术，例如 RSA 累加器、专用的零知识方案，甚至使用颁发的签名。在实际构建中使用Merkle 森林实现成员资格证明，这是一种新的方法，允许开发者在验证时间和见证数据上进行轻微增加，以换取证明时间的大幅减少。</p>
+<p>访问标准检查：我们为开发者提供了一组小工具（gadgets），这些小工具可以组合形成复杂的访问标准检查。</p>
+<p>盲 Groth16 证明：我们将这些组件结合在一起，使用一种新的盲 Groth16 证明，允许我们证明多个 Groth16 证明共享相同的盲化输入，而不需要像 commit-and-prove 那样创建持久标识符。这使我们能够在多个凭证展示中重用成员资格证明，而不会被跟踪。</p>
+<p><img src="assets/image-20250225154434685.png" alt="image-20250225154434685"></p>
+<h3 id="merkle-森林">Merkle 森林</h3>
+<p>zk-creds 使用 Merkle 树的森林，而不是单一的 Merkle 树来累积凭证和证明成员资格。成员资格证明包括两个部分：</p>
+<ul>
+<li>
+<p>cred∈T 对于某个 Merkle 树 T</p>
+</li>
+<li>
+<p>Troot∈F，其中 F是包含已颁发凭证的 Merkle 树森林。</p>
+</li>
+</ul>
+<p>较短的 Merkle 树可以显著减少证明成本——最多可减少 50%（约 143 毫秒）。此外，由于森林成员资格是对 Merkle 树根的简单 OR 证明，较大森林的成本对证明者来说是微不足道的，并且允许更大的凭证列表。我们注意到，对于我们考虑的森林大小，额外的验证成本是微不足道的（约 137 微秒）。</p>
+<h3 id="见证管理">见证管理</h3>
+<p>展示凭证需要知道见证（即认证路径）θ，以证明其在 Merkle 树中的颁发。随着凭证的添加或移除，θ必须更新。在一个简单的构造中，用户可能会下载新颁发的凭证以更新树。然而，这要求用户构建和维护其整个 Merkle 树的本地副本，这通常是不切实际的。另一方面，用户可以定期查询颁发者或列表管理者以提供更新的 θ。然而，这会唯一标识凭证，并与后续展示强相关，带来较大的隐私风险（尤其是在低使用率的部署中）。我们在附录 B 中提出了两种便捷的方法，并在完整版本中介绍了利用 Merkle 森林的更好构造。</p>
+<h3 id="盲-groth16">盲 Groth16</h3>
+<p>成员资格证明是 ShowCred 中最耗时的部分，预计需要 460 毫秒才能完成。虽然在许多情况下，访问标准检查必须为每次展示重新进行（例如，速率限制的展示包括唯一标识重用的令牌），但成员资格证明除非颁发更多凭证，否则不会改变。</p>
+<p>我们使用盲 Groth16 连接证明将成员资格证明与（可能是多个）访问证明结合起来。盲 Groth16 允许我们在多个展示中重用已计算的成员资格证明，而不会破坏隐私。此外，它通过支持访问标准的轻松组合扩展了系统的功能：如果没有这种组合访问标准的能力，系统设计者将需要：</p>
+<ul>
+<li>
+<p>动态生成小工具所需的电路参数。</p>
+</li>
+<li>
+<p>预先确定他们将支持的所有小工具。</p>
+</li>
+<li>
+<p>为可能使用的每种小工具组合生成电路参数。</p>
+</li>
+</ul>
+<p>具体而言，盲 Groth16 允许我们证明多个 Groth16 证明都是针对同一凭证制作的，而不揭示凭证。高层次上，算法的工作流程如下：</p>
+<ul>
+<li>
+<p>准备公共输入（在这里是凭证及其 Merkle 根），这些输入由基础证明共享。</p>
+</li>
+<li>
+<p>对于每个证明，盲化准备好的输入的副本，并以一种与盲化输入相抵消的方式盲化证明。</p>
+</li>
+<li>
+<p>最后，证明所有盲化输入彼此一致。在抵消盲化因子后，验证方程与典型的 Groth16 验证方程相同。</p>
+</li>
+</ul>
+<h3 id="小工具-gadgets">小工具（Gadgets）</h3>
+<p>由于 ShowCred 支持任意语句，验证者可以灵活地在其协议中添加和移除有用的子电路或小工具（gadgets）。实际上，验证者可以利用 ShowCred 的结构为每个小工具创建单独的证明并将它们链接在一起，而不是将小工具嵌入现有电路中。这种定制的好处有两个方面：</p>
+<ul>
+<li>
+<p>预计算和缓存：用户可以单独预计算和缓存独立的小工具证明，而不必与其他访问标准证明混合。</p>
+</li>
+<li>
+<p>简化电路定义：验证者不必定义自定义电路并生成公共参考字符串（CRS）。</p>
+</li>
+</ul>
+<p>小工具是任意的 NP 关系，可以捕获几乎所有可想象的身份检查。以下是一些作为 zk-creds 系统构建块的小工具的描述。</p>
+<h4 id="1-可链接展示-linkable-show"><strong>1. 可链接展示（Linkable Show）</strong></h4>
+<p>功能：揭示一个在给定上下文 ctx 中持久存在的伪名 PRFnk(ctx)，但与其他上下文中凭证的任何使用是不可链接的。</p>
+<p>示例：例如，单个抗 Sybil 的凭证可以用于在单个网站内的子论坛（如 Discord 服务器或 subreddit）中创建不可链接的账户。</p>
+<h4 id="2-速率限制-rate-limiting">2.速率限制（Rate Limiting）</h4>
+<p>功能：限制用户在每个时间段内仅执行 ShowCred N次，N是由验证者选择的速率限制。</p>
+<p>实现：每次 ShowCred，用户生成一个伪随机令牌 tok=PRFrk(epoch∥ctr)，揭示时间段，并证明 ctr&lt;N</p>
+<h4 id="3-克隆抵抗-cloning-resistance">3. 克隆抵抗（Cloning Resistance）</h4>
+<p>功能：与速率限制执行相同的功能，但会揭示速率违规者的身份。</p>
+<p>实现：每次运行 ShowCred，用户从验证者那里接收一个随机数，并发送两个令牌：</p>
+<ul>
+<li>tok1=PRFrk(epoch∥ctr)</li>
+<li>tok2=id+H(nonce)⋅PRFrk′(epoch∥ctr)</li>
+</ul>
+<p>其中 id 是一个标识属性（例如，凭证哈希）。如上所述，ShowCred 证明令牌构造正确。如果其中一个展示被重用，tok1将重复，但 tok2将是不同的，给验证者提供两个 tok2方程和两个未知变量：id和 PRFrk′(epoch∥ctr)。通过求解方程 id可以识别凭证持有者。注意，如果 id 是凭证（或其哈希），则可以通过将其从颁发列表中移除立即撤销克隆凭证。</p>
+<h4 id="4-过期-expiry">4. 过期（Expiry）</h4>
+<p>功能：打开凭证中的属性 e并证明 e&gt;today，即凭证尚未过期。</p>
+<h4 id="5-会话绑定-session-binding">5. 会话绑定（Session Binding）</h4>
+<p>功能：使验证者能够通过将验证者选择的随机数或会话上下文绑定到每个 ShowCred 来拒绝重放的 ShowCred 证明。</p>
+<p>实现：这可以通过包括一个空证明来完成，该证明将随机数作为公共输入。</p>
+<h4 id="6-连接-join">6. 连接（Join）</h4>
+<p>功能：允许通过在某些公共属性（如全名或地址）上连接凭证来组合凭证。</p>
+<p>实现：这可以在单个 ShowCred 内完成，或通过公开承诺公共属性在不同的 ShowCred 之间完成。</p>
+<h3 id="签名颁发的凭证-不使用区块链">签名颁发的凭证[不使用区块链]</h3>
+<p>zk-creds 的一个主要优势是我们不需要信任持有签名密钥的颁发者，而可以使用透明日志或区块链来颁发凭证。然而，如果不需要这一特性，我们可以构建一个传统的匿名凭证方案，同时保留 zk-creds 的其他特性和灵活性。由于我们的小工具（gadget）方法是灵活的，我们可以用一个验证签名的小工具替换成员资格检查小工具。这意味着 zk-creds 也支持通过标准签名（例如 ECDSA 或 Schnorr）由单一方或通过阈值签名方案（如 FROST）由多个方颁发的凭证。此外，我们可以将通过列表颁发的凭证与通过签名颁发的凭证组合。</p>
+<h3 id="额外特性">额外特性</h3>
+<p>值得注意的是，我们的 zk-creds 构造还允许构建具有几个以前仅在专用方案中可用的特性的协议。</p>
+<h4 id="隐藏颁发者">隐藏颁发者</h4>
+<p>功能：我们可以完全隐藏凭证颁发者的身份，例如在泄露凭证来源可能对隐私造成重大伤害的情况下。虽然这一概念在文献中并不新颖，但现有的方案中很少支持这一隐藏颁发者特性。</p>
+<p>实现：zk-creds 本质上支持这一特性，因为 ShowCred 可以针对通过连接不同颁发者维护的列表创建的合成列表进行执行，从而隐藏颁发者。然而，缺点是多个颁发者可能会颁发不同格式的凭证。</p>
+<h4 id="隐藏凭证类型">隐藏凭证类型</h4>
+<p>功能：zk-creds 还可以配置为隐藏凭证类型，这不仅独立有用，而且对于完全支持隐藏颁发者是必要的。</p>
+<p>实现：在 zk-creds 中，具有不同属性的凭证可以在颁发后填充到相同的大小，然后可以互换使用，并在访问标准上高效验证。这是通过构造一个新的电路，该电路是单个凭证上标准的 OR 来实现的。</p>
+<h4 id="委托">委托</h4>
+<p>功能：在 zk-creds 中，颁发权是可委托的。颁发凭证的权力可以通过 zk 支持文档来证明，该文档本身是另一个凭证的展示。</p>
+<p>实现：此外，由于 zk 支持文档中的证明是通用的，委托过程可以约束正在颁发的凭证中的属性。例如，我们可以定义一个凭证，允许的委托层级最多为三层，每次委托时隐藏的属性会递减。凭证属性也可以选择性地委托。</p>
+<h3 id="nizk-设置">NIZK 设置</h3>
+<p>Groth16 需要一次性的可信设置来生成一组称为公共参考字符串（CRS）的参数，用于每个语句（即电路）。一旦生成了这个 CRS，就可以在系统的整个生命周期中用于证明不同实例的语句。</p>
+<h4 id="分布式设置">分布式设置</h4>
+<p>解决方案：Groth16 的分布式设置是一个已解决的问题，通过<strong>多方计算设置仪式</strong>来实现，这些仪式只需要两个诚实的参与者。这些仪式已经在数百名用户中运行，并用于保护数十亿美元的加密货币。</p>
+<p>效率：这些协议高效且产生抗颠覆的零知识证明系统——即使设置中的所有参与者都是恶意的，证明仍然是零知识的，用户隐私不受影响。</p>
+<h4 id="crs-的灵活性">CRS 的灵活性</h4>
+<p>最小化影响：如前所述，我们还寻求最小化 CRS 对 zk-creds 灵活性的影响。通过利用盲 Groth16，系统设计者不需要为他们希望支持的所有可能的访问标准组合决定和预生成 CRS，而是可以按小工具（gadget）逐个生成 CRS。</p>
+<h3 id="安全论证">安全论证</h3>
+<p>zk-creds 的安全性基于以下假设：</p>
+<ol>
+<li>
+<p>Groth16 证明：假设 Groth16 证明是健壮的、完美零知识的，并且在代数群模型中是可模拟提取的。</p>
+</li>
+<li>
+<p>Poseidon 哈希函数：假设 Poseidon 哈希函数是抗碰撞的和伪随机函数（PRF）。</p>
+</li>
+<li>
+<p>其他变体：对于我们方案的其他变体，假设 Schnorr 签名在离散对数假设下是安全的，Pedersen 承诺在相同假设下是计算绑定的且完美隐藏的。</p>
+</li>
+</ol>
+<h4 id="安全游戏">安全游戏</h4>
+<p>消息认证：非正式地说，由于我们安全游戏中各方之间的所有消息都通过零知识证明“认证”，模拟器可以提取所有对抗性生成的消息并将其代理到理想功能。</p>
+<p>诚实交互：对于理想功能中的任何诚实交互，模拟器可以通过模拟与随机承诺和随机输出相关的零知识证明来建模对手在现实世界协议中的视图。</p>
+<p>撤销事件处理：最后，模拟器维护一个映射真实和理想世界凭证的列表，以便处理撤销事件。</p>
+<h2 id="related">Related</h2>
+<p>Decentralized Anonymous Credentials  NDSS 2014：首次提出去中心化匿名证书的概念，消除单一发行人的假设和发行人持有密钥的需要。但是，他们要求用户在本地存储完整的凭证列表，并且计算证明时间和每次显示的已颁发凭证数量呈线性关系（即使是静态凭证列表）。</p>
+<p>相比之下，zk-creds开发了一种新的方法和新的密码学（盲Groth16），以允许证明重用和快速凭证显示。而且，通过使用Merkle树，zk-creds要求<strong>用户只存储对数大小的见证数据</strong>来计算凭证显示。</p>
+<p>他们使用的定制西格玛协议集不提供凭证和身份属性的组合，也不支持复杂的身份声明。</p>
+<p>最后也是最重要的是，这项工作没有回答如何在<strong>不向发卡机构披露敏感信息</strong>的情况下做出颁发证书的决定的问题（即zk支持文档地址的问题）。</p>
+<p>Coconut[55]匿名凭证方案通过阈值签名解决了发行挑战。在Coconut中，凭据由n个静态方在假设t&gt;1/2是诚实的情况下颁发，但是必须有足够多的愿意发行凭证的参与方。如果在某些情况下，虽然有很多潜在的参与方愿意发行凭证，但由于某种原因，没有任何一个参与方被认为是可信的，那么阈值发行机制就无法解决发行者稀缺的问题。</p>
+<p>Coconut只支持凭证中属性的选择性披露，而不支持对属性进行复杂的零知识证明。它不符合我们的<strong>灵活性或动态生成访问标准</strong>的设计目标。</p>
+<h1 id="groth16">Groth16</h1>
+<p>相关实现代码</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/matter-labs/bellman">https://github.com/matter-labs/bellman</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/zkcrypto/bellman">https://github.com/zkcrypto/bellman</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/arkworks-rs/groth16">https://github.com/arkworks-rs/groth16</a></li>
+</ul>
+<p>学习资料：<a target="_blank" rel="noopener" href="https://learnblockchain.cn/2019/05/27/groth16">https://learnblockchain.cn/2019/05/27/groth16</a></p>
+<h1 id="详细推导">详细推导</h1>
+<h3 id="1-setup-1-λ-h-n"><strong>1. Setup(1^λ, h, n)</strong></h3>
+<p><strong>功能</strong>：生成系统公共参数，支持Merkle树验证和森林成员证明。</p>
+<p><strong>步骤解析</strong>：</p>
+<ol>
+<li><strong>选择双线性群</strong>
+<ul>
+<li>输入安全参数λ，生成一个素数阶p的双线性群<code>bg = (G1, G2, GT, e, g, h)</code>，其中p足够大（与λ相关），e是双线性映射，g和h分别是G1和G2的生成元。</li>
+</ul>
+</li>
+<li><strong>定义descT电路（Merkle树验证）</strong>
+<ul>
+<li><strong>公共输入</strong>：<code>Troot</code>（Merkle树根）、<code>cred</code>（凭证值）。</li>
+<li><strong>私有输入</strong>：认证路径<code>θ</code>（包含兄弟节点和路径信息）。</li>
+<li><strong>电路逻辑</strong>：验证<code>cred</code>存在于高度为h的Merkle树中，且通过路径θ可计算出根<code>Troot</code>。</li>
+<li><strong>实现细节</strong>：电路逐层验证哈希路径，确保每层哈希计算正确，最终匹配<code>Troot</code>。</li>
+</ul>
+</li>
+<li><strong>定义descF电路（森林成员验证）</strong>
+<ul>
+<li><strong>公共输入</strong>：<code>Troot</code>、<code>cred</code>、<code>F</code>（森林，包含n棵树的根）。</li>
+<li><strong>电路逻辑</strong>：验证<code>Troot</code>是森林F中某棵树的根，即<code>Troot ∈ &#123;F1, F2, ..., Fn&#125;</code>。</li>
+<li><strong>实现细节</strong>：通过逻辑或（OR）连接n个等式检查，例如：<br>
+<code>(Troot == F1) ∨ (Troot == F2) ∨ ... ∨ (Troot == Fn)</code><br>
+在算术电路中，OR可通过线性组合和布尔约束实现。</li>
+</ul>
+</li>
+<li><strong>生成CRS</strong>
+<ul>
+<li>使用Groth16的Setup算法为descT生成<code>crsT</code>，为descF生成<code>crsF</code>。</li>
+<li><strong>Groth16.Setup</strong>：根据电路生成证明密钥（proving key）和验证密钥（verification key），构成CRS。</li>
+</ul>
+</li>
+<li><strong>返回公共参数pp</strong>
+<ul>
+<li><code>pp = (bg, crsT, crsF)</code>，后续协议依赖这些参数生成和验证证明。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="2-issuesetup-pp"><strong>2. IssueSetup(pp)</strong></h3>
+<p><strong>功能</strong>：设置凭证发行参数，定义发行者验证属性与凭证结构的条件。</p>
+<p><strong>步骤解析</strong>：</p>
+<ol>
+<li><strong>定义发行标准</strong>
+<ul>
+<li><code>ιzk</code>：零知识条件，验证属性<code>attrs</code>和私有输入<code>iauxzk</code>的关系（如属性满足隐藏规则）。</li>
+<li><code>ιpub</code>：公开条件，可能包含公开参数（如发行者公钥）。</li>
+</ul>
+</li>
+<li><strong>定义desc电路（发行验证）</strong>
+<ul>
+<li><strong>公共输入</strong>：<code>iauxzk</code>（辅助公开输入，如策略参数）。</li>
+<li><strong>私有输入</strong>：<code>attrs</code>（属性）、<code>cred</code>的结构<code>(nk, rk, attrs)</code>。</li>
+<li><strong>电路逻辑</strong>：
+<ul>
+<li><strong>条件1</strong>：<code>ιzk(attrs, iauxzk) = 1</code>，即属性满足发行者的隐藏规则（如哈希等于特定值）。</li>
+<li><strong>条件2</strong>：<code>cred</code>可正确解析为<code>(nk, rk, attrs)</code>，例如验证承诺或结构哈希。</li>
+</ul>
+</li>
+<li><strong>实现细节</strong>：若<code>cred</code>是承诺，电路需验证承诺的正确性（如Pedersen承诺：<code>cred = nk*G + rk*H + attrs*M</code>）。</li>
+</ul>
+</li>
+<li><strong>生成CRS</strong>
+<ul>
+<li>使用Groth16生成<code>crsι</code>，用于发行时生成零知识证明。</li>
+</ul>
+</li>
+<li><strong>返回参数</strong>
+<ul>
+<li><code>(crsι, ιpub)</code>，其中<code>crsι</code>用于生成凭证，<code>ιpub</code>公开供验证方使用。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="3-showsetup-pp"><strong>3. ShowSetup(pp)</strong></h3>
+<p><strong>功能</strong>：设置凭证展示参数，定义访问策略与属性验证条件。</p>
+<p><strong>步骤解析</strong>：</p>
+<ol>
+<li><strong>定义访问标准ϕ</strong>
+<ul>
+<li>策略如“年龄 ≥ 21”或“角色 = 管理员”，可包含逻辑组合（AND/OR）。</li>
+</ul>
+</li>
+<li><strong>定义desc电路（展示验证）</strong>
+<ul>
+<li><strong>公共输入</strong>：<code>Troot</code>（树根）、<code>cred</code>（凭证）、<code>aux</code>（辅助数据，如时间戳）。</li>
+<li><strong>私有输入</strong>：<code>nk</code>（秘密钥）、<code>rk</code>（随机数）、<code>attrs</code>（属性）。</li>
+<li><strong>电路逻辑</strong>：
+<ul>
+<li><strong>条件1</strong>：<code>ϕ(nk, rk, attrs, aux) = 1</code>，即属性和辅助数据满足访问策略。</li>
+<li><strong>条件2</strong>：<code>cred</code>可正确解析为<code>(nk, rk, attrs)</code>，确保凭证未被篡改。</li>
+</ul>
+</li>
+<li><strong>实现细节</strong>：若ϕ包含范围证明，电路需实现比较操作；若使用哈希，需约束哈希计算。</li>
+</ul>
+</li>
+<li><strong>生成CRS</strong>
+<ul>
+<li>使用Groth16生成<code>crsϕ</code>，用于生成满足ϕ条件的零知识证明。</li>
+</ul>
+</li>
+<li><strong>返回参数</strong>
+<ul>
+<li><code>crsϕ</code>，供验证方验证展示证明的有效性。</li>
+</ul>
+</li>
+</ol>
+<h3 id="1-issuereq-pp-crsι-attrs-wsd-iauxzk-iauxpub"><strong>1. IssueReq(pp, crsι, attrs, wsd, (iauxzk, iauxpub))</strong></h3>
+<p><strong>功能</strong>：用户生成凭证请求，包含属性证明和承诺，发送给发行者。</p>
+<p><strong>步骤解析</strong>：</p>
+<ol>
+<li><strong>生成随机数</strong>
+<ul>
+<li>抽样随机数<code>r</code>（承诺随机因子）、<code>nk</code>（假名密钥）、<code>rk</code>（速率密钥）。</li>
+<li><strong>作用</strong>：<code>r</code>用于隐藏属性；<code>nk</code>用于生成唯一假名；<code>rk</code>控制凭证使用频率。</li>
+</ul>
+</li>
+<li><strong>计算凭证承诺</strong>
+<ul>
+<li><code>cred := Com(nk, rk, attrs; r)</code></li>
+<li><strong>实现</strong>：使用Pedersen承诺或其他绑定承诺方案，确保cred不可逆且隐藏属性。</li>
+</ul>
+</li>
+<li><strong>组装见证集合</strong>
+<ul>
+<li><code>w := (wsd, r, nk, rk, attrs)</code></li>
+<li><strong>说明</strong>：<code>wsd</code>为支持文档的见证（如签名），其余为承诺的私有参数。</li>
+</ul>
+</li>
+<li><strong>生成零知识证明πι</strong>
+<ul>
+<li><code>πι ← G16.Prove(crsι, (cred, iauxzk), w)</code></li>
+<li><strong>公共输入</strong>：<code>cred</code>（承诺值）、<code>iauxzk</code>（发行策略参数）。</li>
+<li><strong>私有输入</strong>：<code>w</code>中的参数。</li>
+<li><strong>电路条件</strong>：
+<ul>
+<li>属性<code>attrs</code>满足发行策略<code>ιzk(attrs, iauxzk) = 1</code>。</li>
+<li><code>cred</code>正确绑定<code>nk, rk, attrs</code>和随机数<code>r</code>。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>打包支持文档</strong>
+<ul>
+<li><code>sdzk := (πι, iauxzk)</code>：零知识证明部分。</li>
+<li><code>sdpub := iauxpub</code>：公开参数（如策略版本）。</li>
+</ul>
+</li>
+<li><strong>发送请求</strong>
+<ul>
+<li>用户将<code>(cred, sdzk, sdpub)</code>发送给发行者，等待凭证插入Merkle树。</li>
+</ul>
+</li>
+<li><strong>接收认证路径</strong>
+<ul>
+<li>发行者将<code>cred</code>插入树后，返回新根<code>T’</code>和路径<code>θ</code>，用户存储<code>(nk, rk, r, attrs, θ)</code>以备后续展示。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="2-issuegrant-pp-crsι-ιpub-f-t-cred-sdzk-sdpub"><strong>2. IssueGrant(pp, (crsι, ιpub), (F, T), cred, (sdzk, sdpub))</strong></h3>
+<p><strong>功能</strong>：发行者验证请求并颁发凭证，更新Merkle树。</p>
+<p><strong>步骤解析</strong>：</p>
+<ol>
+<li><strong>解析证明参数</strong>
+<ul>
+<li><code>(πι, iauxzk) := sdzk</code>：提取零知识证明和策略参数。</li>
+</ul>
+</li>
+<li><strong>验证公开文档</strong>
+<ul>
+<li><code>ιpub(sdpub)</code>：检查公开参数合法性（如签名有效性或策略匹配）。</li>
+</ul>
+</li>
+<li><strong>验证零知识证明</strong>
+<ul>
+<li><code>G16.Verify(crsι, πι, (cred, iauxzk))</code>：确保用户属性满足发行条件。</li>
+</ul>
+</li>
+<li><strong>拒绝或继续</strong>
+<ul>
+<li>若任意检查失败，拒绝请求；否则继续。</li>
+</ul>
+</li>
+<li><strong>插入凭证到树</strong>
+<ul>
+<li>选择森林<code>F</code>中的树<code>T</code>，插入<code>cred</code>生成新树<code>T’</code>。</li>
+<li><strong>实现</strong>：Merkle树插入操作更新根哈希，生成路径<code>θ</code>。</li>
+</ul>
+</li>
+<li><strong>生成认证路径</strong>
+<ul>
+<li><code>θ := T’.AuthPath(cred)</code>：证明<code>cred</code>在<code>T’</code>中的成员资格。</li>
+</ul>
+</li>
+<li><strong>更新森林状态</strong>
+<ul>
+<li>用<code>T’</code>替换原树<code>T</code>，更新森林<code>F</code>的根集合。</li>
+</ul>
+</li>
+<li><strong>返回认证路径</strong>
+<ul>
+<li>将<code>θ</code>发送给用户，用户需妥善保存以用于后续证明。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="3-ushowcred-pp-crs-f-troot-cred-θ-wi-auxi-i-1-k"><strong>3. UShowCred(pp, crs, (F, Troot), cred, θ, {wi, auxi}_i=1^k)</strong></h3>
+<p><strong>功能</strong>：用户生成满足多个访问策略的凭证展示证明。</p>
+<p><strong>步骤解析</strong>：</p>
+<ol>
+<li><strong>解析CRS和凭证根</strong>
+<ul>
+<li><code>(&#123;crsϕi&#125;, crsT, crsF) := crs</code>：分解为各策略、树和森林的CRS。</li>
+<li>确认<code>Troot</code>属于森林<code>F</code>（即<code>Troot ∈ &#123;F1, ..., Fn&#125;</code>）。</li>
+</ul>
+</li>
+<li><strong>生成策略证明πϕi</strong>
+<ul>
+<li>对每个策略<code>i</code>（共k个）：<br>
+<code>πϕi ← G16.Prove(crsϕi, (Troot, cred, auxi), wi)</code>
+<ul>
+<li><strong>公共输入</strong>：<code>Troot</code>（树根）、<code>cred</code>（凭证）、<code>auxi</code>（如时间戳）。</li>
+<li><strong>私有输入</strong>：<code>wi = (nk, rk, attrs, aux_secret)</code>。</li>
+<li><strong>电路条件</strong>：
+<ul>
+<li>满足策略<code>ϕi(nk, rk, attrs, auxi) = 1</code>（如年龄≥18）。</li>
+<li><code>cred</code>正确解析为<code>(nk, rk, attrs)</code>。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>生成树成员证明πT</strong>
+<ul>
+<li><code>πT ← G16.Prove(crsT, (Troot, cred), θ)</code></li>
+<li><strong>公共输入</strong>：<code>Troot</code>、<code>cred</code>。</li>
+<li><strong>私有输入</strong>：认证路径<code>θ</code>。</li>
+<li><strong>电路逻辑</strong>：验证<code>θ</code>能计算得到<code>Troot</code>，证明<code>cred</code>在树中。</li>
+</ul>
+</li>
+<li><strong>生成森林成员证明πF</strong>
+<ul>
+<li><code>πF ← G16.Prove(crsF, (Troot, cred, F), nil)</code></li>
+<li><strong>公共输入</strong>：<code>Troot</code>、<code>cred</code>、森林<code>F</code>。</li>
+<li><strong>私有输入</strong>：无（因<code>F</code>公开）。</li>
+<li><strong>电路逻辑</strong>：<code>Troot ∈ F</code>（通过OR门验证）。</li>
+</ul>
+</li>
+<li><strong>聚合证明</strong>
+<ul>
+<li><code>π := (&#123;πϕi&#125;, πT, πF)</code>：收集所有子证明。</li>
+</ul>
+</li>
+<li><strong>生成链接证明πlink</strong>
+<ul>
+<li><code>πlink ← LinkG16.Link((Troot, cred), &#123;crsi, πi&#125;_i=1^&#123;k+2&#125;)</code></li>
+<li><strong>作用</strong>：将多个证明绑定到同一公共输入<code>(Troot, cred)</code>，防止证明被分割复用。</li>
+<li><strong>实现</strong>：可能通过哈希绑定或签名，确保所有证明针对同一凭证和根。</li>
+</ul>
+</li>
+<li><strong>发送给验证者</strong>
+<ul>
+<li>发送<code>(πlink, &#123;auxi&#125;)</code>，验证者只需验证链接证明和辅助参数。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="4-verifyshow-pp-crs-f-πlink-auxi-i-1-k"><strong>4. VerifyShow(pp, crs, F, πlink, {auxi}_i=1^k)</strong></h3>
+<p><strong>功能</strong>：验证者验证用户提供的链接证明及策略符合性。</p>
+<p><strong>步骤解析</strong>：</p>
+<ol>
+<li><strong>解析CRS</strong>
+<ul>
+<li><code>(&#123;crsϕi&#125;, crsT, crsF) := crs</code>：分离各策略和结构CRS。</li>
+</ul>
+</li>
+<li><strong>组装辅助输入</strong>
+<ul>
+<li><code>auxk+1 := nil</code>（对应树证明πT无额外辅助输入）。</li>
+<li><code>auxk+2 := F</code>（森林证明πF的公开输入）。</li>
+</ul>
+</li>
+<li><strong>验证链接证明</strong>
+<ul>
+<li><code>LinkG16.LinkVerify(πlink, &#123;crsi, auxi&#125;_i=1^&#123;k+2&#125;)</code></li>
+<li><strong>检查内容</strong>：
+<ul>
+<li>所有子证明的公共输入一致性（如<code>Troot</code>和<code>cred</code>相同）。</li>
+<li>每个子证明的有效性（通过各自CRS验证）。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>结果判定</strong>
+<ul>
+<li>若链接验证通过，接受凭证展示；否则拒绝。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="5-revokecred-pp-f-t-cred"><strong>5. RevokeCred(pp, (F, T), cred)</strong></h3>
+<p><strong>功能</strong>：从Merkle树中移除凭证，更新森林状态。</p>
+<p><strong>步骤解析</strong>：</p>
+<ol>
+<li><strong>定位凭证</strong>
+<ul>
+<li>在森林<code>F</code>的某棵树<code>T</code>中查找<code>cred</code>，若不存在则终止。</li>
+</ul>
+</li>
+<li><strong>移除凭证</strong>
+<ul>
+<li><code>T’ := T.Remove(cred)</code>：删除<code>cred</code>并重新计算Merkle根。</li>
+</ul>
+</li>
+<li><strong>更新森林</strong>
+<ul>
+<li>将原树<code>T</code>替换为<code>T’</code>，更新森林<code>F</code>的根集合。</li>
+</ul>
+</li>
+<li><strong>返回新树</strong>
+<ul>
+<li>返回<code>T’</code>，系统同步新根给相关方（如验证者）。</li>
+</ul>
+</li>
+</ol>
+<h1 id="实际代码实现">实际代码实现</h1>
+<h3 id="1-数据结构分层">1. 数据结构分层</h3>
+<ul>
+<li><strong>PersonalInfo</strong>: 存储原始护照信息，包括：
+<ul>
+<li><code>nonce</code>: 承诺的随机数，用于防止重放攻击</li>
+<li><code>seed</code>: 随机种子，用于生成速率限制令牌</li>
+<li>国籍、姓名、出生日期、护照有效期等字段</li>
+<li>生物特征数据（Biometrics类型）</li>
+</ul>
+</li>
+<li><strong>PersonalInfoVar</strong>: 电路中的属性表示，特点包括：
+<ul>
+<li>使用零知识证明的域元素类型（<code>FpVar&lt;Fr&gt;</code>）</li>
+<li>字节串使用电路兼容类型（<code>Bytestring&lt;Fr&gt;</code>）</li>
+<li>生物特征存储哈希值而非原始数据</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// Stores a subset of the info found in data groups 1 and 2 of a passport</span></span><br><span class="line"><span class="meta">#[derive(Clone)]</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">PersonalInfo</span> &#123;</span><br><span class="line">    nonce: ComNonce,</span><br><span class="line">    seed: Fr,</span><br><span class="line">    nationality: [<span class="type">u8</span>; STATE_ID_LEN],</span><br><span class="line">    name: [<span class="type">u8</span>; NAME_LEN],</span><br><span class="line">    dob: <span class="type">u32</span>,</span><br><span class="line">    passport_expiry: <span class="type">u32</span>,</span><br><span class="line">    biometrics: Biometrics,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/// The &quot;var&quot; version of `PersonalInfo`. This is what we use in ZK circuits</span></span><br><span class="line"><span class="meta">#[derive(Clone)]</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">PersonalInfoVar</span> &#123;</span><br><span class="line">    nonce: ComNonce,</span><br><span class="line">    seed: FpVar&lt;Fr&gt;,</span><br><span class="line">    nationality: Bytestring&lt;Fr&gt;,</span><br><span class="line">    name: Bytestring&lt;Fr&gt;,</span><br><span class="line">    dob: FpVar&lt;Fr&gt;,</span><br><span class="line">    passport_expiry: FpVar&lt;Fr&gt;,</span><br><span class="line">    biometric_hash: Bytestring&lt;Fr&gt;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-核心trait实现">2. 核心Trait实现</h3>
+<p><strong>Attrs Trait</strong> 实现要点：</p>
+<ul>
+<li><strong>序列化</strong>：将各字段转换为字节流，注意：
+<ul>
+<li><code>dob</code>和<code>passport_expiry</code>需先转换为<code>Fr</code>类型</li>
+<li>生物特征存储哈希值而非原始数据</li>
+</ul>
+</li>
+<li><strong>承诺参数</strong>：返回全局常量<code>PASSPORT_COM_PARAM</code></li>
+<li><strong>Nonce获取</strong>：返回结构体中的随机数</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">impl</span> <span class="title class_">Attrs</span>&lt;Fr, PassportComScheme&gt; <span class="keyword">for</span> <span class="title class_">PersonalInfo</span> &#123;</span><br><span class="line">    <span class="comment">/// Serializes the attrs into bytes</span></span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">to_bytes</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> <span class="type">Vec</span>&lt;<span class="type">u8</span>&gt; &#123;</span><br><span class="line">        <span class="comment">// DoB bytes need to match the PersonalInfoVar version, which is an FpVar. Convert to Fr</span></span><br><span class="line">        <span class="comment">// before serializing</span></span><br><span class="line">        <span class="keyword">let</span> <span class="variable">dob</span> = Fr::<span class="title function_ invoke__">from</span>(<span class="keyword">self</span>.dob);</span><br><span class="line">        <span class="keyword">let</span> <span class="variable">passport_expiry</span> = Fr::<span class="title function_ invoke__">from</span>(<span class="keyword">self</span>.passport_expiry);</span><br><span class="line">        <span class="keyword">let</span> <span class="variable">biometric_hash</span> = <span class="keyword">self</span>.biometrics.<span class="title function_ invoke__">hash</span>();</span><br><span class="line">        to_bytes![</span><br><span class="line">            <span class="keyword">self</span>.seed,</span><br><span class="line">            <span class="keyword">self</span>.nationality,</span><br><span class="line">            <span class="keyword">self</span>.name,</span><br><span class="line">            dob,</span><br><span class="line">            passport_expiry,</span><br><span class="line">            biometric_hash</span><br><span class="line">        ]</span><br><span class="line">        .<span class="title function_ invoke__">unwrap</span>()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">get_com_param</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> &amp;ComParam&lt;PassportComScheme&gt; &#123;</span><br><span class="line">        &amp;*PASSPORT_COM_PARAM</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">get_com_nonce</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> &amp;ComNonce &#123;</span><br><span class="line">        &amp;<span class="keyword">self</span>.nonce</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>电路端AttrsVar实现</strong>：</p>
+<ul>
+<li><strong>字节序列化</strong>：将各电路变量转换为字节串（用于生成承诺）</li>
+<li><strong>见证生成</strong>：通过<code>new_witness</code>将原始数据转换为电路变量</li>
+<li><strong>约束系统</strong>：聚合各字段的约束系统引用</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">impl</span> <span class="title class_">ToBytesGadget</span>&lt;Fr&gt; <span class="keyword">for</span> <span class="title class_">PersonalInfoVar</span> &#123;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">to_bytes</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> <span class="type">Result</span>&lt;<span class="type">Vec</span>&lt;UInt8&lt;Fr&gt;&gt;, SynthesisError&gt; &#123;</span><br><span class="line">        <span class="title function_ invoke__">Ok</span>([</span><br><span class="line">            <span class="keyword">self</span>.seed.<span class="title function_ invoke__">to_bytes</span>()?,</span><br><span class="line">            <span class="keyword">self</span>.nationality.<span class="number">0</span>.<span class="title function_ invoke__">to_bytes</span>()?,</span><br><span class="line">            <span class="keyword">self</span>.name.<span class="number">0</span>.<span class="title function_ invoke__">to_bytes</span>()?,</span><br><span class="line">            <span class="keyword">self</span>.dob.<span class="title function_ invoke__">to_bytes</span>()?,</span><br><span class="line">            <span class="keyword">self</span>.passport_expiry.<span class="title function_ invoke__">to_bytes</span>()?,</span><br><span class="line">            <span class="keyword">self</span>.biometric_hash.<span class="number">0</span>.<span class="title function_ invoke__">to_bytes</span>()?,</span><br><span class="line">        ]</span><br><span class="line">        .<span class="title function_ invoke__">concat</span>())</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">impl</span> <span class="title class_">AttrsVar</span>&lt;Fr, PersonalInfo, PassportComScheme, PassportComSchemeG&gt; <span class="keyword">for</span> <span class="title class_">PersonalInfoVar</span> &#123;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">cs</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> ConstraintSystemRef&lt;Fr&gt; &#123;</span><br><span class="line">        <span class="keyword">self</span>.seed</span><br><span class="line">            .<span class="title function_ invoke__">cs</span>()</span><br><span class="line">            .<span class="title function_ invoke__">or</span>(<span class="keyword">self</span>.nationality.<span class="title function_ invoke__">cs</span>())</span><br><span class="line">            .<span class="title function_ invoke__">or</span>(<span class="keyword">self</span>.name.<span class="title function_ invoke__">cs</span>())</span><br><span class="line">            .<span class="title function_ invoke__">or</span>(<span class="keyword">self</span>.dob.<span class="title function_ invoke__">cs</span>())</span><br><span class="line">            .<span class="title function_ invoke__">or</span>(<span class="keyword">self</span>.passport_expiry.<span class="title function_ invoke__">cs</span>())</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">witness_attrs</span>(</span><br><span class="line">        cs: <span class="keyword">impl</span> <span class="title class_">Into</span>&lt;Namespace&lt;Fr&gt;&gt;,</span><br><span class="line">        attrs: &amp;PersonalInfo,</span><br><span class="line">    ) <span class="punctuation">-&gt;</span> <span class="type">Result</span>&lt;<span class="keyword">Self</span>, SynthesisError&gt; &#123;</span><br><span class="line">        <span class="keyword">let</span> <span class="variable">cs</span> = cs.<span class="title function_ invoke__">into</span>().<span class="title function_ invoke__">cs</span>();</span><br><span class="line">        <span class="keyword">let</span> <span class="variable">nonce</span> = attrs.nonce.<span class="title function_ invoke__">clone</span>();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">let</span> <span class="variable">biometric_hash</span> = attrs.biometrics.<span class="title function_ invoke__">hash</span>().<span class="title function_ invoke__">to_vec</span>();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">let</span> <span class="variable">seed</span> = FpVar::&lt;Fr&gt;::<span class="title function_ invoke__">new_witness</span>(ns!(cs, <span class="string">&quot;seed&quot;</span>), || <span class="title function_ invoke__">Ok</span>(attrs.seed))?;</span><br><span class="line">        <span class="keyword">let</span> <span class="variable">nationality</span> =</span><br><span class="line">            Bytestring::<span class="title function_ invoke__">new_witness</span>(ns!(cs, <span class="string">&quot;nationality&quot;</span>), || <span class="title function_ invoke__">Ok</span>(attrs.nationality.<span class="title function_ invoke__">to_vec</span>()))?;</span><br><span class="line">        <span class="keyword">let</span> <span class="variable">name</span> = Bytestring::<span class="title function_ invoke__">new_witness</span>(ns!(cs, <span class="string">&quot;name&quot;</span>), || <span class="title function_ invoke__">Ok</span>(attrs.name.<span class="title function_ invoke__">to_vec</span>()))?;</span><br><span class="line">        <span class="keyword">let</span> <span class="variable">dob</span> = FpVar::&lt;Fr&gt;::<span class="title function_ invoke__">new_witness</span>(ns!(cs, <span class="string">&quot;dob&quot;</span>), || <span class="title function_ invoke__">Ok</span>(Fr::<span class="title function_ invoke__">from</span>(attrs.dob)))?;</span><br><span class="line">        <span class="keyword">let</span> <span class="variable">passport_expiry</span> = FpVar::&lt;Fr&gt;::<span class="title function_ invoke__">new_witness</span>(ns!(cs, <span class="string">&quot;passport expiry&quot;</span>), || &#123;</span><br><span class="line">            <span class="title function_ invoke__">Ok</span>(Fr::<span class="title function_ invoke__">from</span>(attrs.passport_expiry))</span><br><span class="line">        &#125;)?;</span><br><span class="line">        <span class="keyword">let</span> <span class="variable">biometric_hash</span> =</span><br><span class="line">            Bytestring::<span class="title function_ invoke__">new_witness</span>(ns!(cs, <span class="string">&quot;biometric_hash&quot;</span>), || <span class="title function_ invoke__">Ok</span>(biometric_hash))?;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Return the witnessed values</span></span><br><span class="line">        <span class="title function_ invoke__">Ok</span>(PersonalInfoVar &#123;</span><br><span class="line">            nonce,</span><br><span class="line">            seed,</span><br><span class="line">            nationality,</span><br><span class="line">            name,</span><br><span class="line">            dob,</span><br><span class="line">            passport_expiry,</span><br><span class="line">            biometric_hash,</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">get_com_param</span>(</span><br><span class="line">        &amp;<span class="keyword">self</span>,</span><br><span class="line">    ) <span class="punctuation">-&gt;</span> <span class="type">Result</span>&lt;ComParamVar&lt;PassportComScheme, PassportComSchemeG, Fr&gt;, SynthesisError&gt; &#123;</span><br><span class="line">        <span class="keyword">let</span> <span class="variable">cs</span> = <span class="keyword">self</span></span><br><span class="line">            .nationality</span><br><span class="line">            .<span class="title function_ invoke__">cs</span>()</span><br><span class="line">            .<span class="title function_ invoke__">or</span>(<span class="keyword">self</span>.name.<span class="title function_ invoke__">cs</span>())</span><br><span class="line">            .<span class="title function_ invoke__">or</span>(<span class="keyword">self</span>.dob.<span class="title function_ invoke__">cs</span>())</span><br><span class="line">            .<span class="title function_ invoke__">or</span>(<span class="keyword">self</span>.biometric_hash.<span class="title function_ invoke__">cs</span>());</span><br><span class="line">        ComParamVar::&lt;_, PassportComSchemeG, _&gt;::<span class="title function_ invoke__">new_constant</span>(cs, &amp;*PASSPORT_COM_PARAM)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">get_com_nonce</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> &amp;ComNonce &#123;</span><br><span class="line">        &amp;<span class="keyword">self</span>.nonce</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-高级功能实现">3. 高级功能实现</h3>
+<p><strong>AccountableAttrs Trait</strong>：</p>
+<ul>
+<li><strong>唯一标识</strong>：使用姓名（<code>name</code>字段）作为标识符（实际可能需要更唯一的值）</li>
+<li><strong>种子获取</strong>：返回结构体的随机种子，用于速率限制令牌生成</li>
+</ul>
+<p><strong>电路端对应实现</strong>：</p>
+<ul>
+<li>将标识符和种子映射到电路兼容类型（<code>Bytestring</code>和<code>FpVar</code>）</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">impl</span> <span class="title class_">AccountableAttrs</span>&lt;Fr, PassportComScheme&gt; <span class="keyword">for</span> <span class="title class_">PersonalInfo</span> &#123;</span><br><span class="line">    <span class="keyword">type</span> <span class="title class_">Id</span> = <span class="type">Vec</span>&lt;<span class="type">u8</span>&gt;;</span><br><span class="line">    <span class="keyword">type</span> <span class="title class_">Seed</span> = Fr;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/// Returns a unique identifier corresponding to this attribute. Name isn&#x27;t</span></span><br><span class="line">    <span class="comment">/// actually unique, but we use it as an example.</span></span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">get_id</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> <span class="type">Vec</span>&lt;<span class="type">u8</span>&gt; &#123;</span><br><span class="line">        <span class="keyword">self</span>.name.<span class="title function_ invoke__">to_vec</span>()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/// Returns the pseudorandom generator seed used for all randomness</span></span><br><span class="line">    <span class="comment">/// generated by this credential.</span></span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">get_seed</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> Fr &#123;</span><br><span class="line">        <span class="keyword">self</span>.seed</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">impl</span> <span class="title class_">AccountableAttrsVar</span>&lt;Fr, PersonalInfo, PassportComScheme, PassportComSchemeG&gt;</span><br><span class="line">    <span class="keyword">for</span> <span class="title class_">PersonalInfoVar</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">type</span> <span class="title class_">Id</span> = Bytestring&lt;Fr&gt;;</span><br><span class="line">    <span class="keyword">type</span> <span class="title class_">Seed</span> = FpVar&lt;Fr&gt;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">get_id</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> <span class="type">Result</span>&lt;Bytestring&lt;Fr&gt;, SynthesisError&gt; &#123;</span><br><span class="line">        <span class="title function_ invoke__">Ok</span>(<span class="keyword">self</span>.name.<span class="title function_ invoke__">clone</span>())</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">get_seed</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> <span class="type">Result</span>&lt;FpVar&lt;Fr&gt;, SynthesisError&gt; &#123;</span><br><span class="line">        <span class="title function_ invoke__">Ok</span>(<span class="keyword">self</span>.seed.<span class="title function_ invoke__">clone</span>())</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="5-谓词核心机制解析">5. 谓词核心机制解析</h3>
+<p><strong>AgeChecker结构体</strong>：</p>
+<ul>
+<li>存储阈值日期<code>threshold_dob</code>（Fr类型）</li>
+<li>本质是构建约束<code>attrs.dob ≤ threshold_dob</code></li>
+<li>阈值日期作为公共输入（非隐藏数据）</li>
+</ul>
+<p><strong>关键方法实现</strong>：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">pred</span>(...) &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">threshold_dob</span> = FpVar::<span class="title function_ invoke__">new_input</span>(...); <span class="comment">// 声明为公共输入</span></span><br><span class="line">    attrs.dob.<span class="title function_ invoke__">enforce_cmp</span>(threshold_dob, Less, <span class="literal">true</span>) <span class="comment">// 创建约束</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>enforce_cmp</code>生成以下约束：
+<ul>
+<li><code>attrs.dob - threshold_dob ≤ 0</code></li>
+<li>启用等于判断（true参数）</li>
+</ul>
+</li>
+</ul>
+<p><strong>公共输入设计</strong>：</p>
+<ul>
+<li>必须公开阈值日期供验证使用</li>
+<li>验证者需要重新计算约束条件</li>
+<li>通过<code>public_inputs()</code>方法暴露阈值</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://Ann-103.github.io">Ann</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://ann-103.github.io/post/1967566042.html">https://ann-103.github.io/post/1967566042.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://Ann-103.github.io" target="_blank">Ann-Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/">论文阅读</a></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2024/11/22/GXwuEP8UlBzOyAe.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/post/3183480541.html" title="PaperNotebook-BADS"><img class="cover" src="https://s2.loli.net/2024/11/22/GXwuEP8UlBzOyAe.jpg" onerror="onerror=null;src='/img/loading.gif'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">PaperNotebook-BADS</div></div></a></div><div class="next-post pull-right"><a href="/post/4150779276.html" title="匿名凭据"><img class="cover" src="https://s2.loli.net/2025/01/07/byGj6UexQNDV4tk.jpg" onerror="onerror=null;src='/img/loading.gif'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">匿名凭据</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/post/3183480541.html" title="PaperNotebook-BADS"><img class="cover" src="https://s2.loli.net/2024/11/22/GXwuEP8UlBzOyAe.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-02-28</div><div class="title">PaperNotebook-BADS</div></div></a></div><div><a href="/post/948195453.html" title="PaperNotebook-Gosharing"><img class="cover" src="https://s2.loli.net/2024/11/22/GXwuEP8UlBzOyAe.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-01-15</div><div class="title">PaperNotebook-Gosharing</div></div></a></div></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/favicon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Ann</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">33</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">32</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Ann-103"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Ann-103" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:ajw0822@mail.ustc.edu.cn" target="_blank" title="Em"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="iconfont icon-gonggao"></i><span>公告</span></div><div class="announcement_content">欢迎访问我的小破站 ❤</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#zk-creds-2023-ndss"><span class="toc-number">1.</span> <span class="toc-text">zk-creds（2023 NDSS）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%8C%E6%99%AF"><span class="toc-number">1.1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B4%A1%E7%8C%AE"><span class="toc-number">1.2.</span> <span class="toc-text">贡献</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#overview"><span class="toc-number">1.3.</span> <span class="toc-text">Overview</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#preliminary"><span class="toc-number">1.4.</span> <span class="toc-text">preliminary</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#definitions"><span class="toc-number">1.5.</span> <span class="toc-text">Definitions</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#construction"><span class="toc-number">1.6.</span> <span class="toc-text">Construction</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#merkle-%E6%A3%AE%E6%9E%97"><span class="toc-number">1.6.1.</span> <span class="toc-text">Merkle 森林</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%81%E8%AF%81%E7%AE%A1%E7%90%86"><span class="toc-number">1.6.2.</span> <span class="toc-text">见证管理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B2-groth16"><span class="toc-number">1.6.3.</span> <span class="toc-text">盲 Groth16</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%8F%E5%B7%A5%E5%85%B7-gadgets"><span class="toc-number">1.6.4.</span> <span class="toc-text">小工具（Gadgets）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E5%8F%AF%E9%93%BE%E6%8E%A5%E5%B1%95%E7%A4%BA-linkable-show"><span class="toc-number">1.6.4.1.</span> <span class="toc-text">1. 可链接展示（Linkable Show）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E9%80%9F%E7%8E%87%E9%99%90%E5%88%B6-rate-limiting"><span class="toc-number">1.6.4.2.</span> <span class="toc-text">2.速率限制（Rate Limiting）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E5%85%8B%E9%9A%86%E6%8A%B5%E6%8A%97-cloning-resistance"><span class="toc-number">1.6.4.3.</span> <span class="toc-text">3. 克隆抵抗（Cloning Resistance）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-%E8%BF%87%E6%9C%9F-expiry"><span class="toc-number">1.6.4.4.</span> <span class="toc-text">4. 过期（Expiry）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-%E4%BC%9A%E8%AF%9D%E7%BB%91%E5%AE%9A-session-binding"><span class="toc-number">1.6.4.5.</span> <span class="toc-text">5. 会话绑定（Session Binding）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-%E8%BF%9E%E6%8E%A5-join"><span class="toc-number">1.6.4.6.</span> <span class="toc-text">6. 连接（Join）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AD%BE%E5%90%8D%E9%A2%81%E5%8F%91%E7%9A%84%E5%87%AD%E8%AF%81-%E4%B8%8D%E4%BD%BF%E7%94%A8%E5%8C%BA%E5%9D%97%E9%93%BE"><span class="toc-number">1.6.5.</span> <span class="toc-text">签名颁发的凭证[不使用区块链]</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%9D%E5%A4%96%E7%89%B9%E6%80%A7"><span class="toc-number">1.6.6.</span> <span class="toc-text">额外特性</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9A%90%E8%97%8F%E9%A2%81%E5%8F%91%E8%80%85"><span class="toc-number">1.6.6.1.</span> <span class="toc-text">隐藏颁发者</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9A%90%E8%97%8F%E5%87%AD%E8%AF%81%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.6.6.2.</span> <span class="toc-text">隐藏凭证类型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A7%94%E6%89%98"><span class="toc-number">1.6.6.3.</span> <span class="toc-text">委托</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nizk-%E8%AE%BE%E7%BD%AE"><span class="toc-number">1.6.7.</span> <span class="toc-text">NIZK 设置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E8%AE%BE%E7%BD%AE"><span class="toc-number">1.6.7.1.</span> <span class="toc-text">分布式设置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#crs-%E7%9A%84%E7%81%B5%E6%B4%BB%E6%80%A7"><span class="toc-number">1.6.7.2.</span> <span class="toc-text">CRS 的灵活性</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E5%85%A8%E8%AE%BA%E8%AF%81"><span class="toc-number">1.6.8.</span> <span class="toc-text">安全论证</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%89%E5%85%A8%E6%B8%B8%E6%88%8F"><span class="toc-number">1.6.8.1.</span> <span class="toc-text">安全游戏</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#related"><span class="toc-number">1.7.</span> <span class="toc-text">Related</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#groth16"><span class="toc-number">2.</span> <span class="toc-text">Groth16</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AF%A6%E7%BB%86%E6%8E%A8%E5%AF%BC"><span class="toc-number">3.</span> <span class="toc-text">详细推导</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-setup-1-%CE%BB-h-n"><span class="toc-number">3.0.1.</span> <span class="toc-text">1. Setup(1^λ, h, n)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-issuesetup-pp"><span class="toc-number">3.0.2.</span> <span class="toc-text">2. IssueSetup(pp)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-showsetup-pp"><span class="toc-number">3.0.3.</span> <span class="toc-text">3. ShowSetup(pp)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-issuereq-pp-crs%CE%B9-attrs-wsd-iauxzk-iauxpub"><span class="toc-number">3.0.4.</span> <span class="toc-text">1. IssueReq(pp, crsι, attrs, wsd, (iauxzk, iauxpub))</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-issuegrant-pp-crs%CE%B9-%CE%B9pub-f-t-cred-sdzk-sdpub"><span class="toc-number">3.0.5.</span> <span class="toc-text">2. IssueGrant(pp, (crsι, ιpub), (F, T), cred, (sdzk, sdpub))</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-ushowcred-pp-crs-f-troot-cred-%CE%B8-wi-auxi-i-1-k"><span class="toc-number">3.0.6.</span> <span class="toc-text">3. UShowCred(pp, crs, (F, Troot), cred, θ, {wi, auxi}_i&#x3D;1^k)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-verifyshow-pp-crs-f-%CF%80link-auxi-i-1-k"><span class="toc-number">3.0.7.</span> <span class="toc-text">4. VerifyShow(pp, crs, F, πlink, {auxi}_i&#x3D;1^k)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-revokecred-pp-f-t-cred"><span class="toc-number">3.0.8.</span> <span class="toc-text">5. RevokeCred(pp, (F, T), cred)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%9E%E9%99%85%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-number">4.</span> <span class="toc-text">实际代码实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%88%86%E5%B1%82"><span class="toc-number">4.0.1.</span> <span class="toc-text">1. 数据结构分层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%A0%B8%E5%BF%83trait%E5%AE%9E%E7%8E%B0"><span class="toc-number">4.0.2.</span> <span class="toc-text">2. 核心Trait实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E9%AB%98%E7%BA%A7%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0"><span class="toc-number">4.0.3.</span> <span class="toc-text">3. 高级功能实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E8%B0%93%E8%AF%8D%E6%A0%B8%E5%BF%83%E6%9C%BA%E5%88%B6%E8%A7%A3%E6%9E%90"><span class="toc-number">4.0.4.</span> <span class="toc-text">5. 谓词核心机制解析</span></a></li></ol></li></ol></li></ol></div></div></div></div></main><footer id="footer" style="background: transparent"><div id="footer-wrap"><div class="copyright">&copy;2024 - 2025 By Ann</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"> </i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="iconfont icon-triangleupfill"></i></button><button id="go-down" type="button" title="to_bottom" onclick="btf.scrollToDest(document.body.scrollHeight, 500)"><i class="iconfont icon-triangledownfill"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.8/dist/lazyload.iife.min.js"></script><div class="js-pjax"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/copy-tex.min.js"></script><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script><script>(() => {
+  const initValine = () => {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'jlgkfToE73FxTz8kyHsmvdzb-gzGzoHsz',
+      appKey: 'NN6nCIT47fGwz5Q1UyvFcGKP',
+      avatar: 'retro',
+      serverURLs: '',
+      emojiMaps: "",
+      path: window.location.pathname,
+      visitor: false
+    }, null))
+  }
+
+  const loadValine = async () => {
+    if (typeof Valine === 'function') initValine()
+    else {
+      await getScript('https://cdn.jsdelivr.net/npm/valine@1.5.1/dist/Valine.min.js')
+      initValine()
+    }
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})()</script></div><script async data-pjax src="/js/custom.js"></script><script async data-pjax src="/js/waterfall/waterfall.js"></script><script src="/Ann/random.js"></script><script src="/js/snowflake.js"></script><script src="/js/hot.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener
+  btf.removeGlobalFnEvent('pjax')
+  btf.removeGlobalFnEvent('themeChange')
+
+  document.getElementById('rightside').classList.remove('rightside-show')
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><div id="algolia-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="search-wrap"><div id="algolia-search-input"></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-info"><div class="algolia-stats"></div><div class="algolia-poweredBy"></div></div></div></div></div><div id="search-mask"></div><script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.22.1/dist/algoliasearch-lite.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.65.0/dist/instantsearch.production.min.js"></script><script src="/js/search/algolia.js?v=4.13.0"></script></div></div></body></html>

@@ -1,0 +1,457 @@
+<!--head 和 body 是 html 的直接子元素--><!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>匿名凭据 | Ann-Blog</title><meta name="author" content="Ann"><meta name="copyright" content="Ann"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="匿名凭据 匿名凭证：允许用户在不泄露其他信息的情况下证明自己拥有凭证。即使验证者和发行人勾结，他们也无法了解凭证发放给用户的身份，也无法了解如何以及在哪里使用凭证。 对于匿名凭证的理想安全属性：  不可伪造 unforgeability 正确  correctness 不可链接  unlinkability  由于匿名本身造成的问题：  女巫攻击 sybil ：用户生成大量凭证并进行非法买卖 追踪">
+<meta property="og:type" content="article">
+<meta property="og:title" content="匿名凭据">
+<meta property="og:url" content="https://ann-103.github.io/post/4150779276.html">
+<meta property="og:site_name" content="Ann-Blog">
+<meta property="og:description" content="匿名凭据 匿名凭证：允许用户在不泄露其他信息的情况下证明自己拥有凭证。即使验证者和发行人勾结，他们也无法了解凭证发放给用户的身份，也无法了解如何以及在哪里使用凭证。 对于匿名凭证的理想安全属性：  不可伪造 unforgeability 正确  correctness 不可链接  unlinkability  由于匿名本身造成的问题：  女巫攻击 sybil ：用户生成大量凭证并进行非法买卖 追踪">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2025/01/07/byGj6UexQNDV4tk.jpg">
+<meta property="article:published_time" content="2025-02-20T06:07:38.000Z">
+<meta property="article:modified_time" content="2025-07-03T02:38:24.884Z">
+<meta property="article:author" content="Ann">
+<meta property="article:tag" content="Blockchain">
+<meta property="article:tag" content="Anonymous Credentials">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2025/01/07/byGj6UexQNDV4tk.jpg"><link rel="shortcut icon" href="https://s2.loli.net/2022/11/06/lgYVqNypjRCe3d2.png"><link rel="canonical" href="https://ann-103.github.io/post/4150779276.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: {"appId":"TYQ16Q4ESJ","apiKey":"ea175434f2803b60c631bc11c6e24e54","indexName":"blog","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":200,"languages":{"author":"作者: Ann","link":"链接: ","source":"来源: Ann-Blog","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '匿名凭据',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-07-03 10:38:24'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"><link rel="stylesheet" href="/css/font.css"><link rel="stylesheet" href="/css/essay_page/essay_page.css"><link rel="stylesheet" href="/css/hot.css"><meta name="generator" content="Hexo 7.3.0"><link href="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.css" rel="stylesheet" /></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="scarecrow"><div class="scarecrow__hat"><div class="scarecrow__ribbon"></div></div><div class="scarecrow__head"><div class="scarecrow__eye"></div><div class="scarecrow__eye"></div><div class="scarecrow__mouth"></div><div class="scarecrow__pipe"></div></div><div class="scarecrow__body"><div class="scarecrow__glove scarecrow__glove--l"></div><div class="scarecrow__sleeve scarecrow__sleeve--l"></div><div class="scarecrow__bow"></div><div class="scarecrow__shirt"></div><div class="scarecrow__coat"></div><div class="scarecrow__waistcoat"></div><div class="scarecrow__sleeve scarecrow__sleeve--r"></div><div class="scarecrow__glove scarecrow__glove--r"></div><div class="scarecrow__coattails"></div><div class="scarecrow__pants"></div></div><div class="scarecrow__arms"></div><div class="scarecrow__leg">  </div></div></div><script async="async">(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load',() => { preloader.endLoading() })
+  document.getElementById('loading-box').addEventListener('click',()=> {preloader.endLoading()})
+  setTimeout(function(){preloader.endLoading();}, 10000);
+
+  if (true) {
+    document.addEventListener('pjax:send', () => { preloader.initLoading() })
+    document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+  }
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/favicon.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">33</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">32</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-heart"></i><span> About</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/about/"><i class="fa-fw iconfont icon-paper-full"></i><span> 关于</span></a></li><li><a class="site-page child" href="/essay/"><i class="fa-fw iconfont icon-shuoshuo"></i><span> 动态</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Ann-Blog"><span class="site-name">Ann-Blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-heart"></i><span> About</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/about/"><i class="fa-fw iconfont icon-paper-full"></i><span> 关于</span></a></li><li><a class="site-page child" href="/essay/"><i class="fa-fw iconfont icon-shuoshuo"></i><span> 动态</span></a></li></ul></div></div></div><div id="rightBank"><div id="box"> <a href="/link" title="百宝箱"><i class="iconfont icon-24gf-box2"></i></a></div><div id="random"><a class="site-page" href="javascript:toRandomPost()" title="随机前往一个文章"><i class="iconfont icon-touzi"> </i></a></div><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">匿名凭据</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-02-20T06:07:38.000Z" title="发表于 2025-02-20 14:07:38">2025-02-20</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-07-03T02:38:24.884Z" title="更新于 2025-07-03 10:38:24">2025-07-03</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Blockchain/">Blockchain</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">4.7k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>14分钟</span></span></div></div></div><div class="top-img gist" style="background-image: url(/false)"></div><article class="post-content" id="article-container"><h1 id="匿名凭据">匿名凭据</h1>
+<p>匿名凭证：允许用户在不泄露其他信息的情况下证明自己拥有凭证。即使验证者和发行人勾结，他们也无法了解凭证发放给用户的身份，也无法了解如何以及在哪里使用凭证。</p>
+<p>对于匿名凭证的理想安全属性：</p>
+<ul>
+<li>不可伪造 unforgeability</li>
+<li>正确  correctness</li>
+<li>不可链接  unlinkability</li>
+</ul>
+<p>由于匿名本身造成的问题：</p>
+<ul>
+<li>女巫攻击 sybil ：用户生成大量凭证并进行非法买卖</li>
+<li>追踪审计和撤销</li>
+</ul>
+<p>note：这里是DID凭证系统本身就存在的问题？</p>
+<p>构建匿名凭证的传统方法是使用盲签名，即发证机构签名时并不知道具体的凭证内容。eg：Pointcheval-Sanders 签名方案。</p>
+<p>签名：</p>
+<ul>
+<li>密钥生成</li>
+</ul>
+<p>选择参数：选择一个大素数 p 和一个生成元 g</p>
+<p>私钥：选择一个随机数 x作为私钥，满足 1&lt;x&lt;p−1</p>
+<p>公钥：计算公钥$ y=g^x\pmod p$</p>
+<ul>
+<li>
+<p>消息哈希：对待签名的消息 m进行哈希，得到哈希值 H(m)。</p>
+</li>
+<li>
+<p>随机数选择：选择一个随机数 k，满足 1&lt;k&lt;p−1,且 k与 p−1互质。</p>
+</li>
+<li>
+<p>计算签名：</p>
+<p>计算$ r=g^k\pmod p$</p>
+<p>计算$ s=k^{−1}(H(m)+x⋅r) mod(p−1)$</p>
+<p>签名输出：签名为 (r,s)</p>
+</li>
+</ul>
+<p>验证：</p>
+<ul>
+<li>检查 r和 s是否在有效范围内，即 0&lt;r&lt;p和 0&lt;s&lt;p−1。</li>
+<li>计算$ w=s^{−1}mod(p−1)$</li>
+<li>计算$u_1=H(m)⋅w \pmod{p−1} 和 u_2=r⋅w \pmod{p−1} $</li>
+<li>计算 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>=</mo><mo stretchy="false">(</mo><msup><mi>g</mi><msub><mi>u</mi><mn>1</mn></msub></msup><mo>⋅</mo><msup><mi>y</mi><msub><mi>u</mi><mn>2</mn></msub></msup><mo stretchy="false">)</mo><mspace></mspace><mspace width="0.4444444444444444em"/><mo stretchy="false">(</mo><mrow><mi mathvariant="normal">m</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">d</mi></mrow><mspace width="0.3333333333333333em"/><mi>p</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">v=(g^{u_1}⋅y^{u_2})\pmod p</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathdefault mtight">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31731428571428577em;"><span style="top:-2.357em;margin-left:0em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathdefault mtight">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31731428571428577em;"><span style="top:-2.357em;margin-left:0em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace allowbreak"></span><span class="mspace" style="margin-right:0.4444444444444444em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord"><span class="mord mathrm">m</span><span class="mord mathrm">o</span><span class="mord mathrm">d</span></span></span><span class="mspace" style="margin-right:0.3333333333333333em;"></span><span class="mord mathdefault">p</span><span class="mclose">)</span></span></span></span>，与r对比</li>
+</ul>
+<p>基于区块链可以避免单一发行方单点故障问题，并且不需要签名密钥。发证阶段区块链作为透明账本存放公开可验证的匿名凭证，验证阶段用户需要提供证明自己拥有某个匿名凭证。</p>
+<p>DAC：在去中心化匿名凭证方案中，凭证保存在某种形式的透明日志中，这可以是集中式的、分布式的或通过拜占庭系统或区块链以去中心化的方式操作。虽然这种方法消除了凭证颁发中的一个障碍，但具体协议在性能和操作上存在局限。例如，该协议要求所有客户端拥有已颁发凭证的完整列表，并未解决实际使用案例中的其他复杂性。</p>
+<p>Coconut：为了减少对颁发者的信任，方案探索了阈值颁发和多个颁发者的支持。虽然这在有多个愿意的颁发者时改善了情况，但并未解决愿意或能够部署新技术的颁发者稀缺的问题。此外，它也未能提供协调不同身份文件格式或多个颁发者使用案例的手段。</p>
+<h2 id="decentralized-anonymous-credentials-ndss-2014">Decentralized Anonymous Credentials  NDSS 2014</h2>
+<blockquote>
+<p>C. Garman, M. Green, and I. Miers. Decentralized anonymous credentials. In NDSS. Citeseer, 2014.</p>
+</blockquote>
+<p>传统匿名凭证系统，例如盲签名需要一个可信的凭证发行者，这个中心化的发行者存在单点故障风险，容易成为攻击目标。在点对点网络等临时网络中难以部署,因为没有可以完全信任的单一机构。希望颁发凭证的过程（如果不是身份本身的建立）不再依赖于受信任方。</p>
+<blockquote>
+<p>提到了如果无法确定链上地址是否与相同的真实身份相关联，攻击者可以通过生成大量地址来获得不成比例的利益</p>
+</blockquote>
+<p>创新方案:</p>
+<ul>
+<li>基于区块链，提出了一个新的匿名凭证方案，不需要可信的凭证发行者</li>
+</ul>
+<p>凭证系统可以按需实例化，并由一组不信任的对等体操作，进一步展示了对系统的扩展，以创建可更新的（例如，有状态的）匿名凭证，其中用户根据其身份属性的变化获得新的凭证。</p>
+<ul>
+<li>
+<p>去中心化直接匿名认证。我们展示了如何去中心化直接匿名证明协议，允许自组织或分布式系统中的单个节点集合安全地断言其系统状态的属性。我们的方法消除了由一方管理DAA凭据的需要，从而消除了现有系统的主要限制。我们提供了一个去中心化（dDAA）结构的示例性描述。</p>
+</li>
+<li>
+<p>可审计凭证。我们的技术也可用于扩展现有的集中式证书系统，允许对已颁发的证书进行公开审计。这有助于防止凭证颁发者受到攻击，并允许网络轻松检测和撤销不适当的凭证授予。</p>
+</li>
+</ul>
+<p>传统的匿名凭证系统有两种类型的参与者：用户和组织。每个用户都有一个密钥skU，彼此和组织都知道他们的假名（例如用户A在组织O中的化名是<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mi>y</mi><msubsup><mi>m</mi><mi>A</mi><mi>O</mi></msubsup></mrow><annotation encoding="application/x-tex">Nym^O_A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.1166619999999998em;vertical-align:-0.275331em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">N</span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mord"><span class="mord mathdefault">m</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8413309999999999em;"><span style="top:-2.424669em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">A</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.02778em;">O</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.275331em;"><span></span></span></span></span></span></span></span></span></span>），去中心化匿名凭证没有一方代表组织，而是被<strong>强制执行特定凭据颁发策略并协同维护迄今为止颁发的凭据列表的用户法定人数</strong>所取代。为了与之前的工作保持一致，我们保留了“组织”一词。分布式匿名凭证系统由<strong>全局事务分类账</strong>、一组<strong>事务语义</strong>以及以下（可能是概率性的）算法组成：</p>
+<p><img src="assets/image-20250113142334295.png" alt="image-20250113142334295"></p>
+<blockquote>
+<p>Form：选择随机数<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><msub><mi>k</mi><mrow><mi>n</mi><mi>y</mi><mi>m</mi></mrow></msub><mo>=</mo><mi>r</mi></mrow><annotation encoding="application/x-tex">sk_{nym}=r</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.980548em;vertical-align:-0.286108em;"></span><span class="mord mathdefault">s</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03148em;">k</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.15139200000000003em;"><span style="top:-2.5500000000000003em;margin-left:-0.03148em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">n</span><span class="mord mathdefault mtight" style="margin-right:0.03588em;">y</span><span class="mord mathdefault mtight">m</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span></span></span></span>，生成假名<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mi>y</mi><mi>m</mi><mo>=</mo><msubsup><mi>g</mi><mn>0</mn><mi>r</mi></msubsup><msup><mi>g</mi><mrow><mi>s</mi><msub><mi>k</mi><mn>1</mn></msub></mrow></msup></mrow><annotation encoding="application/x-tex">Nym=g^r_0g^{sk_1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8777699999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">N</span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mord mathdefault">m</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.097216em;vertical-align:-0.24810799999999997em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-2.4518920000000004em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.02778em;">r</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.24810799999999997em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.849108em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">s</span><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31731428571428577em;"><span style="top:-2.357em;margin-left:-0.03148em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></p>
+</blockquote>
+<p><img src="assets/image-20250113142348804.png" alt="image-20250113142348804"></p>
+<blockquote>
+<p>一旦被网络接收，所有各方都可以使用MintVerify例程和验证辅助数据所需的任何外部程序来验证凭证和身份断言的正确性。该过程可以直接由网络节点执行，也可以在事后由单个凭证验证器进行验证。</p>
+<p>当用户希望向某个验证者显示凭证时，她首先扫描公告板，以获得一组CO，其中包含属于特定组织的所有候选凭证。</p>
+<p>接下来，她使用MintVerify例程验证每个凭证（如果她还没有这样做），并验证辅助身份认证信息。然后，她运行Show算法生成凭证，并将其直接传输给验证器。验证器还收集CO中的凭据集，并使用ShowVerify例程验证凭据。如果此例程输出1，则她接受证书认证。</p>
+</blockquote>
+<h2 id="coconut-ndss2019">Coconut NDSS2019</h2>
+<p>Coconut是一种新型的选择性披露证书方案，支持分布式阈值发布、公共和私有属性、重新随机化和多个不可链接的选择性属性披露。</p>
+<p>Coconut与区块链集成，以确保机密性、真实性和可用性，即使凭证颁发机构的一个子集是恶意的或离线的。</p>
+<p>我们为Chainspace和以太坊实现并评估了一个通用的Coconut智能合约库；并介绍了三种与匿名支付、电子请愿和分发抗审查代理相关的应用程序。Coconut使用短而计算高效的凭据，我们的评估表明，大多数Coconut加密原语平均只需要几毫秒，验证所需时间最长（10毫秒）。</p>
+<h2 id="zk-cred">zk-cred</h2>
+<ul>
+<li>通用零知识证明协议，证明在MPT树上有证书（承诺）且属性符合访问标准。灵活访问标准定制，支持隐藏属性等匿名凭证功能。凭证可公开审计，区块链维护凭证列表，撤销只需要从Merkle树中移除凭证</li>
+</ul>
+<p>1）消除了凭证颁发者持有签名密钥的需要：凭证可以颁发给实例化为透明度日志、拜占庭系统甚至区块链的公告板；</p>
+<p>2） 将现有身份证件转换为匿名证件，而无需修改证件或与发证机关协调；</p>
+<p>3） 允许在多个凭据上使用灵活、可组合和复杂的身份声明。具体来说，在使用护照匿名访问年龄限制视频的真实场景中，使用zk-cred进行身份断言所需的时间不到150毫秒。</p>
+<p>•Certchain: Public and efficient certificate audit based on blockchain for tls connections  2018 infocom</p>
+<p>开源：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/didnet/zxDID/blob/main/contracts/manager.sol">https://github.com/didnet/zxDID/blob/main/contracts/manager.sol</a></p>
+<p>并新加了一个安全属性防止重放攻击</p>
+<ul>
+<li>会话绑定  session binding</li>
+</ul>
+<h3 id="贡献">贡献</h3>
+<ul>
+<li>隐私保护的身份验证工具包：zk-creds 是一个用于隐私保护身份验证协议和匿名凭证的工具包，提供灵活的身份声明，并且不需要可信的发行者。与以往的工作相比，zk-creds 的一个关键贡献是使用通用的零知识证明，而不是基于盲签名的定制证明系统。</li>
+<li>范式转变：将通用零知识证明作为匿名凭证的基础，而不是盲签名，代表了一种范式转变。zk-creds 允许在协议设计和部署后，仍然能够实现完全的隐私和表达能力。使用 zk-creds 构建的单一方案可以适应不断变化的需求，而无需开发新的定制加密协议。此外，应用特定的逻辑可以通过多种公开可用的工具使用简单的编程语言定义和修改，方案的实例化由编译器处理。</li>
+<li>灵活的访问标准：通用零知识证明使 zk-creds 支持灵活和可组合的访问标准。用户不仅可以私下展示其凭证满足某些任意访问标准检查，还可以在任何时间（即使在系统设置或凭证发行后）由任何方定义这些标准，并动态组合成小工具。这种灵活性使 zk-creds 能够满足现实世界身份验证机制的需求，因为要求和使用案例可以随时动态变化</li>
+<li>支持现有身份基础设施：zk-creds 的第二个主要贡献是支持现有的政府身份基础设施，而无需修改或合作。通过使用通用零知识证明，我们可以将越来越多包含在国家身份证和护照中的数字（非匿名）身份信息转换为匿名凭证。这种支持文档使我们能够提供数字化的方式，类似于走进美国机动车辆管理局（DMV）并出示现有身份文件以获取驾照，而无需向发行者暴露任何信息</li>
+<li>公开可验证的凭证：zk-creds 还支持公开可验证的凭证。由于发行的凭证列表可以由公共系统（如透明日志或区块链）维护，并且每个凭证可以包括证明其发行的支持文档，因此所有发行凭证的集合是公开可审计的。这在凭证可以通过签名密钥秘密发行时是不可行的。因此，我们只需信任发行者将凭证（及其支持文档）添加到列表中，任何妥协或不当行为都是可检测和可逆的。</li>
+</ul>
+<p>总结贡献点：</p>
+<ul>
+<li>通过可重用证明显著提高现有去中心化方案的性能，ShowCred 的执行时间小于 150 毫秒；</li>
+<li>支持现有的物理身份文件（如护照），无需修改；</li>
+<li>提供灵活和可组合的小工具，能够在系统设置后组合以表达复杂的访问标准检查；</li>
+<li>允许已发行凭证的公开审计，而不损害匿名性；</li>
+<li>提供了一种新机制（盲 Groth16），用于私下链接多个零知识证明，从而实现证明的重新随机化和重用；</li>
+<li>包括一个完整的应用程序，用于访问年龄限制的视频，具有克隆抵抗性，使用现有护照进行发行。</li>
+</ul>
+<p><strong>非目标</strong>：zk-creds 不涉及凭证的链上验证。该工作构建了可以在没有中央方持有签名密钥的情况下发行的灵活凭证（尽管我们也支持基于签名的发行）。这与工业和学术界的其他工作（例如 [52]）不同，后者考虑通过智能合约验证现有（即中心发行的）匿名凭证。关于匿名凭证的链上验证的问题并不是如何去除中心化发行，而是如何在智能合约执行成本极高的情况下最小化验证成本。通常通过在零知识证明中批量验证来降低验证成本，这适用于任何匿名凭证方案，包括这里提出的方案。</p>
+<p>对于匿名凭证的验证。</p>
+<p>区块链匿名可追溯数据共享</p>
+<h3 id="overview">overview</h3>
+<p>1）凭证生成和发布：用户证明自己满足凭证的属性</p>
+<p>cred :=Com(nk,rk, attrs; r)</p>
+<blockquote>
+<p>nk：假名密钥，一个用于生成持久假名的private random value</p>
+<p>rk：rate key，用于生成速率限制token的private random value</p>
+<p>attrs ∈ A：一组公共和隐藏属性</p>
+<p>r：承诺随机性（commitment randomness）</p>
+</blockquote>
+<p>当凭证出现在issuer I的凭证列表CL上时，称I颁发了证书，这里的凭证列表可以用多种方式实例化，累加器、MT等，这里采用的方式是默克尔森岭，以及一组对应的默克尔树列表。</p>
+<p>CL := (F, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mi>T</mi><mo>ˉ</mo></mover></mrow><annotation encoding="application/x-tex">\bar{T}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8201099999999999em;vertical-align:0em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8201099999999999em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.13889em;">T</span></span></span><span style="top:-3.25233em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.16666em;"><span class="mord">ˉ</span></span></span></span></span></span></span></span></span></span>)，其中身份验证路径θ提供成员身份证明。</p>
+<p>每个发行人都有对应的发行标准，例如cred中的出生日期与签名的数字护照相匹配。然后通过issuer认证通道，请求者（运行<strong>IssueReq</strong>）向发行者发送带有zk支持文档sd的cred。例如，Groth16证明或数字签名，发行人运行<strong>IssueGrant</strong>，成功后将cred添加到他们的列表中，并返回一个身份验证路径θ，证明其发行。</p>
+<p>2）用户证明自己拥有已发布的某个匿名属性</p>
+<p>访问标准（possible access criteria ）Φ := {ϕ | ϕ : A → {0, 1}}</p>
+<blockquote>
+<p>这里Φ是指所有从A元素映射到01的函数集合，</p>
+</blockquote>
+<p>在<strong>匿名通道</strong>上，用户通过提供零知识证明来显示凭证（运行<strong>ShowCred</strong>），证明他们拥有有效的已颁发凭证（θ作为私人见证witness），其见证中的属性w满足验证器的访问标准。该证明还必须绑定到某个会话上下文aux。verifier运行<strong>VerifyShow</strong>，成功后授予用户访问权限</p>
+<p>3）简单协议流程（U是用户，I是凭证颁发者，V是验证者）</p>
+<p>Setup(<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>1</mn><mi>λ</mi></msup></mrow><annotation encoding="application/x-tex">1^λ</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.849108em;vertical-align:0em;"></span><span class="mord"><span class="mord">1</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.849108em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">λ</span></span></span></span></span></span></span></span></span></span></span>) → pp</p>
+<ul>
+<li><strong>生成系统参数</strong>。此步骤生成所需的公共系统参数（<code>pp</code>），这些参数会用于后续的凭证和访问控制操作。<code>λ</code> 表示安全参数，通常与系统的安全级别（例如比特强度）相关。</li>
+</ul>
+<p>IssueSetup(pp) → ι</p>
+<ul>
+<li><strong>建立公共属性字段和凭证发行准则</strong>。使用之前生成的系统参数 <code>pp</code>，此步骤会设立一个公共属性集合（<code>attrs</code>），以及凭证发行的标准或准则（<code>ι</code>），这些准则将控制凭证如何被颁发。</li>
+</ul>
+<p>ShowSetup(pp) → ϕ</p>
+<ul>
+<li><strong>设定访问准则</strong>。此步骤设定一个新的“访问准则”（<code>ϕ</code>）。<code>ϕ</code> 是访问凭证的条件，定义了哪些情况下可以展示凭证。<code>Φ</code> 是所有可能访问准则的集合。</li>
+</ul>
+<p>IssueReq_U(pp, ι, attrs, wsd, iauxsd) → (cred, sd)</p>
+<ul>
+<li><strong>凭证申请</strong>。用户可以基于设定的发行准则（<code>ι</code>）和属性（<code>attrs</code>）请求一个凭证（<code>cred</code>），并生成相应的支持文档（<code>sd</code>）。这里 <code>wsd</code> 和 <code>iauxsd</code> 表示可能涉及的其他附加信息或支持文档。</li>
+</ul>
+<p>IssueGrant_I(pp, ι, CL, cred, sd) → (CL′, θ)</p>
+<ul>
+<li><strong>颁发凭证</strong>。此步骤决定是否根据申请（<code>cred</code>）及其支持文档（<code>sd</code>）授予用户请求的凭证。如果授予成功，凭证将被添加到凭证列表（<code>CL</code>）中，并返回凭证的证明（<code>θ</code>）。</li>
+</ul>
+<p>ShowCred_U(pp, ϕ, CL, cred, θ, w, aux) → (πlink, aux)</p>
+<ul>
+<li><strong>展示凭证</strong>。当用户需要展示其凭证时，通过检查其凭证是否满足设定的访问准则（<code>ϕ</code>）。此步骤会生成一个“展示链接”（<code>πlink</code>），证明用户持有符合准则的凭证，并附带额外的上下文信息（<code>aux</code>）。</li>
+</ul>
+<p>VerifyShow_V(pp, ϕ, CL, πlink, aux) → b</p>
+<ul>
+<li><strong>验证凭证展示</strong>。验证用户所展示的凭证是否符合设定的访问准则（<code>ϕ</code>），并检查相关上下文信息（<code>aux</code>）。返回一个布尔值 <code>b</code>，表示验证是否通过。</li>
+</ul>
+<p>RevokeCred_I(pp, CL, cred) → CL′</p>
+<ul>
+<li><strong>撤销凭证</strong>。如果某个凭证需要被撤销，此步骤会从凭证列表（<code>CL</code>）中删除该凭证，并返回更新后的凭证列表（<code>CL′</code>）。</li>
+</ul>
+<p><img src="assets/image-20250225154434685.png" alt="image-20250225154434685"></p>
+<h3 id="related">Related</h3>
+<p>Decentralized Anonymous Credentials  NDSS 2014：首次提出去中心化匿名证书的概念，消除单一发行人的假设和发行人持有密钥的需要。但是，他们要求用户在本地存储完整的凭证列表，并且计算证明时间和每次显示的已颁发凭证数量呈线性关系（即使是静态凭证列表）。</p>
+<p>相比之下，zk-creds开发了一种新的方法和新的密码学（盲Groth16），以允许证明重用和快速凭证显示。而且，通过使用Merkle树，zk-creds要求<strong>用户只存储对数大小的见证数据</strong>来计算凭证显示。</p>
+<p>他们使用的定制西格玛协议集不提供凭证和身份属性的组合，也不支持复杂的身份声明。</p>
+<p>最后也是最重要的是，这项工作没有回答如何在<strong>不向发卡机构披露敏感信息</strong>的情况下做出颁发证书的决定的问题（即zk支持文档地址的问题）。</p>
+<p>Coconut[55]匿名凭证方案通过阈值签名解决了发行挑战。在Coconut中，凭据由n个静态方在假设t&gt;1/2是诚实的情况下颁发，但是必须有足够多的愿意发行凭证的参与方。如果在某些情况下，虽然有很多潜在的参与方愿意发行凭证，但由于某种原因，没有任何一个参与方被认为是可信的，那么阈值发行机制就无法解决发行者稀缺的问题。</p>
+<p>Coconut只支持凭证中属性的选择性披露，而不支持对属性进行复杂的零知识证明。它不符合我们的<strong>灵活性或动态生成访问标准</strong>的设计目标。</p>
+<h2 id="疑惑的点">疑惑的点</h2>
+<ol>
+<li>匿名凭据是指颁发时满足kyc规则，但是验证的时候无法进行关联</li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://Ann-103.github.io">Ann</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://ann-103.github.io/post/4150779276.html">https://ann-103.github.io/post/4150779276.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://Ann-103.github.io" target="_blank">Ann-Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Blockchain/">Blockchain</a><a class="post-meta__tags" href="/tags/Anonymous-Credentials/">Anonymous Credentials</a></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2025/01/07/byGj6UexQNDV4tk.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/post/1967566042.html" title="PaperNotebook-zk-creds"><img class="cover" src="https://s2.loli.net/2024/11/22/GXwuEP8UlBzOyAe.jpg" onerror="onerror=null;src='/img/loading.gif'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">PaperNotebook-zk-creds</div></div></a></div><div class="next-post pull-right"><a href="/post/381386168.html" title="DID2"><img class="cover" src="https://s2.loli.net/2024/11/22/HgvTujcKwQVEzUp.jpg" onerror="onerror=null;src='/img/loading.gif'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">DID2</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/post/3638070731.html" title="DID架构"><img class="cover" src="https://s2.loli.net/2024/11/22/HgvTujcKwQVEzUp.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-12-02</div><div class="title">DID架构</div></div></a></div><div><a href="/post/1783592341.html" title="Fabric"><img class="cover" src="https://s2.loli.net/2024/11/14/ezn2mqK7YOEsMca.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-11-06</div><div class="title">Fabric</div></div></a></div><div><a href="/post/381386168.html" title="DID2"><img class="cover" src="https://s2.loli.net/2024/11/22/HgvTujcKwQVEzUp.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-02-18</div><div class="title">DID2</div></div></a></div><div><a href="/post/1858757970.html" title="fabric自定义网络搭建"><img class="cover" src="https://s2.loli.net/2024/12/05/SO3LhvBDmxZCou4.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-12-07</div><div class="title">fabric自定义网络搭建</div></div></a></div><div><a href="/post/3643155828.html" title="区块链技术基础"><img class="cover" src="https://s2.loli.net/2024/11/14/OsgaF7GIC1NRlhe.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-10-25</div><div class="title">区块链技术基础</div></div></a></div><div><a href="/post/3364712731.html" title="zkSNARK 基础"><img class="cover" src="https://s2.loli.net/2025/01/07/byGj6UexQNDV4tk.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-12-15</div><div class="title">zkSNARK 基础</div></div></a></div></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/favicon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Ann</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">33</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">32</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Ann-103"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Ann-103" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:ajw0822@mail.ustc.edu.cn" target="_blank" title="Em"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="iconfont icon-gonggao"></i><span>公告</span></div><div class="announcement_content">欢迎访问我的小破站 ❤</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8C%BF%E5%90%8D%E5%87%AD%E6%8D%AE"><span class="toc-number">1.</span> <span class="toc-text">匿名凭据</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#decentralized-anonymous-credentials-ndss-2014"><span class="toc-number">1.1.</span> <span class="toc-text">Decentralized Anonymous Credentials  NDSS 2014</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#coconut-ndss2019"><span class="toc-number">1.2.</span> <span class="toc-text">Coconut NDSS2019</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#zk-cred"><span class="toc-number">1.3.</span> <span class="toc-text">zk-cred</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B4%A1%E7%8C%AE"><span class="toc-number">1.3.1.</span> <span class="toc-text">贡献</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#overview"><span class="toc-number">1.3.2.</span> <span class="toc-text">overview</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#related"><span class="toc-number">1.3.3.</span> <span class="toc-text">Related</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%96%91%E6%83%91%E7%9A%84%E7%82%B9"><span class="toc-number">1.4.</span> <span class="toc-text">疑惑的点</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer" style="background: transparent"><div id="footer-wrap"><div class="copyright">&copy;2024 - 2025 By Ann</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"> </i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="iconfont icon-triangleupfill"></i></button><button id="go-down" type="button" title="to_bottom" onclick="btf.scrollToDest(document.body.scrollHeight, 500)"><i class="iconfont icon-triangledownfill"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.8/dist/lazyload.iife.min.js"></script><div class="js-pjax"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/copy-tex.min.js"></script><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script><script>(() => {
+  const initValine = () => {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'jlgkfToE73FxTz8kyHsmvdzb-gzGzoHsz',
+      appKey: 'NN6nCIT47fGwz5Q1UyvFcGKP',
+      avatar: 'retro',
+      serverURLs: '',
+      emojiMaps: "",
+      path: window.location.pathname,
+      visitor: false
+    }, null))
+  }
+
+  const loadValine = async () => {
+    if (typeof Valine === 'function') initValine()
+    else {
+      await getScript('https://cdn.jsdelivr.net/npm/valine@1.5.1/dist/Valine.min.js')
+      initValine()
+    }
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})()</script></div><script async data-pjax src="/js/custom.js"></script><script async data-pjax src="/js/waterfall/waterfall.js"></script><script src="/Ann/random.js"></script><script src="/js/snowflake.js"></script><script src="/js/hot.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener
+  btf.removeGlobalFnEvent('pjax')
+  btf.removeGlobalFnEvent('themeChange')
+
+  document.getElementById('rightside').classList.remove('rightside-show')
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><div id="algolia-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="search-wrap"><div id="algolia-search-input"></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-info"><div class="algolia-stats"></div><div class="algolia-poweredBy"></div></div></div></div></div><div id="search-mask"></div><script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.22.1/dist/algoliasearch-lite.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.65.0/dist/instantsearch.production.min.js"></script><script src="/js/search/algolia.js?v=4.13.0"></script></div></div></body></html>
